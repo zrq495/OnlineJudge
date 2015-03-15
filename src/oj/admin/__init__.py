@@ -2,3 +2,4 @@
 
 from . import user  # noqa
 from . import problem  # noqa
+from . import solution  # noqa

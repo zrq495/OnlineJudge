@@ -19,6 +19,19 @@ class ProblemModel(db.Model):
         db.DateTime, nullable=False,
         server_default=db.func.current_timestamp())
 
+    solutions = db.relationship(
+        'SolutionModel',
+        primaryjoin='SolutionModel.problem_id==ProblemModel.id',
+        foreign_keys='[SolutionModel.problem_id]',
+        backref=db.backref(
+            'problem',
+            lazy='joined',
+            innerjoin=True),
+        order_by='SolutionModel.date_created.desc()',
+        passive_deletes='all',
+        lazy='dynamic'
+    )
+
     def as_dict(self):
         return {
             'id': self.id,
