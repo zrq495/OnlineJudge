@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from flask import (views,
                    Blueprint,
                    render_template)
+from flask.ext.login import current_user
 
 from oj.models import UserModel
 
@@ -12,10 +13,10 @@ from oj.models import UserModel
 class IndexView(views.MethodView):
 
     def get(self):
-        user = UserModel.query.first()
+        user = current_user
         return render_template(
             'index.html',
-            name=user.username if user else None)
+            user=user)
 
 
 bp_index = Blueprint('index', __name__)

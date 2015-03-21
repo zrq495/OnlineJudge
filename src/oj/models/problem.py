@@ -14,7 +14,7 @@ class ProblemModel(db.Model):
     __tablename__ = 'problem'
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(512), unique=True, nullable=False)
+    title = db.Column(db.String(512), nullable=False)
     date_created = db.Column(
         db.DateTime, nullable=False,
         server_default=db.func.current_timestamp())

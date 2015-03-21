@@ -15,4 +15,6 @@ class SolutionHook(CommonEntityHook):
         solutions = new_solutions | deleted_solutions
         self.update_children_count(
             solutions, 'user', 'solutions', 'solutions_count')
+        self.update_children_count(
+            solutions, 'user', 'accepts', 'accepts_count')
 

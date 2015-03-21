@@ -6,6 +6,9 @@ from __future__ import unicode_literals
 from .user import *  # noqa
 from .problem import *  # noqa
 from .solution import *  # noqa
+from .contest import *  # noqa
+from .news import *  # noqa
+from .message import *  # noqa
 from . import listeners  # noqa
 
 
