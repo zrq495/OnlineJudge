@@ -8,6 +8,7 @@ from oj import db
 __all__ = [
     'ContestModel',
     'ContestProblemModel',
+    'ContestUserModel',
 ]
 
 
@@ -81,3 +82,21 @@ class ContestProblemModel(db.Model):
 
     def __repr__(self):
         return '<ContestProblem %r>' % self.id
+
+
+class ContestUsermModel(db.Model):
+    __tablename__ = 'contest_user'
+
+    id = db.Column(db.Integer, primary_key=True)
+    contest_id = db.Column(db.Integer(), nullable=False)
+    date_created = db.Column(
+        db.DateTime, nullable=False,
+        server_default=db.func.current_timestamp())
+
+    def as_dict(self):
+        return {
+            'id': self.id,
+        }
+
+    def __repr__(self):
+        return '<ContestUser %r>' % self.id

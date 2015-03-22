@@ -2,6 +2,9 @@
 
 from __future__ import unicode_literals
 
+from sqlalchemy.sql import expression
+from sqlalchemy import sql
+
 from oj import db
 
 
@@ -18,9 +21,18 @@ class MessageModel(db.Model):
     to_user_id = db.Column(db.Integer(), nullable=False)
     title = db.Column(db.String(512), nullable=False)
     content = db.Column(db.UnicodeText(), nullable=False)
+    is_read = db.Column(db.Boolean(), server_default=sql.false(),
+                        nullable=False)
     date_created = db.Column(
         db.DateTime, nullable=False,
         server_default=db.func.current_timestamp())
+
+    @staticmethod
+    def get_unread_count(user_id):
+        return MessageModel.query.filter(
+            MessageModel.to_user_id == user_id,
+            MessageModel.is_read.is_(False),
+        ).count()
 
     def as_dict(self):
         return {

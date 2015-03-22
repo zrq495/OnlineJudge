@@ -9,10 +9,10 @@ from oj.models import ProblemModel
 
 class ProblemModelView(ModelView):
     # Disable model creation
-    can_create = False
+    # can_create = False
 
     # Override displayed fields
-    column_list = ('title',)
+    # column_list = ('title',)
 
     def __init__(self, session, **kwargs):
         # You can pass name and other parameters if you want to

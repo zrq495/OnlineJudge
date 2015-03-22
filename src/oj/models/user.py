@@ -56,6 +56,38 @@ class UserModel(UserMixin, db.Model):
         lazy='dynamic'
     )
 
+    message_sent = db.relationship(
+        'MessageModel',
+        primaryjoin='MessageModel.from_user_id==UserModel.id',
+        foreign_keys='[MessageModel.from_user_id]',
+        backref=db.backref(
+            'user',
+            lazy='joined',
+            innerjoin=True),
+        order_by='MessageModel.date_created.desc()',
+        lazy='dynamic'
+    )
+
+    message_received = db.relationship(
+        'MessageModel',
+        primaryjoin='MessageModel.to_user_id==UserModel.id',
+        foreign_keys='[MessageModel.to_user_id]',
+        order_by='MessageModel.date_created.desc()',
+        lazy='dynamic'
+    )
+
+    news = db.relationship(
+        'NewsModel',
+        primaryjoin='NewsModel.user_id==UserModel.id',
+        foreign_keys='[NewsModel.user_id]',
+        backref=db.backref(
+            'user',
+            lazy='joined',
+            innerjoin=True),
+        order_by='NewsModel.date_created.desc()',
+        lazy='dynamic'
+    )
+
     solutions = db.relationship(
         'SolutionModel',
         primaryjoin='SolutionModel.user_id==UserModel.id',

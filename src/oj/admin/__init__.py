@@ -2,4 +2,6 @@
 
 from . import user  # noqa
 from . import problem  # noqa
+from . import contest  # noqa
+from . import news  # noqa
 from . import solution  # noqa
