@@ -161,7 +161,7 @@ class EntityHook(object):
 class CommonEntityHook(EntityHook):
 
     def update_children_count(
-            self, children, parent_name, children_name, counter_name):
+            self, children, parent_name, children_name, counter_name, by_len=False):
         '''
         全量式更新统计表的count值，效率低，有一致性保证
         '''
@@ -171,9 +171,14 @@ class CommonEntityHook(EntityHook):
             if not parent:
                 continue
             if parent and parent not in parents:
-                setattr(parent, counter_name,
-                        getattr(parent, children_name)
-                        .order_by(None).count())
+                if not by_len:
+                    setattr(parent, counter_name,
+                            getattr(parent, children_name)
+                            .order_by(None).count())
+                else:
+                    setattr(parent, counter_name,
+                            len(getattr(parent, children_name)
+                                .all()))
                 parents.add(parent)
 
     def increase_children_count(

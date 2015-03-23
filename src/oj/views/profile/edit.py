@@ -19,7 +19,7 @@ class ProfileEditView(views.MethodView):
 
     @login_required
     def get(self):
-        user = current_user
+        user = current_user._get_current_object()
         if not user:
             raise abort(404)
         form = UserForm(obj=user)
@@ -30,7 +30,7 @@ class ProfileEditView(views.MethodView):
 
     @login_required
     def post(self):
-        user = current_user
+        user = current_user._get_current_object()
         if not user:
             raise abort(404)
 
@@ -42,4 +42,4 @@ class ProfileEditView(views.MethodView):
                 user=user)
         form.populate_obj(user)
         db.session.commit()
-        return redirect(url_for('profile.profile', user_id=current_user.id))
+        return redirect(url_for('profile.profile', user_id=user.id))

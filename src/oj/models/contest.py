@@ -27,7 +27,8 @@ class ContestModel(db.Model):
         foreign_keys='[SolutionModel.contest_id]',
         backref=db.backref(
             'contest',
-            lazy='joined',
+            lazy=True,
+            uselist=False,
             innerjoin=True),
         order_by='SolutionModel.date_created.desc()',
         passive_deletes='all',
@@ -46,6 +47,22 @@ class ContestModel(db.Model):
         passive_deletes='all',
         lazy='dynamic'
     )
+
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            c = ContestModel(
+                title=forgery_py.lorem_ipsum.title())
+            db.session.add(c)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
 
     def as_dict(self):
         return {
@@ -75,6 +92,34 @@ class ContestProblemModel(db.Model):
         uselist=False
     )
 
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed, randint
+        import forgery_py
+
+        from .problem import ProblemModel
+
+        seed()
+        contest_count = ContestModel.query.count()
+        problem_count = ProblemModel.query.count()
+        if contest_count == 0:
+            ContestModel.generate_fake()
+        if problem_count == 0:
+            ProblemModel.generate_fake()
+        for i in range(count):
+            c = ContestModel.query.offset(randint(0, contest_count - 1)).first()
+            p = ProblemModel.query.offset(randint(0, problem_count - 1)).first()
+            cp = ContestProblemModel(
+                contest_id=c.id,
+                problem_id=p.id,
+                ordinal=randint(0, 0xffff))
+            db.session.add(cp)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+
     def as_dict(self):
         return {
             'id': self.id,
@@ -84,7 +129,7 @@ class ContestProblemModel(db.Model):
         return '<ContestProblem %r>' % self.id
 
 
-class ContestUsermModel(db.Model):
+class ContestUserModel(db.Model):
     __tablename__ = 'contest_user'
 
     id = db.Column(db.Integer, primary_key=True)

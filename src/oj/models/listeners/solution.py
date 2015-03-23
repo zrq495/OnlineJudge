@@ -17,4 +17,12 @@ class SolutionHook(CommonEntityHook):
             solutions, 'user', 'solutions', 'solutions_count')
         self.update_children_count(
             solutions, 'user', 'accepts', 'accepts_count')
-
+        self.update_children_count(
+            solutions, 'problem', 'solutions', 'solutions_count')
+        self.update_children_count(
+            solutions, 'problem', 'accepts', 'accepts_count')
+        self.update_children_count(
+            solutions, 'problem', 'solution_users',
+            'solution_users_count', True)
+        self.update_children_count(
+            solutions, 'problem', 'accept_users', 'accept_users_count', True)

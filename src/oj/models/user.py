@@ -18,7 +18,7 @@ __all__ = [
 
 @db.preserve_deleted(
     date_deleted=db.Column(
-        db.DateTime(timezone=True),
+        db.DateTime,
         server_default=db.func.current_timestamp(),
         nullable=False,
         index=True))
@@ -109,6 +109,25 @@ class UserModel(UserMixin, db.Model):
         passive_deletes='all',
         lazy='dynamic'
     )
+
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            u = UserModel(
+                username=forgery_py.internet.user_name(True),
+                nickname=forgery_py.internet.user_name(True),
+                email=forgery_py.internet.email_address(),
+                password='123')
+            db.session.add(u)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
 
     @property
     def password(self):

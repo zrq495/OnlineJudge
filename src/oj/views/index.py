@@ -7,13 +7,13 @@ from flask import (views,
                    render_template)
 from flask.ext.login import current_user
 
-from oj.models import UserModel
+from oj.models import UserModel, ProblemModel
 
 
 class IndexView(views.MethodView):
 
     def get(self):
-        user = current_user
+        user = current_user._get_current_object()
         return render_template(
             'index.html',
             user=user)
