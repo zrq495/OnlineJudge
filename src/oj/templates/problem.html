@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Online Judge - Problem{% endblock %}
+
+{% block page_content %}
+<div>
+    <div>
+        <table class="table">
+            <thead>
+                <th>Tag</th>
+                <th>PID</th>
+                <th>Title</th>
+                <th>Ratio</th>
+                <th>AC/Submit</th>
+                <th>Date Added</th>
+            </thead>
+            <tbody>
+                {% for problem in problems %}
+                <tr>
+                    <td>
+                        {% if problem.current_user_has_solved %}
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        {% elif problem.current_user_has_submitted %}
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        {% endif %}
+                    </td>
+                    <td>{{ problem.id }}</td>
+                    <td>{{ problem.title }}</td>
+                    <td>{{ problem.ratio }}</td>
+                    <td>({{ problem.accepts_count }}/{{ problem.solutions_count }})</td>
+                    <td>{{ problem.date_created.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            {{ macros.pagination_widget(pagination, 'problem.list') }}
+        </div>
+    </div>
+</div>
+{% endblock %}

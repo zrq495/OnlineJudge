@@ -42,6 +42,7 @@ def create_app(config_name):
         bp_index,
         bp_auth,
         bp_profile,
+        bp_problem,
     )
 
     app.register_blueprint(
@@ -59,5 +60,9 @@ def create_app(config_name):
     app.register_blueprint(
         bp_profile,
         url_prefix='')
+
+    app.register_blueprint(
+        bp_problem,
+        url_prefix='/problem')
 
     return app

@@ -8,6 +8,7 @@ from flask import (views,
 from flask.ext.login import current_user
 
 from oj.models import UserModel, ProblemModel
+from oj import db
 
 
 class IndexView(views.MethodView):

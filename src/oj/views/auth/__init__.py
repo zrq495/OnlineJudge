@@ -12,16 +12,19 @@ from .logout import LogoutView
 
 bp_auth.add_url_rule(
     '/signup/',
+    endpoint='signup',
     view_func=SignupView.as_view(b'signup'),
     methods=['POST', 'GET']
 )
 bp_auth.add_url_rule(
     '/login/',
+    endpoint='login',
     view_func=LoginView.as_view(b'login'),
     methods=['POST', 'GET']
 )
 bp_auth.add_url_rule(
     '/logout/',
+    endpoint='logout',
     view_func=LogoutView.as_view(b'logout'),
     methods=['GET']
 )

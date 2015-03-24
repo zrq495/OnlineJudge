@@ -2,12 +2,16 @@
 from __future__ import unicode_literals
 """在 flask-sqlalchemy 上的定制扩展"""
 
+import contextlib
+import threading
 from functools import partial
 
+from flask import session
 from flask.helpers import locked_cached_property
-from sqlalchemy import orm, sql, exc
+from sqlalchemy import orm, sql, exc, types
 from sqlalchemy.util import OrderedDict, to_list
 from sqlalchemy.orm import attributes, loading
+from sqlalchemy.ext.compiler import compiles
 from flask.ext.sqlalchemy import (SQLAlchemy, SignallingSession,
                                   BaseQuery)
 from flask.ext import sqlalchemy as flask_sqlalchemy
@@ -119,7 +123,16 @@ class SignallingSessionMixin(object):
         return super(SignallingSessionMixin, self).delete(instance)
 
 
+def _include_custom(obj):
+    obj.current_user_id = current_user_id
+    obj.set_current_user_id = set_current_user_id
+
+
 class SQLAlchemyMixin(object):
+
+    def __init__(self, *args, **kwargs):
+        super(SQLAlchemyMixin, self).__init__(*args, **kwargs)
+        _include_custom(self)
 
     def create_scoped_session(self, options=None):
         """Hepler factory method that creates a scoped session.
@@ -230,3 +243,22 @@ BaseQuery = type(BaseQuery.__name__,
 # dirty monkey patch
 flask_sqlalchemy.BaseQuery = BaseQuery
 flask_sqlalchemy.Model.query_class = BaseQuery
+
+
+class current_user_id(sql.ColumnElement):
+    type = types.String()
+
+imsafe = threading.local()
+
+
+@compiles(current_user_id)
+def default_current_user_id(element, compiler, **kw):
+    ukey = getattr(imsafe, '_db_current_user_id', session.get('user_id', None))
+    return compiler.process(sql.bindparam('current_user_id', ukey))
+
+
+@contextlib.contextmanager
+def set_current_user_id(ukey):
+    imsafe._db_current_user_id = ukey
+    yield
+    delattr(imsafe, '_db_current_user_id')

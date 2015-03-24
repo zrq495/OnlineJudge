@@ -22,6 +22,7 @@ class Config:
     OJ_MAIL_SUBJECT_PREFIX = '[SDTU OJ]'
     OJ_MAIL_SENDER = os.environ.get('MAIL_USERNAME')
     OJ_ADMIN = os.environ.get('MAIL_USERNAME')
+    PROBLEMS_PER_PAGE = 5
 
     @staticmethod
     def init_app(app):

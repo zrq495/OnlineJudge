@@ -178,10 +178,46 @@ class ProblemModel(db.Model):
     def accept_users_count_expr(cls):
         return ProblemStatisticsModel.accept_users_count
 
+    @classmethod
+    def __declare_last__(cls):
+        cls.current_user_has_solved = db.column_property(db.and_(
+            db.current_user_id().isnot(None), db.exists().
+            where(SolutionModel.user_id == db.current_user_id()).
+            where(SolutionModel.problem_id == cls.id).
+            where(SolutionModel.result == 1).
+            correlate_except(SolutionModel)), deferred=True)
+        cls.current_user_has_submitted = db.column_property(db.and_(
+            db.current_user_id().isnot(None), db.exists().
+            where(SolutionModel.user_id == db.current_user_id()).
+            where(SolutionModel.problem_id == cls.id).
+            correlate_except(SolutionModel)), deferred=True)
+
     def as_dict(self):
         return {
             'id': self.id,
             'title': self.title,
+            'time_limit': self.time_limit,
+            'memory_limit': self.memory_limit,
+            'description': self.description,
+            'input': self.input,
+            'output': self.output,
+            'sample_input': self.sample_input,
+            'sample_output': self.sample_output,
+            'sample_code': self.sample_code,
+            'hint': self.hint,
+            'source': self.source,
+            'author': self.author,
+            'is_display': self.is_display,
+            'is_special_judge': self.is_special_judge,
+            'date_modified': self.date_modified,
+            'date_created': self.date_created,
+            'solutions_count': self.solutions_count,
+            'accepts_count': self.accepts_count,
+            'ratio': '%.f%%' % round(
+                self.accepts_count * 100.0 / self.solutions_count
+                if self.solutions_count else 0),
+            'current_user_has_solved': self.current_user_has_solved,
+            'current_user_has_submitted': self.current_user_has_submitted,
         }
 
     def __repr__(self):
