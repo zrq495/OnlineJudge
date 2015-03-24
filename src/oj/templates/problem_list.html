@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
-{% import "_macros.html" as macros %}
+{% from "bootstrap/pagination.html" import render_pagination %}
 
-{% block title %}Online Judge - Problem{% endblock %}
+{% block title %}Online Judge - Problem List{% endblock %}
 
 {% block page_content %}
 <div>
@@ -25,8 +25,8 @@
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         {% endif %}
                     </td>
-                    <td>{{ problem.id }}</td>
-                    <td>{{ problem.title }}</td>
+                    <td><a href="{{ problem.url }}">{{ problem.id }}</a></td>
+                    <td><a href="{{ problem.url }}">{{ problem.title }}</a></td>
                     <td>{{ problem.ratio }}</td>
                     <td>({{ problem.accepts_count }}/{{ problem.solutions_count }})</td>
                     <td>{{ problem.date_created.strftime('%Y-%m-%d') }}</td>
@@ -35,7 +35,7 @@
             </tbody>
         </table>
         <div class="pagination">
-            {{ macros.pagination_widget(pagination, 'problem.list') }}
+            {{ render_pagination(pagination, 'problem.list') }}
         </div>
     </div>
 </div>

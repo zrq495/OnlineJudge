@@ -23,6 +23,7 @@ class Config:
     OJ_MAIL_SENDER = os.environ.get('MAIL_USERNAME')
     OJ_ADMIN = os.environ.get('MAIL_USERNAME')
     PROBLEMS_PER_PAGE = 5
+    BOOTSTRAP_SERVE_LOCAL = True
 
     @staticmethod
     def init_app(app):

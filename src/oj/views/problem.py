@@ -23,9 +23,18 @@ class ProblemView(views.MethodView):
                 page, per_page=per_page, error_out=False))
         problems = pagination.items
         return render_template(
-            'problem.html',
+            'problem_list.html',
             pagination=pagination,
-            problems=[p.as_dict() for p in problems])
+            problems=problems)
+
+
+class ProblemDetailView(views.MethodView):
+
+    def get(self, problem_id):
+        problem = ProblemModel.query.get_or_404(problem_id)
+        return render_template(
+            'problem_detail.html',
+            problem=problem)
 
 
 bp_problem = Blueprint('problem', __name__)
@@ -33,4 +42,9 @@ bp_problem.add_url_rule(
     '/',
     endpoint='list',
     view_func=ProblemView.as_view(b'list'),
+    methods=['GET'])
+bp_problem.add_url_rule(
+    '/<int:problem_id>/',
+    endpoint='detail',
+    view_func=ProblemDetailView.as_view(b'detail'),
     methods=['GET'])

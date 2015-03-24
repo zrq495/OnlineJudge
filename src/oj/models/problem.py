@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+from flask import url_for
 from sqlalchemy import sql
 from sqlalchemy.ext.hybrid import hybrid_property
 
@@ -178,6 +179,16 @@ class ProblemModel(db.Model):
     def accept_users_count_expr(cls):
         return ProblemStatisticsModel.accept_users_count
 
+    @property
+    def url(self):
+        return url_for('problem.detail', problem_id=self.id)
+
+    @property
+    def ratio(self):
+        return '%.f%%' % round(
+            self.accepts_count * 100.0 / self.solutions_count
+            if self.solutions_count else 0)
+
     @classmethod
     def __declare_last__(cls):
         cls.current_user_has_solved = db.column_property(db.and_(
@@ -213,9 +224,8 @@ class ProblemModel(db.Model):
             'date_created': self.date_created,
             'solutions_count': self.solutions_count,
             'accepts_count': self.accepts_count,
-            'ratio': '%.f%%' % round(
-                self.accepts_count * 100.0 / self.solutions_count
-                if self.solutions_count else 0),
+            'ratio': self.ratio,
+            'url': self.url,
             'current_user_has_solved': self.current_user_has_solved,
             'current_user_has_submitted': self.current_user_has_submitted,
         }
