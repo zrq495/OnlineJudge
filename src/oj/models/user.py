@@ -62,8 +62,8 @@ class UserModel(UserMixin, db.Model):
         foreign_keys='[MessageModel.from_user_id]',
         backref=db.backref(
             'user',
-            lazy='joined',
-            innerjoin=True),
+            lazy=True,
+            uselist=False),
         order_by='MessageModel.date_created.desc()',
         lazy='dynamic'
     )
@@ -82,8 +82,8 @@ class UserModel(UserMixin, db.Model):
         foreign_keys='[NewsModel.user_id]',
         backref=db.backref(
             'user',
-            lazy='joined',
-            innerjoin=True),
+            lazy=True,
+            uselist=False),
         order_by='NewsModel.date_created.desc()',
         lazy='dynamic'
     )
@@ -94,8 +94,8 @@ class UserModel(UserMixin, db.Model):
         foreign_keys='[SolutionModel.user_id]',
         backref=db.backref(
             'user',
-            lazy='joined',
-            innerjoin=True),
+            lazy=True,
+            uselist=False),
         order_by='SolutionModel.date_created.desc()',
         passive_deletes='all',
         lazy='dynamic'

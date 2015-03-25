@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}Online Judge - News - {{ news.id }}{% endblock %}
+
+{% block page_content %}
+<div>
+    <div>
+        <div>
+            <h3 class="text-center">{{ news.title }}</h3>
+        </div>
+        <div>
+            {{ news.content|safe }}
+        </div>
+    </div>
+</div>
+{% endblock %}

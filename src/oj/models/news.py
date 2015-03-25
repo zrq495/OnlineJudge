@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+from flask import url_for
 from sqlalchemy import sql
 
 from oj import db
@@ -26,6 +27,10 @@ class NewsModel(db.Model):
     date_created = db.Column(
         db.DateTime, nullable=False,
         server_default=db.func.current_timestamp())
+
+    @property
+    def url(self):
+        return url_for('news.detail', news_id=self.id)
 
     def as_dict(self):
         return {

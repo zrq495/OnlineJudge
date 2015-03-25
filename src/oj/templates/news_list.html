@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% from "bootstrap/pagination.html" import render_pagination %}
+
+{% block title %}Online Judge - News List{% endblock %}
+
+{% block page_content %}
+<div>
+    <div>
+        <table class="table">
+            <thead>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Date Added</th>
+            </thead>
+            <tbody>
+                {% for n in news %}
+                <tr>
+                    <td><a href="{{ n.url }}">{{ n.title }}</a></td>
+                    <td>{{ n.user.username }}</td>
+                    <td>{{ n.date_created.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if pagination is defined %}
+        <div class="pagination">
+            {{ render_pagination(pagination, 'news.list') }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
