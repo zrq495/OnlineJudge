@@ -1,10 +1,14 @@
 {% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 {% from "bootstrap/pagination.html" import render_pagination %}
 
 {% block title %}Online Judge - Problem List{% endblock %}
 
 {% block page_content %}
 <div>
+    <div>
+        {{ wtf.quick_form(form, form_type="inline", method="get") }}
+    </div>
     <div>
         <table class="table">
             <thead>
@@ -34,9 +38,11 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% if pagination is defined %}
         <div class="pagination">
             {{ render_pagination(pagination, 'problem.list') }}
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
