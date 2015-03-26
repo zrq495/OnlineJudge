@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% from "bootstrap/pagination.html" import render_pagination %}
+
+{% block title %}Online Judge - Solution List{% endblock %}
+
+{% block page_content %}
+<div>
+    <div>
+        {{ wtf.quick_form(form, form_type="inline", method="get") }}
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+                <th>Run ID</th>
+                <th>Nickname</th>
+                <th>Problem ID</th>
+                <th>Result</th>
+                <th>Time</th>
+                <th>Memory</th>
+                <th>Language</th>
+                <th>Code Len</th>
+                <th>Submit Time</th>
+            </thead>
+            <tbody>
+                {% for solution in solutions %}
+                <tr>
+                    <td>{{ solution.id }}</td>
+                    <td><a href="{{ solution.user.url }}">{{ solution.user.nickname }}</a></td>
+                    <td><a href="{{ solution.problem.url }}">{{ solution.problem.id }}</a></td>
+                    <td>{{ solution.result }}</td>
+                    <td>{{ solution.take_time }}MS</td>
+                    <td>{{ solution.take_memory }}KB</td>
+                    <td>{{ solution.program_language }}</td>
+                    <td>{{ solution.length }}</td>
+                    <td>{{ solution.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if pagination is defined %}
+        <div class="pagination">
+            {{ render_pagination(pagination, 'solution.list') }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

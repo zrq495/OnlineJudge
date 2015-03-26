@@ -26,6 +26,7 @@
                 <li><a href="{{ url_for('index.index') }}">Home</a></li>
                 <li><a href="{{ url_for('news.list') }}">News</a></li>
                 <li><a href="{{ url_for('problem.list') }}">Problems</a></li>
+                <li><a href="{{ url_for('solution.list') }}">Solutions</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated() %}

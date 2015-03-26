@@ -48,6 +48,7 @@ class NewsModel(db.Model):
         user_count = UserModel.query.count()
         if user_count == 0:
             UserModel.generate_fake()
+            user_count = UserModel.query.count()
         for i in range(count):
             u = UserModel.query.offset(randint(0, user_count - 1)).first()
             n = NewsModel(

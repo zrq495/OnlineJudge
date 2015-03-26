@@ -98,13 +98,27 @@ class ProblemModel(db.Model):
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
-        from random import seed
+        from random import seed, randint, choice
         import forgery_py
 
         seed()
         for i in range(count):
             p = ProblemModel(
-                title=forgery_py.lorem_ipsum.title())
+                title=forgery_py.lorem_ipsum.title(),
+                time_limit=randint(1, 5) * 1000,
+                memory_limit=choice([2 << 14, 2 << 15]),
+                description=forgery_py.lorem_ipsum.paragraphs(),
+                input=forgery_py.lorem_ipsum.paragraphs(),
+                output=forgery_py.lorem_ipsum.paragraphs(),
+                sample_input=forgery_py.lorem_ipsum.paragraphs(),
+                sample_output=forgery_py.lorem_ipsum.paragraphs(),
+                sample_code=forgery_py.lorem_ipsum.paragraphs(),
+                hint=forgery_py.lorem_ipsum.paragraphs(),
+                source=forgery_py.internet.domain_name(),
+                author=forgery_py.internet.user_name(True),
+                is_display=choice([True, False]),
+                is_special_judge=choice([True, False])
+            )
             db.session.add(p)
             try:
                 db.session.commit()

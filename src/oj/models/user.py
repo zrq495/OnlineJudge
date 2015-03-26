@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+from flask import url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.ext.hybrid import hybrid_property
 from flask.ext.login import UserMixin
@@ -128,6 +129,10 @@ class UserModel(UserMixin, db.Model):
                 db.session.commit()
             except IntegrityError:
                 db.session.rollback()
+
+    @property
+    def url(self):
+        return url_for('profile.profile', user_id=self.id)
 
     @property
     def password(self):
