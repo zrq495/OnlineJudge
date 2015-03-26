@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}Online Judge - Code - {{ code.id }}{% endblock %}
+
+{% block page_content %}
+<div>
+    <div>
+        <div>
+            <h3 class="text-center">View Code<br>
+                <small>Problem ID: {{ solution.problem_id }}&nbsp;&nbsp;Username: {{ solution.user.username }}&nbsp;&nbsp;Nickname: {{ solution.user.nickname }}<br>
+                    Time: {{ solution.take_time }}MS&nbsp;&nbsp;Memory: {{ solution.take_memory }}KB<br>
+                    Language: {{ solution.program_language }}&nbsp;&nbsp;Result: {{ solution.result }}<br>
+                    {{ solution.date_created.strftime('%Y-%m-%d %H:%M:%S') }}
+                </small></h3>
+        </div>
+        <div>
+            <pre>{{ code.content }}</pre>
+        </div>
+    </div>
+</div>
+{% endblock %}

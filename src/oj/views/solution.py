@@ -3,12 +3,14 @@
 from __future__ import unicode_literals
 
 from flask import (views,
+                   abort,
                    request,
                    url_for,
                    redirect,
                    Blueprint,
                    current_app,
                    render_template)
+from flask.ext.login import login_required, current_user
 
 from oj.models import (
     SolutionModel, CodeModel, CompileInfoModel, UserModel)
@@ -62,9 +64,29 @@ class SolutionView(views.MethodView):
             solutions=solutions, form=form)
 
 
+class CodeDetailView(views.MethodView):
+
+    template = 'code_detail.html'
+
+    @login_required
+    def get(self, code_id):
+        code = CodeModel.query.get_or_404(code_id)
+        if current_user.id != code.solution.user_id:
+            abort(404)
+        return render_template(
+            self.template, code=code, solution=code.solution)
+
+
 bp_solution = Blueprint('solution', __name__)
 bp_solution.add_url_rule(
     '/',
     endpoint='list',
     view_func=SolutionView.as_view(b'list'),
+    methods=['GET'])
+
+bp_code = Blueprint('code', __name__)
+bp_code.add_url_rule(
+    '/<int:code_id>/',
+    endpoint='detail',
+    view_func=CodeDetailView.as_view(b'detail'),
     methods=['GET'])

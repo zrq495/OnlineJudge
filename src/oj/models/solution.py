@@ -2,6 +2,8 @@
 
 from __future__ import unicode_literals
 
+from flask import url_for
+
 from oj import db
 
 
@@ -113,6 +115,10 @@ class CodeModel(db.Model):
         backref='code',
         uselist=False
     )
+
+    @property
+    def url(self):
+        return url_for('code.detail', code_id=self.id)
 
     def as_dict(self):
         return {

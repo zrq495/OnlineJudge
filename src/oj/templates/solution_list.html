@@ -31,7 +31,13 @@
                     <td>{{ solution.result }}</td>
                     <td>{{ solution.take_time }}MS</td>
                     <td>{{ solution.take_memory }}KB</td>
-                    <td>{{ solution.program_language }}</td>
+                    <td>
+                        {% if current_user.id == solution.user_id %}
+                        <a href="{{ solution.code.url }}">{{ solution.program_language }}</a>
+                        {% else %}
+                        {{ solution.program_language }}
+                        {% endif %}
+                    </td>
                     <td>{{ solution.length }}</td>
                     <td>{{ solution.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                 </tr>

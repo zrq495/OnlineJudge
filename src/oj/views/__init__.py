@@ -7,7 +7,7 @@ from .auth import bp_auth
 from .profile import bp_profile
 from .problem import bp_problem
 from .news import bp_news
-from .solution import bp_solution
+from .solution import bp_solution, bp_code
 
 
 __all__ = [
@@ -17,5 +17,6 @@ __all__ = [
     'bp_problem',
     'bp_news',
     'bp_solution',
+    'bp_code',
 ]
 
