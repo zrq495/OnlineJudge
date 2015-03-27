@@ -77,6 +77,17 @@ class CodeDetailView(views.MethodView):
             self.template, code=code, solution=code.solution)
 
 
+class CompileInfoDetailView(views.MethodView):
+
+    template = 'compile_info_detail.html'
+
+    @login_required
+    def get(self, compile_info_id):
+        compile_info = CompileInfoModel.query.get_or_404(compile_info_id)
+        return render_template(
+            self.template, compile_info=compile_info)
+
+
 bp_solution = Blueprint('solution', __name__)
 bp_solution.add_url_rule(
     '/',
@@ -89,4 +100,11 @@ bp_code.add_url_rule(
     '/<int:code_id>/',
     endpoint='detail',
     view_func=CodeDetailView.as_view(b'detail'),
+    methods=['GET'])
+
+bp_compile_info = Blueprint('compile_info', __name__)
+bp_compile_info.add_url_rule(
+    '/<int:compile_info_id>/',
+    endpoint='detail',
+    view_func=CompileInfoDetailView.as_view(b'detail'),
     methods=['GET'])

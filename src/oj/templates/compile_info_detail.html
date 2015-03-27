@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}Online Judge - Compile Info - {{ compile_info.id }}{% endblock %}
+
+{% block page_content %}
+<div>
+    <div>
+        <div>
+            <h3 class="text-center">Compile Error</h3>
+        </div>
+        <div>
+            <pre>{{ compile_info.content }}</pre>
+        </div>
+    </div>
+</div>
+{% endblock %}

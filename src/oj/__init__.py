@@ -46,6 +46,7 @@ def create_app(config_name):
         bp_news,
         bp_solution,
         bp_code,
+        bp_compile_info,
     )
 
     app.register_blueprint(
@@ -79,5 +80,9 @@ def create_app(config_name):
     app.register_blueprint(
         bp_code,
         url_prefix='/code')
+
+    app.register_blueprint(
+        bp_compile_info,
+        url_prefix='/compile')
 
     return app
