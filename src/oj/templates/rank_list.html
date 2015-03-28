@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% from "bootstrap/pagination.html" import render_pagination %}
+
+{% block title %}Online Judge - Rank List{% endblock %}
+
+{% block page_content %}
+<div>
+    <div>
+        <table class="table">
+            <thead>
+                <th>Rank</th>
+                <th>Username</th>
+                <th>Nickname</th>
+                <th>Solved</th>
+                <th>Submitted</th>
+                <th>AC Ratio</th>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>
+                        {{ (pagination.page - 1) * per_page + loop.index }}
+                    </td>
+                    <td><a href="{{ user.url }}">{{ user.username }}</a></td>
+                    <td>{{ user.nickname }}</a></td>
+                    <td>{{ user.accepts_count }}</td>
+                    <td>{{ user.solutions_count }}</td>
+                    <td>{{ user.ratio }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if pagination is defined %}
+        <div class="pagination">
+            {{ render_pagination(pagination, 'rank.list') }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -95,6 +95,10 @@ class ProblemModel(db.Model):
         lazy='dynamic'
     )
 
+    def __init__(self, **kwargs):
+        super(ProblemModel, self).__init__(**kwargs)
+        self._statistics = ProblemStatisticsModel()
+
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError

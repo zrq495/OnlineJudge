@@ -111,6 +111,10 @@ class UserModel(UserMixin, db.Model):
         lazy='dynamic'
     )
 
+    def __init__(self, **kwargs):
+        super(UserModel, self).__init__(**kwargs)
+        self._statistics = UserStatisticsModel()
+
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
@@ -178,6 +182,12 @@ class UserModel(UserMixin, db.Model):
     @accepts_count.expression
     def accepts_count_expr(cls):
         return UserStatisticsModel.accepts_count
+
+    @property
+    def ratio(self):
+        return '%.f%%' % round(
+            self.accepts_count * 100.0 / self.solutions_count
+            if self.solutions_count else 0)
 
     def as_dict(self):
         return {

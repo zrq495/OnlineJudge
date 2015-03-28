@@ -8,6 +8,7 @@ from .profile import bp_profile
 from .problem import bp_problem
 from .news import bp_news
 from .solution import bp_solution, bp_code, bp_compile_info
+from .rank import bp_rank
 
 
 __all__ = [
@@ -19,5 +20,6 @@ __all__ = [
     'bp_solution',
     'bp_code',
     'bp_compile_info',
+    'bp_rank',
 ]
 
