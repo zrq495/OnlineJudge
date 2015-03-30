@@ -1,0 +1,14 @@
+web:
+  build: .
+  command: python src/manage.py
+  ports:
+   - "5000:5000"
+  volumes:
+   - .:/OnlineJudge
+  links:
+   - redis
+   - postgres
+redis:
+  image: redis
+postgres:
+  image: postgres
