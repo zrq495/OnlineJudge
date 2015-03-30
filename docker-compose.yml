@@ -11,4 +11,4 @@ web:
 redis:
   image: redis
 postgres:
-  image: postgres
+  build: ./docker_file/postgres
