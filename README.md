@@ -34,3 +34,12 @@ SDUT Online Judge
 - cd src
 - ./manage.py db upgrade
 - ./manage.py runserver
+
+
+## docker
+
+- mkvirtualenv oj
+- pip install -r requirements/install.txt
+- docker-compose build
+- docker-compose run web python manage.py db upgrade
+- docker-compose up
