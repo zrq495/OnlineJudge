@@ -35,6 +35,9 @@ def create_app(config_name):
     login_manager.init_app(app)
     flask_admin.init_app(app)
 
+    from .core.jinja_filters import JINJA_FILTERS
+    app.jinja_env.filters.update(JINJA_FILTERS)
+
     from oj.blueprints import blueprint_apis
     from . import apis  # noqa
     from . import admin  # noqa
@@ -48,6 +51,7 @@ def create_app(config_name):
         bp_code,
         bp_compile_info,
         bp_rank,
+        bp_contest,
     )
 
     app.register_blueprint(
@@ -89,5 +93,9 @@ def create_app(config_name):
     app.register_blueprint(
         bp_rank,
         url_prefix='/rank')
+
+    app.register_blueprint(
+        bp_contest,
+        url_prefix='/contest')
 
     return app

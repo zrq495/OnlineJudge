@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}Online Judge - Contest - {{ contest.id }}{% endblock %}
+
+{% block page_content %}
+<div>
+    <div>
+        <div>
+            <h3 class="text-center">{{ contest.name }}<br>
+                <small>
+                    Start Time: {{ contest.date_start.strftime('%Y-%m-%d %H:%M:%S') }}&nbsp;&nbsp;
+                    End Time: {{ contest.date_start.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+                    Contest Type: {{ contest.type|title }}&nbsp;&nbsp;
+                    Contest Status: {{ contest.status|title }}<br>
+                    Server Time: {{ now.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+                </small>
+            </h3>
+            <p class="text-center">{{ contest.description|safe }}<p>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                    <th>Solved</th>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Accepted</th>
+                    <th>Submit</th>
+                </thead>
+                <tbody>
+                    {% for problem in contest.problems %}
+                    <tr>
+                        <td></td>
+                        <td>{{ loop.index0|digital_to_letter }}</td>
+                        <td>{{ problem.name }}</td>
+                        <td></td>
+                        <td></td>
+                    <tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

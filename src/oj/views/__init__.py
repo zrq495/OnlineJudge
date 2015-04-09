@@ -9,6 +9,7 @@ from .problem import bp_problem
 from .news import bp_news
 from .solution import bp_solution, bp_code, bp_compile_info
 from .rank import bp_rank
+from .contest import bp_contest
 
 
 __all__ = [
@@ -21,5 +22,6 @@ __all__ = [
     'bp_code',
     'bp_compile_info',
     'bp_rank',
+    'bp_contest',
 ]
 

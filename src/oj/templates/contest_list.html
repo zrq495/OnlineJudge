@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% from "bootstrap/pagination.html" import render_pagination %}
+
+{% block title %}Online Judge - Contest List{% endblock %}
+
+{% block page_content %}
+<div>
+    <div>
+        <table class="table">
+            <thead>
+                <th>ID</th>
+                <th>Contest Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Register</th>
+            </thead>
+            <tbody>
+                {% for contest in contests %}
+                <tr>
+                    <td>{{ contest.id }}</td>
+                    <td><a href="{{ contest.url }}">{{ contest.name }}</a></td>
+                    <td>{{ contest.date_start.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ contest.date_end.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>
+                        {{ contest.type|title }}
+                        {% if contest.type == 'register' %}
+                        <br>{{ contest.date_start_register.strftime('%Y-%m-%d %H:%M:%S') }}
+                        <br>{{ contest.date_end_register.strftime('%Y-%m-%d %H:%M:%S') }}
+                        {% endif %}
+                    </td>
+                    <td>{{ contest.status }}</td>
+                    <td>
+                        {% if contest.type == 'register' %}
+                        todo
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if pagination is defined %}
+        <div class="pagination">
+            {{ render_pagination(pagination, 'contest.list') }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

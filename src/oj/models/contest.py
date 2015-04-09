@@ -2,10 +2,13 @@
 
 from __future__ import unicode_literals
 
+import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import sql
+from flask import url_for
 
 from oj import db
+from .user import UserModel
 
 
 __all__ = [
@@ -29,8 +32,8 @@ class ContestModel(db.Model):
         server_default='public', nullable=False)
     user_id = db.Column(db.Integer(), nullable=False)
     password_hash = db.Column(db.String(128))
-    date_start_register = db.Column(db.DateTime, nullable=False)
-    date_end_register = db.Column(db.DateTime, nullable=False)
+    date_start_register = db.Column(db.DateTime)
+    date_end_register = db.Column(db.DateTime)
     is_hiden = db.Column(
         db.Boolean, default=False, server_default=sql.false(),
         nullable=True)
@@ -74,18 +77,52 @@ class ContestModel(db.Model):
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
-        from random import seed
+        from random import seed, randint, choice
         import forgery_py
 
         seed()
+        now = datetime.datetime.now()
+        user_count = UserModel.query.count()
+        if user_count == 0:
+            UserModel.generate_fake()
+            user_count = UserModel.query.count()
         for i in range(count):
+            date_start = now + datetime.timedelta(randint(-100, 100))
+            date_end = date_start + datetime.timedelta(hours=randint(2, 10))
+            date_end_register = date_start - datetime.timedelta(randint(1,5))
+            date_start_register = date_end_register - datetime.timedelta(randint(1,10))
+            u = UserModel.query.offset(randint(0, user_count - 1)).first()
             c = ContestModel(
-                name=forgery_py.lorem_ipsum.name())
+                name=forgery_py.lorem_ipsum.title(),
+                date_start=date_start,
+                date_end=date_end,
+                description=forgery_py.lorem_ipsum.paragraph(),
+                type=choice(['public', 'private', 'register', 'diy']),
+                user_id=u.id,
+                password='123',
+                date_start_register=date_start_register,
+                date_end_register=date_end_register,
+            )
             db.session.add(c)
             try:
                 db.session.commit()
             except IntegrityError:
                 db.session.rollback()
+
+    @property
+    def url(self):
+        return url_for('contest.detail', contest_id=self.id)
+
+    @property
+    def status(self):
+        now = datetime.datetime.now()
+        if now < self.date_start:
+            status = 'pending'
+        elif now > self.date_end:
+            status = 'ended'
+        else:
+            status = 'running'
+        return status
 
     @property
     def password(self):
@@ -148,6 +185,7 @@ class ContestProblemModel(db.Model):
             c = ContestModel.query.offset(randint(0, contest_count - 1)).first()
             p = ProblemModel.query.offset(randint(0, problem_count - 1)).first()
             cp = ContestProblemModel(
+                name=p.title,
                 contest_id=c.id,
                 problem_id=p.id,
                 ordinal=randint(0, 0xffff))
