@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from wtforms import fields
+from flask import current_app as app
 
 from oj import flask_admin, db
 from oj.models import UserModel
@@ -35,12 +36,15 @@ class User(Mixin):
 
     def scaffold_form(self):
         form_class = super(User, self).scaffold_form()
-        form_class.password2 = fields.PasswordField('Password')
+        form_class.password2 = fields.StringField('Password')
         return form_class
 
     def on_model_change(self, form, model):
         if len(model.password2):
             model.password = form.password2.data
+        elif not model.password_hash:
+            default_password = app.config['DEFAULT_PASSWORD']
+            model.password = form.password2.data if len(model.password2) else default_password
 
 
 class UserDeleted(Mixin):

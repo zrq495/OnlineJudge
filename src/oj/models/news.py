@@ -18,14 +18,14 @@ class NewsModel(db.Model):
     __tablename__ = 'news'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer(), nullable=False)
+    user_id = db.Column(db.Integer(), nullable=False, index=True)
     title = db.Column(db.String(512), nullable=False)
     content = db.Column(db.UnicodeText(), nullable=False)
     is_display = db.Column(
         db.Boolean, default=True, server_default=sql.true(),
-        nullable=False)
+        nullable=False, index=True)
     date_created = db.Column(
-        db.DateTime, nullable=False,
+        db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
     @property

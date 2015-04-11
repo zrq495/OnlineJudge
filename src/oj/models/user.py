@@ -35,16 +35,16 @@ class UserModel(UserMixin, db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(256), unique=True, index=True)
-    nickname = db.Column(db.String(256), unique=True)
-    email = db.Column(db.String(256), unique=True, index=True)
-    password_hash = db.Column(db.String(128))
+    username = db.Column(db.String(256), unique=True, index=True, nullable=False)
+    nickname = db.Column(db.String(256), unique=True, index=True, nullable=False)
+    email = db.Column(db.String(256), unique=True, index=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
     gender = db.Column(
         db.Enum('male', 'female', name='user_gender'))
     school = db.Column(db.String(256))
-    program_language = db.Column(db.String(64))
+    program_language = db.Column(db.String(64), nullable=False)
     date_created = db.Column(
-        db.DateTime, nullable=False,
+        db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
     _statistics = db.relationship(
@@ -211,8 +211,8 @@ class UserFavoritesModel(db.Model):
     __tablename__ = 'user_favorites'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer(), nullable=False)
-    problem_id = db.Column(db.Integer(), nullable=False)
+    user_id = db.Column(db.Integer(), nullable=False, index=True)
+    problem_id = db.Column(db.Integer(), nullable=False, index=True)
     date_created = db.Column(
         db.DateTime(),
         server_default=db.func.current_timestamp(),

@@ -21,8 +21,8 @@ class ProblemModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(512), nullable=False)
-    time_limit = db.Column(db.Integer)
-    memory_limit = db.Column(db.Integer)
+    time_limit = db.Column(db.Integer, nullable=False)
+    memory_limit = db.Column(db.Integer, nullable=False)
     description = db.Column(db.UnicodeText())
     input = db.Column(db.UnicodeText())
     output = db.Column(db.UnicodeText())
@@ -34,15 +34,15 @@ class ProblemModel(db.Model):
     author = db.Column(db.String(128))
     is_display = db.Column(
         db.Boolean, default=True, server_default=sql.true(),
-        nullable=True)
+        nullable=True, index=True)
     is_special_judge = db.Column(
         db.Boolean, default=False, server_default=sql.false(),
-        nullable=True)
+        nullable=True, index=True)
     date_modified = db.Column(
-        db.DateTime, nullable=False,
+        db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
     date_created = db.Column(
-        db.DateTime, nullable=False,
+        db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
     _statistics = db.relationship(

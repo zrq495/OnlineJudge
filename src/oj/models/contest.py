@@ -30,7 +30,7 @@ class ContestModel(db.Model):
         db.Enum('public', 'private', 'register', 'diy',
                 name='contest_type_enum'),
         server_default='public', nullable=False)
-    user_id = db.Column(db.Integer(), nullable=False)
+    user_id = db.Column(db.Integer(), nullable=False, index=True)
     password_hash = db.Column(db.String(128))
     date_start_register = db.Column(db.DateTime)
     date_end_register = db.Column(db.DateTime)
@@ -38,7 +38,7 @@ class ContestModel(db.Model):
         db.Boolean, default=False, server_default=sql.false(),
         nullable=True)
     date_created = db.Column(
-        db.DateTime, nullable=False,
+        db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
     user = db.relationship(
@@ -150,11 +150,11 @@ class ContestProblemModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Unicode(512))
-    contest_id = db.Column(db.Integer(), nullable=False)
-    problem_id = db.Column(db.Integer(), nullable=False)
-    ordinal = db.Column(db.Integer(), default=0, server_default='0')
+    contest_id = db.Column(db.Integer(), nullable=False, index=True)
+    problem_id = db.Column(db.Integer(), nullable=False, index=True)
+    ordinal = db.Column(db.Integer(), default=0, server_default='0', index=True)
     date_created = db.Column(
-        db.DateTime, nullable=False,
+        db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
     problem = db.relationship(
@@ -208,7 +208,7 @@ class ContestUserModel(db.Model):
     __tablename__ = 'contest_user'
 
     id = db.Column(db.Integer, primary_key=True)
-    contest_id = db.Column(db.Integer(), nullable=False)
+    contest_id = db.Column(db.Integer(), nullable=False, index=True)
     login_name = db.Column(db.String(256), nullable=False)
     team_name = db.Column(db.Unicode(256), nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
@@ -216,10 +216,10 @@ class ContestUserModel(db.Model):
         db.Enum(
             'accept', 'waiting', 'reject', 'again',
             name='contest_user_status_enum'),
-        server_default='waiting', nullable=False)
+        server_default='waiting', nullable=False, index=True)
     seat_number = db.Column(db.Unicode(128))
     reason = db.Column(db.Unicode(256))
-    user_id = db.Column(db.Integer(), nullable=False)
+    user_id = db.Column(db.Integer(), nullable=False, index=True)
     student_id = db.Column(db.String(32))
     name = db.Column(db.Unicode(256))
     school = db.Column(db.Unicode(256))
@@ -245,7 +245,7 @@ class ContestUserModel(db.Model):
     phone2 = db.Column(db.String(32))
     email2 = db.Column(db.String(256))
     date_created = db.Column(
-        db.DateTime, nullable=False,
+        db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
     @property

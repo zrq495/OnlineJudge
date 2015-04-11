@@ -17,14 +17,14 @@ class MessageModel(db.Model):
     __tablename__ = 'message'
 
     id = db.Column(db.Integer, primary_key=True)
-    from_user_id = db.Column(db.Integer(), nullable=False)
-    to_user_id = db.Column(db.Integer(), nullable=False)
+    from_user_id = db.Column(db.Integer(), nullable=False, index=True)
+    to_user_id = db.Column(db.Integer(), nullable=False, index=True)
     title = db.Column(db.String(512), nullable=False)
     content = db.Column(db.UnicodeText(), nullable=False)
     is_read = db.Column(db.Boolean(), server_default=sql.false(),
-                        nullable=False)
+                        nullable=False, index=True)
     date_created = db.Column(
-        db.DateTime, nullable=False,
+        db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
     @staticmethod

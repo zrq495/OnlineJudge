@@ -18,18 +18,18 @@ class SolutionModel(db.Model):
     __tablename__ = 'solution'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer())
-    contest_user_id = db.Column(db.Integer())
+    user_id = db.Column(db.Integer(), index=True)
+    contest_user_id = db.Column(db.Integer(), index=True)
     contest_id = db.Column(
-        db.Integer(), nullable=False, default=0, server_default='0')
-    problem_id = db.Column(db.Integer(), nullable=False)
-    result = db.Column(db.Integer(), nullable=False)
+        db.Integer(), nullable=False, default=0, server_default='0', index=True)
+    problem_id = db.Column(db.Integer(), nullable=False, index=True)
+    result = db.Column(db.Integer(), nullable=False, index=True)
     length = db.Column(db.Integer(), nullable=False)
     take_time = db.Column(db.Integer(), nullable=False)
     take_memory = db.Column(db.Integer(), nullable=False)
-    program_language = db.Column(db.String(64), nullable=False)
+    program_language = db.Column(db.String(64), nullable=False, index=True)
     date_created = db.Column(
-        db.DateTime, nullable=False,
+        db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
     code = db.relationship(
@@ -103,10 +103,10 @@ class CodeModel(db.Model):
     __tablename__ = 'code'
 
     id = db.Column(db.Integer, primary_key=True)
-    solution_id = db.Column(db.Integer(), nullable=False)
+    solution_id = db.Column(db.Integer(), nullable=False, index=True)
     content = db.Column(db.UnicodeText(), nullable=False)
     date_created = db.Column(
-        db.DateTime, nullable=False,
+        db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
     compile_info = db.relationship(
@@ -134,10 +134,10 @@ class CompileInfoModel(db.Model):
     __tablename__ = 'compile_info'
 
     id = db.Column(db.Integer, primary_key=True)
-    code_id = db.Column(db.Integer(), nullable=False)
+    code_id = db.Column(db.Integer(), nullable=False, index=True)
     content = db.Column(db.UnicodeText(), default=None)
     date_created = db.Column(
-        db.DateTime, nullable=False,
+        db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
     def as_dict(self):

@@ -28,6 +28,7 @@ class Config:
     RANK_PER_PAGE = 5
     CONTESTS_PER_PAGE = 5
     BOOTSTRAP_SERVE_LOCAL = True
+    DEFAULT_PASSWORD = 'oj123456'
 
     @staticmethod
     def init_app(app):
