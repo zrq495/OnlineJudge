@@ -31,3 +31,16 @@ class SolutionSearchForm(Form):
         choices=[('', 'all'), ('0', '0'), ('1', '1')],
         validators=[validators.Optional()])
     submit = fields.SubmitField('Search')
+
+
+class SubmitForm(Form):
+    problem_id = fields.IntegerField(
+        'Problem ID', validators=[validators.Required()])
+    language = fields.SelectField(
+        'Language',
+        choices=[('gcc', 'gcc'), ('python', 'Python')],
+        validators=[validators.Required()])
+    code = fields.TextAreaField(
+        'Source Code',
+        validators=[validators.Optional(), validators.Length(3, 100000)])
+    submit = fields.SubmitField('Submit')

@@ -74,6 +74,9 @@
                 {{ problem.sample_code|d('', true) }}
             </div>
         </div>
+        <div class="center-block" style="width:300px">
+            <a class="btn btn-default" href="{{ url_for('submit.submit', problem_id=problem.id) }}" role="button">Submit</a>
+        </div>
     </div>
 </div>
 {% endblock %}

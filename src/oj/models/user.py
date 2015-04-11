@@ -42,7 +42,7 @@ class UserModel(UserMixin, db.Model):
     gender = db.Column(
         db.Enum('male', 'female', name='user_gender'))
     school = db.Column(db.String(256))
-    program_language = db.Column(db.String(64), nullable=False)
+    program_language = db.Column(db.String(64))
     date_created = db.Column(
         db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())

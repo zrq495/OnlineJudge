@@ -21,12 +21,18 @@ class SolutionModel(db.Model):
     user_id = db.Column(db.Integer(), index=True)
     contest_user_id = db.Column(db.Integer(), index=True)
     contest_id = db.Column(
-        db.Integer(), nullable=False, default=0, server_default='0', index=True)
+        db.Integer(), nullable=False, default=0,
+        server_default='0', index=True)
     problem_id = db.Column(db.Integer(), nullable=False, index=True)
-    result = db.Column(db.Integer(), nullable=False, index=True)
-    length = db.Column(db.Integer(), nullable=False)
-    take_time = db.Column(db.Integer(), nullable=False)
-    take_memory = db.Column(db.Integer(), nullable=False)
+    result = db.Column(
+        db.Integer(), nullable=False, index=True,
+        default=0, server_default='0')
+    length = db.Column(
+        db.Integer(), nullable=False, default=0, server_default='0')
+    take_time = db.Column(
+        db.Integer(), nullable=False, default=0, server_default='0')
+    take_memory = db.Column(
+        db.Integer(), nullable=False, default=0, server_default='0')
     program_language = db.Column(db.String(64), nullable=False, index=True)
     date_created = db.Column(
         db.DateTime, nullable=False, index=True,
