@@ -6,11 +6,11 @@ from wtforms import fields
 from flask import current_app as app
 
 from oj import flask_admin, db
-from oj.models import UserModel
+from oj.models import UserModel, UserStatisticsModel
 from .mixin import Mixin
 
 
-class User(Mixin):
+class UserAdmin(Mixin):
 
     can_restore = False
     can_create = True
@@ -32,10 +32,10 @@ class User(Mixin):
     ]
 
     def __init__(self, session, **kwargs):
-        super(User, self).__init__(UserModel, session, **kwargs)
+        super(UserAdmin, self).__init__(UserModel, session, **kwargs)
 
     def scaffold_form(self):
-        form_class = super(User, self).scaffold_form()
+        form_class = super(UserAdmin, self).scaffold_form()
         form_class.password2 = fields.StringField('Password')
         return form_class
 
@@ -47,7 +47,7 @@ class User(Mixin):
             model.password = form.password2.data if len(model.password2) else default_password
 
 
-class UserDeleted(Mixin):
+class UserDeletedAdmin(Mixin):
 
     can_restore = True
     can_create = False
@@ -64,10 +64,23 @@ class UserDeleted(Mixin):
     ]
 
     def __init__(self, session, **kwargs):
-        super(UserDeleted, self).__init__(UserModel.deleted, session, **kwargs)
+        super(UserDeletedAdmin, self).__init__(UserModel.deleted, session, **kwargs)
 
 
-flask_admin.add_view(User(
-    db.session, name='用户列表', category='用户管理', endpoint='user'))
-flask_admin.add_view(UserDeleted(
-    db.session, name='垃圾用户列表', category='用户管理', endpoint='user_deleted'))
+class UserStatisticsAdmin(Mixin):
+
+    can_restore = False
+    can_create = False
+    can_edit = False
+    can_delete = False
+
+    def __init__(self, session, **kwargs):
+        super(UserStatisticsAdmin, self).__init__(UserStatisticsModel, session, **kwargs)
+
+
+flask_admin.add_view(UserAdmin(
+    db.session, name='用户列表', category='用户管理', url='user'))
+flask_admin.add_view(UserDeletedAdmin(
+    db.session, name='垃圾用户列表', category='用户管理', url='user_deleted'))
+flask_admin.add_view(UserStatisticsAdmin(
+    db.session, name='用户统计', category='用户管理', url='user_statistics'))

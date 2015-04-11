@@ -51,6 +51,7 @@ class UserModel(UserMixin, db.Model):
         'UserStatisticsModel',
         primaryjoin='UserModel.id==UserStatisticsModel.id',
         foreign_keys='[UserStatisticsModel.id]',
+        backref='user',
         uselist=False,
         cascade="all, delete-orphan",
     )

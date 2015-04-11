@@ -49,6 +49,7 @@ class ProblemModel(db.Model):
         'ProblemStatisticsModel',
         primaryjoin='ProblemModel.id==ProblemStatisticsModel.id',
         foreign_keys='[ProblemStatisticsModel.id]',
+        backref='problem',
         uselist=False,
         passive_deletes='all'
     )
