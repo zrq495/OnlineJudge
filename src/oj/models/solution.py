@@ -18,7 +18,8 @@ class SolutionModel(db.Model):
     __tablename__ = 'solution'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer(), nullable=False)
+    user_id = db.Column(db.Integer())
+    contest_user_id = db.Column(db.Integer())
     contest_id = db.Column(
         db.Integer(), nullable=False, default=0, server_default='0')
     problem_id = db.Column(db.Integer(), nullable=False)

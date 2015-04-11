@@ -18,11 +18,19 @@ __all__ = [
 
 
 @db.preserve_deleted(
-    date_deleted=db.Column(
-        db.DateTime,
-        server_default=db.func.current_timestamp(),
-        nullable=False,
-        index=True))
+    id=db.Column(db.Integer,
+                 primary_key=True,
+                 nullable=False,
+                 autoincrement=False),
+    date_deleted=db.Column(db.DateTime,
+                           nullable=False,
+                           index=True,
+                           server_default=db.func.current_timestamp()),
+    reason=db.Column(db.Enum('deleted_by_user',
+                             'deleted_by_admin',
+                             'censored_automatically',
+                             name='deleted_reason'),
+                     nullable=False))
 class UserModel(UserMixin, db.Model):
     __tablename__ = 'user'
 
@@ -44,7 +52,7 @@ class UserModel(UserMixin, db.Model):
         primaryjoin='UserModel.id==UserStatisticsModel.id',
         foreign_keys='[UserStatisticsModel.id]',
         uselist=False,
-        passive_deletes='all'
+        cascade="all, delete-orphan",
     )
 
     favorites = db.relationship(
