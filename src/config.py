@@ -6,7 +6,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
-class Config:
+class Config(object):
     SECRET_KEY = (
         os.environ.get('SECRET_KEY') or
         '\x11\xbe\xbb\xf0\x7fz\x9d\x01\x07\xa0'

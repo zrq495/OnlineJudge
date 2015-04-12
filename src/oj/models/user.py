@@ -2,12 +2,13 @@
 
 from __future__ import unicode_literals
 
-from flask import url_for
+from flask import url_for, current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.ext.hybrid import hybrid_property
-from flask.ext.login import UserMixin
+from flask.ext.login import UserMixin, AnonymousUserMixin
 
-from oj import db
+from oj import db, login_manager
+from .role import RoleModel, Permission
 
 
 __all__ = [
@@ -43,6 +44,7 @@ class UserModel(UserMixin, db.Model):
         db.Enum('male', 'female', name='user_gender'))
     school = db.Column(db.String(256))
     program_language = db.Column(db.String(64))
+    role_id = db.Column(db.Integer)
     last_login_ip = db.Column(db.String(64))
     current_login_ip = db.Column(db.String(64))
     login_count = db.Column(db.Integer())
@@ -129,9 +131,23 @@ class UserModel(UserMixin, db.Model):
         lazy='dynamic'
     )
 
+    role = db.relationship(
+        'RoleModel',
+        primaryjoin='UserModel.role_id==RoleModel.id',
+        foreign_keys='[UserModel.role_id]',
+        backref=db.backref(
+            'user',
+            lazy='dynamic'),
+        lazy=True)
+
     def __init__(self, **kwargs):
         super(UserModel, self).__init__(**kwargs)
         self._statistics = UserStatisticsModel()
+        if self.role is None:
+            if self.email == current_app.config['OJ_ADMIN']:
+                self.role = RoleModel.query.filter_by(permissions=0xff).first()
+            if self.role is None:
+                self.role = RoleModel.query.filter_by(default=True).first()
 
     @staticmethod
     def generate_fake(count=100):
@@ -207,6 +223,13 @@ class UserModel(UserMixin, db.Model):
             self.accepts_count * 100.0 / self.solutions_count
             if self.solutions_count else 0)
 
+    def can(self, permissions):
+        return (self.role is not None and
+                (self.role.permissions & permissions) == permissions)
+
+    def is_administrator(self):
+        return self.can(Permission.ADMINISTER)
+
     def as_dict(self):
         return {
             'id': self.id,
@@ -244,3 +267,13 @@ class UserStatisticsModel(db.Model):
     accepts_count = db.Column(
         db.Integer(), default=0,
         nullable=False, server_default='0', index=True)
+
+
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissions):
+        return False
+
+    def is_administrator(self):
+        return False
+
+login_manager.anonymous_user = AnonymousUser

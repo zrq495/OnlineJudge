@@ -103,4 +103,10 @@ def create_app(config_name):
         bp_submit,
         url_prefix='/submit')
 
+    from .models import Permission
+
+    @app.context_processor
+    def inject_permissions():
+        return dict(Permission=Permission)
+
     return app

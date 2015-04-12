@@ -52,9 +52,12 @@ def test(coverage=False):
 def deploy():
     """Run deployment tasks."""
     from flask.ext.migrate import upgrade
+    from oj.models import RoleModel
 
     # migrate database to latest revision
     upgrade()
+
+    RoleModel.insert_roles()
 
 
 if __name__ == '__main__':

@@ -9,6 +9,7 @@ from .solution import *  # noqa
 from .contest import *  # noqa
 from .news import *  # noqa
 from .message import *  # noqa
+from .role import *  # noqa
 from . import listeners  # noqa
 
 
