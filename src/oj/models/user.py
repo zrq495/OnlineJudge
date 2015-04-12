@@ -43,6 +43,15 @@ class UserModel(UserMixin, db.Model):
         db.Enum('male', 'female', name='user_gender'))
     school = db.Column(db.String(256))
     program_language = db.Column(db.String(64))
+    last_login_ip = db.Column(db.String(64))
+    current_login_ip = db.Column(db.String(64))
+    login_count = db.Column(db.Integer())
+    date_last_login = db.Column(
+        db.DateTime, nullable=False,
+        server_default=db.func.current_timestamp())
+    date_current_login = db.Column(
+        db.DateTime, nullable=False,
+        server_default=db.func.current_timestamp())
     date_created = db.Column(
         db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())

@@ -28,7 +28,9 @@ class UserAdmin(Mixin):
 
     form_excluded_columns = [
         'password_hash', 'favorites', 'message_sent', 'message_received',
-        'news', 'solutions', 'accepts', 'date_created'
+        'news', 'solutions', 'accepts', 'date_created', 'date_last_login',
+        'last_login_ip', 'current_login_ip', 'date_current_login',
+        'login_count'
     ]
 
     def __init__(self, session, **kwargs):
