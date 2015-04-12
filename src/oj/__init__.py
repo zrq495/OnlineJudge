@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 from flask import Flask
 from flask.ext.mail import Mail
-from flask.ext.admin import Admin
 from flask.ext.login import LoginManager
 from flask.ext.bootstrap import Bootstrap
 
@@ -14,7 +13,6 @@ from oj.core.sqlalchemy import SQLAlchemy
 mail = Mail()
 db = SQLAlchemy()
 bootstrap = Bootstrap()
-flask_admin = Admin(name='SDUT OJ')
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -33,6 +31,8 @@ def create_app(config_name):
     db.init_app(app)
     bootstrap.init_app(app)
     login_manager.init_app(app)
+
+    from .admin import flask_admin
     flask_admin.init_app(app)
 
     from .core.jinja_filters import JINJA_FILTERS
@@ -40,7 +40,6 @@ def create_app(config_name):
 
     from oj.blueprints import blueprint_apis
     from . import apis  # noqa
-    from . import admin  # noqa
     from .views import (
         bp_index,
         bp_auth,

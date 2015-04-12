@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-from flask.ext.admin.contrib.sqla import ModelView
 
-from oj import flask_admin, db
+from oj import db
 from oj.models import ContestModel
+from .mixin import Mixin
+from . import flask_admin
 
-flask_admin.add_view(ModelView(ContestModel, db.session))
+flask_admin.add_view(Mixin(ContestModel, db.session))

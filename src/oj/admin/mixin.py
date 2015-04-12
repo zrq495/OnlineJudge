@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+from flask.ext.login import current_user
 from flask.ext.admin import form
 from flask.ext.admin.actions import action
 from flask.ext.admin.contrib.sqla import ModelView
@@ -36,7 +37,8 @@ class Mixin(ModelView):
     form_extra_fields = None
 
     def is_accessible(self):
-        return True
+        return (current_user.is_authenticated()
+                and current_user.is_administrator())
 
     def delete_model(self, model):
         class_ = model.__class__

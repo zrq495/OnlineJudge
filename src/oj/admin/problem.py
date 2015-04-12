@@ -2,9 +2,10 @@
 
 from __future__ import unicode_literals
 
-from oj import flask_admin, db
+from oj import db
 from oj.models import ProblemModel, ProblemStatisticsModel
 from .mixin import Mixin
+from . import flask_admin
 
 
 class ProblemAdmin(Mixin):

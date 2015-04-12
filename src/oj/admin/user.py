@@ -5,9 +5,10 @@ from __future__ import unicode_literals
 from wtforms import fields
 from flask import current_app as app
 
-from oj import flask_admin, db
+from oj import db
 from oj.models import UserModel, UserStatisticsModel
 from .mixin import Mixin
+from . import flask_admin
 
 
 class UserAdmin(Mixin):
