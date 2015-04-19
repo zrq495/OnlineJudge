@@ -60,8 +60,8 @@ class ProblemModel(db.Model):
         foreign_keys='[SolutionModel.problem_id]',
         backref=db.backref(
             'problem',
-            lazy='joined',
-            innerjoin=True),
+            uselist=False,
+            lazy=True),
         order_by='SolutionModel.date_created.desc()',
         passive_deletes='all',
         lazy='dynamic'

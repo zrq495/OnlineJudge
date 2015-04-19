@@ -48,6 +48,17 @@ class ContestModel(db.Model):
         lazy=True
     )
 
+    contest_users = db.relationship(
+        'ContestUserModel',
+        primaryjoin='and_(ContestUserModel.contest_id==ContestModel.id, ContestModel.type=="register")',
+        foreign_keys='[ContestUserModel.contest_id]',
+        backref=db.backref(
+            'contest',
+            lazy=True),
+        passive_deletes='all',
+        lazy='dynamic'
+    )
+
     solutions = db.relationship(
         'SolutionModel',
         primaryjoin='SolutionModel.contest_id==ContestModel.id',
@@ -55,8 +66,7 @@ class ContestModel(db.Model):
         backref=db.backref(
             'contest',
             lazy=True,
-            uselist=False,
-            innerjoin=True),
+            uselist=False),
         order_by='SolutionModel.date_created.desc()',
         passive_deletes='all',
         lazy='dynamic'
@@ -164,6 +174,28 @@ class ContestProblemModel(db.Model):
         lazy=True
     )
 
+    solutions = db.relationship(
+        'SolutionModel',
+        primaryjoin='and_(SolutionModel.problem_id==ContestProblemModel.problem_id, SolutionModel.contest_id==ContestProblemModel.contest_id)',
+        foreign_keys='[SolutionModel.problem_id, SolutionModel.contest_id]',
+        backref=db.backref(
+            'contest_problem',
+            lazy=True
+        ),
+        order_by='SolutionModel.date_created.desc()',
+        passive_deletes='all',
+        lazy='dynamic'
+    )
+
+    accepts = db.relationship(
+        'SolutionModel',
+        primaryjoin='and_(SolutionModel.problem_id==ContestProblemModel.problem_id, SolutionModel.contest_id==ContestProblemModel.contest_id, SolutionModel.result==1)',
+        foreign_keys='[SolutionModel.problem_id, SolutionModel.contest_id]',
+        order_by='SolutionModel.date_created.desc()',
+        passive_deletes='all',
+        lazy='dynamic'
+    )
+
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
@@ -209,9 +241,7 @@ class ContestUserModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     contest_id = db.Column(db.Integer(), nullable=False, index=True)
-    login_name = db.Column(db.String(256), nullable=False)
     team_name = db.Column(db.Unicode(256), nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
     status = db.Column(
         db.Enum(
             'accept', 'waiting', 'reject', 'again',
@@ -220,6 +250,7 @@ class ContestUserModel(db.Model):
     seat_number = db.Column(db.Unicode(128))
     reason = db.Column(db.Unicode(256))
     user_id = db.Column(db.Integer(), nullable=False, index=True)
+
     student_id = db.Column(db.String(32))
     name = db.Column(db.Unicode(256))
     school = db.Column(db.Unicode(256))
@@ -248,16 +279,27 @@ class ContestUserModel(db.Model):
         db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
-    @property
-    def password(self):
-        raise AttributeError('password is not a readable attribute')
+    solutions = db.relationship(
+        'SolutionModel',
+        primaryjoin='and_(SolutionModel.user_id==ContestUserModel.user_id, SolutionModel.contest_id==ContestUserModel.contest_id)',
+        foreign_keys='[SolutionModel.user_id, SolutionModel.contest_id]',
+        backref=db.backref(
+            'contest_user',
+            lazy=True
+        ),
+        order_by='SolutionModel.date_created.desc()',
+        passive_deletes='all',
+        lazy='dynamic'
+    )
 
-    @password.setter
-    def password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def verify_password(self, password):
-        return check_password_hash(self.password_hash, password)
+    accepts = db.relationship(
+        'SolutionModel',
+        primaryjoin='and_(SolutionModel.user_id==ContestUserModel.user_id, SolutionModel.contest_id==ContestUserModel.contest_id, SolutionModel.result==1)',
+        foreign_keys='[SolutionModel.user_id, SolutionModel.contest_id]',
+        order_by='SolutionModel.date_created.desc()',
+        passive_deletes='all',
+        lazy='dynamic'
+    )
 
     def as_dict(self):
         return {

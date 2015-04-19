@@ -19,7 +19,6 @@ class SolutionModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer(), index=True)
-    contest_user_id = db.Column(db.Integer(), index=True)
     contest_id = db.Column(
         db.Integer(), nullable=False, default=0,
         server_default='0', index=True)
