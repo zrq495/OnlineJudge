@@ -1,0 +1,69 @@
+        <div>
+            <h3 class="text-center">{{ problem.title }}<br>
+                <small>Time Limit: {{ problem.time_limit|d(1000, true) }}MS&nbsp;&nbsp;
+                Memory Limit: {{ problem.memory_limit|d(65535, true) }}KB</small></h3>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Description</h3>
+            </div>
+            <div class="panel-body">
+                {{ problem.description|d('', true) }}
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Input</h3>
+            </div>
+            <div class="panel-body">
+                {{ problem.input|d('', true) }}
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Output</h3>
+            </div>
+            <div class="panel-body">
+                {{ problem.output|d('', true) }}
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Sample Input</h3>
+            </div>
+            <div class="panel-body">
+                {{ problem.sample_input|d('', true) }}
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Sample Output</h3>
+            </div>
+            <div class="panel-body">
+                {{ problem.sample_output|d('', true) }}
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Hint</h3>
+            </div>
+            <div class="panel-body">
+                {{ problem.hint|d('', true) }}
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Source</h3>
+            </div>
+            <div class="panel-body">
+                {{ problem.source|d('', true) }}
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Sample Code</h3>
+            </div>
+            <div class="panel-body">
+                {{ problem.sample_code|d('', true) }}
+            </div>
+        </div>

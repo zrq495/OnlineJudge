@@ -196,6 +196,10 @@ class ContestProblemModel(db.Model):
         lazy='dynamic'
     )
 
+    @property
+    def url(self):
+        return url_for('contest.contest_problem', contest_problem_id=self.id)
+
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError

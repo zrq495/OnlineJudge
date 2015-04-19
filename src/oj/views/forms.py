@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 from flask.ext.wtf import Form
 from wtforms import fields, validators, ValidationError
 
+from oj.models import ContestModel, ContestProblemModel
+
 
 class ProblemSearchForm(Form):
     problem_id = fields.IntegerField(
@@ -44,3 +46,33 @@ class SubmitForm(Form):
         'Source Code',
         validators=[validators.Optional(), validators.Length(3, 100000)])
     submit = fields.SubmitField('Submit')
+
+    def validate_problem_id(self, field):
+        # TODO 验证题目状态
+        pass
+
+
+class ContestSubmitForm(Form):
+    contest_problem_id = fields.IntegerField(
+        'Contest_Problem ID', validators=[validators.Required()])
+    language = fields.SelectField(
+        'Language',
+        choices=[('gcc', 'gcc'), ('python', 'Python')],
+        validators=[validators.Required()])
+    code = fields.TextAreaField(
+        'Source Code',
+        validators=[validators.Optional(), validators.Length(3, 100000)])
+    submit = fields.SubmitField('Submit')
+
+    def validate_contest_problem_id(self, field):
+        contest_problem_id = field.data
+        contest_problem = ContestProblemModel.query.get(
+            contest_problem_id)
+        if not contest_problem:
+            raise ValidationError('题目不存在')
+        if contest_problem.contest.is_hiden:
+            raise ValidationError('比赛不存在')
+        if contest_problem.contest.status == 'pending':
+            raise ValidationError('比赛还没开始')
+        if contest_problem.contest.status == 'ended':
+            raise ValidationError('比赛已经结束')

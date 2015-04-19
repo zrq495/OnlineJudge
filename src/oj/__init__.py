@@ -51,7 +51,6 @@ def create_app(config_name):
         bp_compile_info,
         bp_rank,
         bp_contest,
-        bp_submit,
     )
 
     app.register_blueprint(
@@ -97,10 +96,6 @@ def create_app(config_name):
     app.register_blueprint(
         bp_contest,
         url_prefix='/contest')
-
-    app.register_blueprint(
-        bp_submit,
-        url_prefix='/submit')
 
     from .models import Permission
 

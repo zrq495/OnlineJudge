@@ -30,8 +30,8 @@
                     {% for problem in contest.problems %}
                     <tr>
                         <td></td>
-                        <td>{{ loop.index0|digital_to_letter }}</td>
-                        <td>{{ problem.name }}</td>
+                        <td><a href="{{ problem.url }}">{{ loop.index0|digital_to_letter }}</a></td>
+                        <td><a href="{{ problem.url }}">{{ problem.name }}</a></td>
                         <td></td>
                         <td></td>
                     <tr>
