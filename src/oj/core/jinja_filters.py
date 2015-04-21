@@ -2,6 +2,20 @@
 from __future__ import unicode_literals
 
 from datetime import datetime, timedelta
+from jinja2 import Markup
+import pygments
+from pygments.formatters.html import HtmlFormatter
+from pygments.lexers import guess_lexer
+
+
+def highlight(code):
+    try:
+        lexer = guess_lexer(code)
+        formatter = HtmlFormatter(linenos='table', linenostart=0)
+        code = pygments.highlight(code, lexer, formatter)
+    except:
+        pass
+    return Markup(code)
 
 
 def digital_to_letter(value, base='A'):
@@ -49,4 +63,5 @@ def time_since(dt, default='刚刚', time_format='%Y-%m-%d %H:%M'):
 JINJA_FILTERS = {
     'digital_to_letter': digital_to_letter,
     'time_since': time_since,
+    'highlight': highlight,
 }

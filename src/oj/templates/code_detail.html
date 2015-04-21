@@ -2,6 +2,11 @@
 
 {% block title %}Online Judge - Code - {{ code.id }}{% endblock %}
 
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/highlight.css') }}">
+{% endblock %}
+
 {% block page_content %}
 <div>
     <div>
@@ -13,8 +18,8 @@
                     {{ solution.date_created.strftime('%Y-%m-%d %H:%M:%S') }}
                 </small></h3>
         </div>
-        <div>
-            <pre>{{ code.content }}</pre>
+        <div class="center-block" style="width:750px">
+            {{ code.content|highlight }}
         </div>
     </div>
 </div>
