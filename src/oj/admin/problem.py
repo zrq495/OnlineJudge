@@ -3,8 +3,10 @@
 from __future__ import unicode_literals
 
 from wtforms import fields, widgets
+from flask.ext.login import current_user
+from flask.ext.admin.contrib import fileadmin
 
-from oj import db
+from oj import db, app
 from oj.models import ProblemModel, ProblemStatisticsModel
 from .mixin import Mixin
 from . import flask_admin
@@ -68,7 +70,23 @@ class ProblemStatisticsAdmin(Mixin):
         super(ProblemStatisticsAdmin, self).__init__(ProblemStatisticsModel, session, **kwargs)
 
 
+class ProblemTestDataAdmin(fileadmin.FileAdmin):
+    
+    # TODO 多文件上传
+
+    allowed_extensions = ('in', 'out')
+    editable_extensions = ('in', 'out')
+
+    def is_accessible(self):
+        return (current_user.is_authenticated()
+                and current_user.is_administrator())
+
+
 flask_admin.add_view(ProblemAdmin(
     db.session, name='题目列表', category='题目管理', url='problem'))
 flask_admin.add_view(ProblemStatisticsAdmin(
     db.session, name='题目统计', category='题目管理', url='problem_statistics'))
+flask_admin.add_view(
+    ProblemTestDataAdmin(
+        app.config['TEST_DATA_PATH'], category='题目管理', name='测试数据管理',
+        url='problem_test_data'))

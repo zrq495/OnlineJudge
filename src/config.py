@@ -29,6 +29,7 @@ class Config(object):
     CONTESTS_PER_PAGE = 5
     BOOTSTRAP_SERVE_LOCAL = True
     DEFAULT_PASSWORD = 'oj123456'
+    TEST_DATA_PATH = '/data/'
 
     @staticmethod
     def init_app(app):
