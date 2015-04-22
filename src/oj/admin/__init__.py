@@ -19,3 +19,4 @@ from . import contest  # noqa
 from . import news  # noqa
 from . import code  # noqa
 from . import solution  # noqa
+from . import file_manager  # noqa

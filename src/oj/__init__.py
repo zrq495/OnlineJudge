@@ -9,6 +9,8 @@ from flask.ext.bootstrap import Bootstrap
 from config import config
 from oj.core.sqlalchemy import SQLAlchemy
 
+import os
+app_dir = os.path.abspath(os.path.dirname(__file__))
 
 mail = Mail()
 db = SQLAlchemy()
@@ -20,6 +22,7 @@ login_manager.login_view = 'auth.login'
 
 app = Flask(__name__)
 app.config.from_object('config')
+app.config['APP_DIR'] = app_dir
 
 
 def create_app(config_name):

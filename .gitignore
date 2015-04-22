@@ -55,3 +55,6 @@ docs/_build/
 target/
 
 dump.rdb
+
+# upload dir
+src/oj/static/upload/
