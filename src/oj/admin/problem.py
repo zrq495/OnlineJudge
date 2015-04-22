@@ -2,10 +2,22 @@
 
 from __future__ import unicode_literals
 
+from wtforms import fields, widgets
+
 from oj import db
 from oj.models import ProblemModel, ProblemStatisticsModel
 from .mixin import Mixin
 from . import flask_admin
+
+
+class CKTextAreaWidget(widgets.TextArea):
+    def __call__(self, field, **kwargs):
+        kwargs.setdefault('class_', 'ckeditor')
+        return super(CKTextAreaWidget, self).__call__(field, **kwargs)
+
+
+class CKTextAreaField(fields.TextAreaField):
+    widget = CKTextAreaWidget()
 
 
 class ProblemAdmin(Mixin):
@@ -15,6 +27,9 @@ class ProblemAdmin(Mixin):
     can_edit = True
     can_delete = False
 
+    create_template = 'admin/edit_problem.html'
+    edit_template = 'admin/edit_problem.html'
+
     column_list = [
         'id', 'title', 'source', 'is_display', 'date_created'
     ]
@@ -23,6 +38,16 @@ class ProblemAdmin(Mixin):
         'id', 'title', 'source', 'is_display', 'date_created', 'date_modified'
     ]
 
+    form_overrides = dict(
+        description=CKTextAreaField,
+        input=CKTextAreaField,
+        output=CKTextAreaField,
+        sample_input=CKTextAreaField,
+        sample_output=CKTextAreaField,
+        hint=CKTextAreaField,
+        source=CKTextAreaField,
+        sample_code=CKTextAreaField,
+    )
     form_excluded_columns = [
         'solution_users', 'accept_users', 'solutions',
         'accepts', 'date_created', 'date_modified'

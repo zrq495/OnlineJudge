@@ -31,7 +31,7 @@ class UserAdmin(Mixin):
         'password_hash', 'favorites', 'message_sent', 'message_received',
         'news', 'solutions', 'accepts', 'date_created', 'date_last_login',
         'last_login_ip', 'current_login_ip', 'date_current_login',
-        'login_count'
+        'login_count', 'role_id'
     ]
 
     def __init__(self, session, **kwargs):

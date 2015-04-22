@@ -55,7 +55,7 @@ class SolutionView(views.MethodView):
         page = request.args.get('page', 1, type=int)
         pagination = (
             SolutionModel.query
-            .order_by(SolutionModel.id.asc())
+            .order_by(SolutionModel.id.desc())
             .paginate(
                 page, per_page=per_page, error_out=False))
         solutions = pagination.items
