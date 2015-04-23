@@ -7,11 +7,14 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
+
     SECRET_KEY = (
         os.environ.get('SECRET_KEY') or
         '\x11\xbe\xbb\xf0\x7fz\x9d\x01\x07\xa0'
         '\xd0J\xec\xbdw\nfc\xc5Q\xd0\x8cd\xf1')
+
     SQLALCHEMY_RECORD_QUERIES = True
+
     MAIL_SERVER = 'smtp.163.com'
     # MAIL_SERVER = 'smtp.sina.cn'
     MAIL_PORT = 587
@@ -22,14 +25,23 @@ class Config(object):
     OJ_MAIL_SUBJECT_PREFIX = '[SDTU OJ]'
     OJ_MAIL_SENDER = os.environ.get('MAIL_USERNAME')
     OJ_ADMIN = os.environ.get('MAIL_USERNAME')
+
     PROBLEMS_PER_PAGE = 5
     NEWS_PER_PAGE = 5
     SOLUTIONS_PER_PAGE = 5
     RANK_PER_PAGE = 5
     CONTESTS_PER_PAGE = 5
+
     BOOTSTRAP_SERVE_LOCAL = True
+
     DEFAULT_PASSWORD = 'oj123456'
+
     TEST_DATA_PATH = '/data/'
+
+    # send cloud
+    SEND_CLOUD_API_USER = os.environ.get('SEND_CLOUD_API_USER')
+    SEND_CLOUD_API_KEY = os.environ.get('SEND_CLOUD_API_KEY')
+
 
     @staticmethod
     def init_app(app):
