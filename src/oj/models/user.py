@@ -109,6 +109,18 @@ class UserModel(UserMixin, db.Model):
         lazy='dynamic'
     )
 
+    headlines = db.relationship(
+        'HeadlineModel',
+        primaryjoin='HeadlineModel.user_id==UserModel.id',
+        foreign_keys='[HeadlineModel.user_id]',
+        backref=db.backref(
+            'user',
+            lazy=True,
+            uselist=False),
+        order_by='HeadlineModel.date_created.desc()',
+        lazy='dynamic'
+    )
+
     solutions = db.relationship(
         'SolutionModel',
         primaryjoin='SolutionModel.user_id==UserModel.id',

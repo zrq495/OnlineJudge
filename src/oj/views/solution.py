@@ -23,8 +23,6 @@ class SolutionView(views.MethodView):
     template = 'solution_list.html'
 
     def get(self, is_contest=False):
-        print request, dir(request)
-        print request.endpoint, request.blueprint
         form = forms.SolutionSearchForm(request.args, csrf_enabled=False)
         if not form.validate():
             redirect(url_for('solution.list'))

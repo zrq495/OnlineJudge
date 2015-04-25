@@ -7,6 +7,8 @@ import pygments
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers import guess_lexer
 
+from oj import app
+
 
 def highlight(code):
     try:
@@ -65,3 +67,10 @@ JINJA_FILTERS = {
     'time_since': time_since,
     'highlight': highlight,
 }
+
+
+@app.template_global()
+def get_headlines():
+    from oj.models import HeadlineModel
+    return HeadlineModel.query.filter(
+        HeadlineModel.is_display.is_(True)).all()

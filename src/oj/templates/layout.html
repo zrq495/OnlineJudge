@@ -53,6 +53,15 @@
 
 {% block content %}
 <div class="container">
+    {% for headline in get_headlines() %}
+    {% if loop.first %}
+    <div class="list-group">
+    {% endif %}
+        <a href="{{ headline.url or '#' }}" class="text-center list-group-item list-group-item-{{ headline.alert }}">{{ headline.title }}</a>
+    {% if loop.last %}
+    </div>
+    {% endif %}
+    {% endfor %}
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
         <button type="button" class="close" data-dismiss="alert">&times;</button>

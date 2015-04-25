@@ -37,7 +37,7 @@ def create_app(config_name):
     from .admin import flask_admin
     flask_admin.init_app(app)
 
-    from .core.jinja_filters import JINJA_FILTERS
+    from .core.jinja import JINJA_FILTERS
     app.jinja_env.filters.update(JINJA_FILTERS)
 
     from oj.blueprints import blueprint_apis
