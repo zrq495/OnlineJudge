@@ -29,11 +29,17 @@
                 <tbody>
                     {% for problem in contest.problems %}
                     <tr>
-                        <td></td>
+                        <td>
+                        {% if problem.current_user_has_solved %}
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        {% elif problem.current_user_has_submitted %}
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        {% endif %}
+                        </td>
                         <td><a href="{{ problem.url }}">{{ loop.index0|digital_to_letter }}</a></td>
                         <td><a href="{{ problem.url }}">{{ problem.name }}</a></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ problem.accepts_count }}</td>
+                        <td>{{ problem.solutions_count }}</td>
                     <tr>
                     {% endfor %}
                 </tbody>

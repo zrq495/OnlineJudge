@@ -6,15 +6,18 @@ import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import sql
 from flask import url_for
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from oj import db
 from .user import UserModel
+from .solution import SolutionModel
 
 
 __all__ = [
     'ContestModel',
     'ContestProblemModel',
     'ContestUserModel',
+    'ContestProblemStatisticsModel',
 ]
 
 
@@ -167,6 +170,15 @@ class ContestProblemModel(db.Model):
         db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())
 
+    _statistics = db.relationship(
+        'ContestProblemStatisticsModel',
+        primaryjoin='ContestProblemModel.id==ContestProblemStatisticsModel.id',
+        foreign_keys='[ContestProblemStatisticsModel.id]',
+        backref='contest_problem',
+        uselist=False,
+        passive_deletes='all'
+    )
+
     problem = db.relationship(
         'ProblemModel',
         primaryjoin='ProblemModel.id==ContestProblemModel.problem_id',
@@ -200,6 +212,40 @@ class ContestProblemModel(db.Model):
     def url(self):
         return url_for('contest.contest_problem', contest_problem_id=self.id)
 
+    @hybrid_property
+    def solutions_count(self):
+        if self._statistics:
+            return self._statistics.solutions_count
+        else:
+            return 0
+
+    @solutions_count.setter
+    def solutions_count_setter(self, value):
+        if not self._statistics:
+            self._statistics = ContestProblemStatisticsModel()
+        self._statistics.solutions_count = value
+
+    @solutions_count.expression
+    def solutions_count_expr(cls):
+        return ContestProblemStatisticsModel.solutions_count
+
+    @hybrid_property
+    def accepts_count(self):
+        if self._statistics:
+            return self._statistics.accepts_count
+        else:
+            return 0
+
+    @accepts_count.setter
+    def accepts_count_setter(self, value):
+        if not self._statistics:
+            self._statistics = ContestProblemStatisticsModel()
+        self._statistics.accepts_count = value
+
+    @accepts_count.expression
+    def accepts_count_expr(cls):
+        return ContestProblemStatisticsModel.accepts_count
+
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
@@ -230,6 +276,22 @@ class ContestProblemModel(db.Model):
                 db.session.commit()
             except IntegrityError:
                 db.session.rollback()
+
+    @classmethod
+    def __declare_last__(cls):
+        cls.current_user_has_solved = db.column_property(db.and_(
+            db.current_user_id().isnot(None), db.exists().
+            where(SolutionModel.user_id == db.current_user_id()).
+            where(SolutionModel.problem_id == cls.problem_id).
+            where(SolutionModel.contest_id == cls.contest_id).
+            where(SolutionModel.result == 1).
+            correlate_except(SolutionModel)), deferred=True)
+        cls.current_user_has_submitted = db.column_property(db.and_(
+            db.current_user_id().isnot(None), db.exists().
+            where(SolutionModel.user_id == db.current_user_id()).
+            where(SolutionModel.problem_id == cls.problem_id).
+            where(SolutionModel.contest_id == cls.contest_id).
+            correlate_except(SolutionModel)), deferred=True)
 
     def as_dict(self):
         return {
@@ -312,3 +374,20 @@ class ContestUserModel(db.Model):
 
     def __repr__(self):
         return '<ContestUser %r>' % self.id
+
+
+class ContestProblemStatisticsModel(db.Model):
+    __tablename__ = 'contest_problem_statistics'
+
+    id = db.Column(
+        db.Integer(),
+        nullable=False,
+        primary_key=True,
+        autoincrement=False)
+
+    solutions_count = db.Column(
+        db.Integer(), default=0,
+        nullable=False, server_default='0', index=True)
+    accepts_count = db.Column(
+        db.Integer(), default=0,
+        nullable=False, server_default='0', index=True)

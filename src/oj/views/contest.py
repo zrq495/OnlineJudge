@@ -27,7 +27,7 @@ class ContestView(views.MethodView):
         page = request.args.get('page', 1, type=int)
         pagination = (
             ContestModel.query
-            .order_by(ContestModel.id.desc())
+            .order_by(ContestModel.date_start.desc())
             .paginate(
                 page, per_page=per_page, error_out=False))
         contests = pagination.items
