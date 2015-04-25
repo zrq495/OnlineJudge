@@ -85,7 +85,7 @@ class ContestSubmitView(views.MethodView):
             content=form.code.data)
         db.session.add(solution)
         db.session.commit()
-        return redirect(url_for('solution.list'))
+        return redirect(url_for('contest.solution'))
 
 
 bp_contest = Blueprint('contest', __name__)

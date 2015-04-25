@@ -15,13 +15,16 @@ from flask.ext.login import login_required, current_user
 from oj.models import (
     SolutionModel, CodeModel, CompileInfoModel, UserModel)
 from . import forms
+from .contest import bp_contest
 
 
 class SolutionView(views.MethodView):
 
     template = 'solution_list.html'
 
-    def get(self):
+    def get(self, is_contest=False):
+        print request, dir(request)
+        print request.endpoint, request.blueprint
         form = forms.SolutionSearchForm(request.args, csrf_enabled=False)
         if not form.validate():
             redirect(url_for('solution.list'))
@@ -31,6 +34,12 @@ class SolutionView(views.MethodView):
         language = form.language.data
         result = form.result.data
         query = SolutionModel.query
+        if is_contest:
+            query = query.filter(
+                SolutionModel.contest_id != 0)
+        else:
+            query = query.filter(
+                SolutionModel.contest_id == 0)
         if problem_id:
             query = query.filter(
                 SolutionModel.problem_id == problem_id)
@@ -54,7 +63,7 @@ class SolutionView(views.MethodView):
         per_page = current_app.config['SOLUTIONS_PER_PAGE']
         page = request.args.get('page', 1, type=int)
         pagination = (
-            SolutionModel.query
+            query
             .order_by(SolutionModel.id.desc())
             .paginate(
                 page, per_page=per_page, error_out=False))
@@ -107,4 +116,12 @@ bp_compile_info.add_url_rule(
     '/<int:compile_info_id>/',
     endpoint='detail',
     view_func=CompileInfoDetailView.as_view(b'detail'),
+    methods=['GET'])
+
+
+bp_contest.add_url_rule(
+    '/solution/',
+    endpoint='solution',
+    view_func=SolutionView.as_view(b'solution'),
+    defaults={'is_contest': True},
     methods=['GET'])

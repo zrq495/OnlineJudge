@@ -27,7 +27,11 @@
                 <tr>
                     <td>{{ solution.id }}</td>
                     <td><a href="{{ solution.user.url }}">{{ solution.user.nickname }}</a></td>
+                    {% if request.endpoint == 'contest.solution' %}
+                    <td><a href="{{ solution.contest_problem.url }}">{{ solution.contest_problem.id }}</a></td>
+                    {% else %}
                     <td><a href="{{ solution.problem.url }}">{{ solution.problem.id }}</a></td>
+                    {% endif %}
                     <td>{{ solution.result }}</td>
                     <td>{{ solution.take_time }}MS</td>
                     <td>{{ solution.take_memory }}KB</td>
@@ -46,7 +50,7 @@
         </table>
         {% if pagination is defined %}
         <div class="pagination">
-            {{ render_pagination(pagination, 'solution.list') }}
+            {{ render_pagination(pagination, request.endpoint) }}
         </div>
         {% endif %}
     </div>
