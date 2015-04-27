@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+from sqlalchemy import sql
 from flask import url_for, current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -45,6 +46,8 @@ class UserModel(UserMixin, db.Model):
     school = db.Column(db.String(256))
     program_language = db.Column(db.String(64))
     role_id = db.Column(db.Integer)
+    is_bulk_registration = db.Column(
+        db.Boolean, default=False, server_default=sql.false(), nullable=True)
     last_login_ip = db.Column(db.String(64))
     current_login_ip = db.Column(db.String(64))
     login_count = db.Column(db.Integer())

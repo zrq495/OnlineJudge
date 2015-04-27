@@ -1,0 +1,32 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<form method="post" enctype="multipart/form-data">
+    <p class="alert alert-info">批量导入，格式为: 用户名,昵称,Email,密码,性别('male', 'female'),学校,编程语言<br/>
+    示例： zrq495,昵称,zrq495@gmail.com,oj123456,male,山东理工大学,python</p>
+    <p class="alert alert-danger">请勿反复刷新页面！请勿重复提交！</p>
+    <div class="form-group {% if form.upload_file.errors %}has-error{% endif %}">
+        {{ form.upload_file() }}
+        {% if form.upload_file.errors %}
+        <span class="text-danger">{{ form.upload_file.errors[0] }}</span>
+        {% endif %}
+    </div>
+    <button class="form-control btn-primary">确定</button>
+    {{ form.csrf_token }}
+</form>
+
+<br>
+{% if users %}
+<span class="badge badge-important">{{ users|length }}</span>个用户已经成功导入
+{% endif %}
+
+<br>
+{% if errors %}
+共有<span class="badge badge-important">{{ errors|length }}</span>条错误
+<ul class="nav nav-tabs nav-stacked">
+    {% for rownum, reason in errors.items() %}
+    <li>第{{ rownum }}行: {{ reason }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
