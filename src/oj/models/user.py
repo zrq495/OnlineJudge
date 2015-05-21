@@ -44,7 +44,15 @@ class UserModel(UserMixin, db.Model):
     gender = db.Column(
         db.Enum('male', 'female', name='user_gender'))
     school = db.Column(db.String(256))
+    college = db.Column(db.String(256))
+    major = db.Column(db.String(256))
+    grade = db.Column(db.String(64))
+    clazz = db.Column(db.String(64))
     program_language = db.Column(db.String(64))
+    avatar = db.Column(db.String(256))
+    qq = db.Column(db.String(64))
+    phone = db.Column(db.String(64))
+    address = db.Column(db.String(256))
     role_id = db.Column(db.Integer)
     is_bulk_registration = db.Column(
         db.Boolean, default=False, server_default=sql.false(), nullable=True)
