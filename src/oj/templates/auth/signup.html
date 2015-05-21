@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Online Judge - Signup{% endblock %}
+{% block title %}Online Judge - 注册{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Signup</h1>
+    <h1 class="text-center">新用户注册</h1>
 </div>
-<div class="col-md-4">
+<div class="col-md-6 col-md-offset-3">
     {{ wtf.quick_form(form) }}
 </div>
 {% endblock %}

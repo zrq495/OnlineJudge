@@ -27,7 +27,9 @@ class LoginView(views.MethodView):
         if not form.validate():
             return render_template(
                 self.template, form=form)
-        user = UserModel.query.filter_by(email=form.email.data).first()
+        query = UserModel.query
+        user = (query.filter_by(email=form.login_name.data).first()
+                or query.filter_by(username=form.login_name.data).first())
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
 
