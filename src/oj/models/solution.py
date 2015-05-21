@@ -72,6 +72,7 @@ class SolutionModel(db.Model):
             u = UserModel.query.offset(randint(0, user_count - 1)).first()
             c = ContestModel.query.offset(randint(0, contest_count - 1)).first()
             p = ProblemModel.query.offset(randint(0, problem_count - 1)).first()
+            # TODO add contest problem solution to contest
             s = SolutionModel(
                 user_id=u.id,
                 contest_id=choice([0, c.id]),

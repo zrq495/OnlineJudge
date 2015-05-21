@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import datetime
+from collections import OrderedDict
 from flask import (views,
                    request,
                    url_for,
@@ -12,6 +13,7 @@ from flask import (views,
                    render_template)
 from flask.ext.login import login_required, current_user
 from werkzeug.datastructures import MultiDict
+from sqlalchemy import func, distinct
 
 from oj.models import (
     ContestModel, ContestProblemModel, ContestUserModel,
@@ -88,6 +90,55 @@ class ContestSubmitView(views.MethodView):
         return redirect(url_for('contest.solution'))
 
 
+class ContestRankView(views.MethodView):
+
+    template = 'contest_rank.html'
+
+    def get(self, contest_id):
+        rank = OrderedDict()
+        contest = ContestModel.query.get_or_404(contest_id)
+        contest_problems = contest.problems
+        contest_solutions = (
+            contest.solutions
+            .order_by(
+                SolutionModel.user_id.asc(),
+                SolutionModel.date_created.asc()))
+
+        for s in contest_solutions:
+            if s.result == 1:
+                rank.setdefault(s.user_id, {}).setdefault(s.problem_id, {}).setdefault('is_solved', True)
+                rank.setdefault(s.user_id, {}).setdefault(s.problem_id, {}).setdefault('solution', s)
+            else:
+                error_count = rank.setdefault(s.user_id, {}).setdefault(s.problem_id, {}).setdefault('error_count', 0)
+                rank[s.user_id][s.problem_id]['error_count'] = error_count + 1
+            rank.setdefault(s.user_id, {}).setdefault('user', s.user)
+        for r in rank.keys():
+            accept_problems = []
+            for i in rank[r].keys():
+                rank[r].setdefault('accepts_count', 0)
+                if isinstance(i, int) and isinstance(rank[r][i], dict):
+                    if rank[r][i].get('is_solved', False):
+                        penalty = rank[r][i].setdefault('penalty', rank[r][i]['solution'].date_created - contest.date_start)
+                        rank[r][i]['penalty'] = penalty + datetime.timedelta(minutes=20) * rank[r][i].get('error_count', 0)
+                        if i not in accept_problems:
+                            rank[r]['accepts_count'] += 1
+                            accept_problems.append(i)
+                        rank[r][i].setdefault('error_count', 0)
+                    else:
+                        rank[r][i].setdefault('penalty', datetime.timedelta(0))
+                        rank[r][i].setdefault('is_solved', False)
+            for i in rank[r].keys():
+                if isinstance(i, int) and isinstance(rank[r][i], dict):
+                    rank[r].setdefault('penalties', datetime.timedelta(0))
+                    rank[r]['penalties'] += rank[r][i]['penalty']
+        rank = OrderedDict(sorted(rank.iteritems(), key=lambda x: x[1]['penalties']))
+        rank = OrderedDict(sorted(rank.iteritems(), key=lambda x: x[1]['accepts_count'], reverse=True))
+
+        return render_template(
+            self.template, rank=rank, contest=contest,
+            contest_problems=contest_problems)
+
+
 bp_contest = Blueprint('contest', __name__)
 bp_contest.add_url_rule(
     '/',
@@ -109,3 +160,8 @@ bp_contest.add_url_rule(
     endpoint='submit',
     view_func=ContestSubmitView.as_view(b'submit'),
     methods=['GET', 'POST'])
+bp_contest.add_url_rule(
+    '/<int:contest_id>/rank/',
+    endpoint='rank',
+    view_func=ContestRankView.as_view(b'rank'),
+    methods=['GET'])

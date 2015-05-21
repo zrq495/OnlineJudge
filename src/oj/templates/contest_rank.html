@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Online Judge - Contest - {{ contest.id }} - Rank{% endblock %}
+
+{% block page_content %}
+<div>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Rank</th>
+                    <th class="text-center">Username</th>
+                    <th class="text-center">Nickname</th>
+                    <th class="text-center">Solved</th>
+                    <th class="text-center">Penalty</th>
+                    {% for cp in contest_problems %}
+                    <th class="text-center"><a href="{{ cp.url }}">{{ loop.index0|digital_to_letter }}</a></th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in rank %}
+                <tr>
+                    <td class="text-center">{{ loop.index }}</td>
+                    <td class="text-center"><a href="{{ rank[r].user.url }}">{{ rank[r].user.username }}</a></td>
+                    <td class="text-center">{{ rank[r].user.nickname }}</td>
+                    <td class="text-center">{{ rank[r]['accepts_count'] }}</td>
+                    <td class="text-center">
+                        {{ rank[r]['penalties']|convert_timedelta_to_hms|join(':') }}
+                    </td>
+                    {% for cp in contest_problems %}
+                        {% if rank[r][cp.problem_id] and rank[r][cp.problem_id]['is_solved'] %}
+                            <td class="text-center success">
+                            {{ (rank[r][cp.problem_id]['solution'].date_created - contest.date_start)|convert_timedelta_to_hms|join(':') }}
+                            {% if rank[r][cp.problem_id]['error_count'] != 0 %}
+                                <br>
+                                -{{ rank[r][cp.problem_id]['error_count'] }}
+                            {% endif %}
+                            </td>
+                        {% elif rank[r][cp.problem_id] and rank[r][cp.problem_id]['error_count'] != 0 %}
+                            <td class="text-center danger">
+                                -{{ rank[r][cp.problem_id]['error_count'] }}
+                            </td>
+                        {% else %}
+                            <td class="text-center"></td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -62,10 +62,21 @@ def time_since(dt, default='刚刚', time_format='%Y-%m-%d %H:%M'):
     return default
 
 
+def convert_timedelta_to_hms(duration):
+    seconds = int(duration.total_seconds())
+    sign = '-' if seconds < 0 else ''
+    seconds = abs(seconds)
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
+    seconds = (seconds % 60)
+    return sign + str(hours), str(minutes), str(seconds)
+
+
 JINJA_FILTERS = {
     'digital_to_letter': digital_to_letter,
     'time_since': time_since,
     'highlight': highlight,
+    'convert_timedelta_to_hms': convert_timedelta_to_hms,
 }
 
 

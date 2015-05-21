@@ -42,7 +42,6 @@ class Config(object):
     SEND_CLOUD_API_USER = os.environ.get('SEND_CLOUD_API_USER')
     SEND_CLOUD_API_KEY = os.environ.get('SEND_CLOUD_API_KEY')
 
-
     @staticmethod
     def init_app(app):
         pass
