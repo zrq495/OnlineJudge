@@ -15,6 +15,7 @@ class Config(object):
 
     SQLALCHEMY_RECORD_QUERIES = True
 
+    # email
     # MAIL_SERVER = 'smtp.163.com'
     MAIL_SERVER = 'smtp.sina.cn'
     MAIL_PORT = 465
@@ -26,6 +27,7 @@ class Config(object):
     OJ_MAIL_SENDER = os.environ.get('MAIL_USERNAME')
     OJ_ADMIN = os.environ.get('MAIL_USERNAME')
 
+    # pagination
     PROBLEMS_PER_PAGE = 5
     NEWS_PER_PAGE = 5
     SOLUTIONS_PER_PAGE = 5
@@ -41,6 +43,16 @@ class Config(object):
     # send cloud
     SEND_CLOUD_API_USER = os.environ.get('SEND_CLOUD_API_USER')
     SEND_CLOUD_API_KEY = os.environ.get('SEND_CLOUD_API_KEY')
+
+    REDIS_URL = 'redis://%s:%s/%s' % (
+        os.environ.get('REDIS_HOST', 'localhost'),
+        os.environ.get('REDIS_PORT', '6379'),
+        os.environ.get('REDIS_DATABASE', '1'),
+    )
+
+    # frequency limitation
+    ENABLE_TIMELIMIT = True
+    SUBMIT_TIMELIMIT = 2
 
     @staticmethod
     def init_app(app):

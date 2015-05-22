@@ -58,8 +58,9 @@ def password_reset(token):
         if user is None:
             return redirect(url_for('index.index'))
         if user.reset_password(token, form.password.data):
-            flash('密码已经更新')
+            flash('密码重置成功')
             return redirect(url_for('auth.login'))
         else:
+            flash('密码重置失败')
             return redirect(url_for('index.index'))
     return render_template('auth/reset_password.html', form=form)

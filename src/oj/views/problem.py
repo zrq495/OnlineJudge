@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from flask import (views,
+                   flash,
                    request,
                    url_for,
                    redirect,
@@ -11,9 +12,11 @@ from flask import (views,
                    render_template)
 from flask.ext.login import login_required, current_user
 from werkzeug.datastructures import MultiDict
+from werkzeug.utils import cached_property
 
 from oj import db
 from oj.models import SolutionModel, CodeModel, ProblemModel
+from oj.core import timelimit
 from . import forms
 
 
@@ -72,6 +75,10 @@ class SubmitView(views.MethodView):
     @login_required
     def post(self):
         form = forms.SubmitForm(request.form)
+        if self.submit_timeout.get():
+            flash('提交过于频繁，请稍候')
+            return render_template(
+                self.template, form=form)
         if not form.validate():
             return render_template(
                 self.template, form=form)
@@ -84,7 +91,14 @@ class SubmitView(views.MethodView):
             content=form.code.data)
         db.session.add(solution)
         db.session.commit()
+        self.submit_timeout.set()
         return redirect(url_for('solution.list'))
+
+    @cached_property
+    def submit_timeout(self):
+        _tm = timelimit.TimeLimit(
+            'submit', current_app.config.get('SUBMIT_TIMELIMIT', 1))
+        return _tm
 
 
 bp_problem = Blueprint('problem', __name__)
