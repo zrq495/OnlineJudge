@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from sqlalchemy import sql
 from flask import url_for, current_app
 from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from sqlalchemy.ext.hybrid import hybrid_property
 from flask.ext.login import UserMixin, AnonymousUserMixin
 
@@ -205,6 +206,23 @@ class UserModel(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def generate_reset_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'reset': self.id})
+
+    def reset_password(self, token, new_password):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('reset') != self.id:
+            return False
+        self.password = new_password
+        db.session.add(self)
+        db.session.commit()
+        return True
 
     @hybrid_property
     def solutions_count(self):

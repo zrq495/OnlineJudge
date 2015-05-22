@@ -28,3 +28,6 @@ bp_auth.add_url_rule(
     view_func=LogoutView.as_view(b'logout'),
     methods=['GET']
 )
+
+
+from . import password  # noqa

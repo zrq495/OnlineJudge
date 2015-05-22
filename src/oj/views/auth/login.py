@@ -48,5 +48,5 @@ class LoginView(views.MethodView):
             user.login_count = user.login_count + 1 if user.login_count else 1
             db.session.commit()
             return redirect(request.args.get('next') or url_for('index.index'))
-        flash('Invalid username or password.')
+        flash('用户名或密码不正确')
         return render_template(self.template, form=form)

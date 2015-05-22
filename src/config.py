@@ -15,9 +15,9 @@ class Config(object):
 
     SQLALCHEMY_RECORD_QUERIES = True
 
-    MAIL_SERVER = 'smtp.163.com'
-    # MAIL_SERVER = 'smtp.sina.cn'
-    MAIL_PORT = 587
+    # MAIL_SERVER = 'smtp.163.com'
+    MAIL_SERVER = 'smtp.sina.cn'
+    MAIL_PORT = 465
     MAIL_USE_TLS = True
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
