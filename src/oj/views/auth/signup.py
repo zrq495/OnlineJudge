@@ -9,6 +9,7 @@ from flask.ext.login import (
 from oj import db, login_manager
 from oj.models import UserModel
 from .forms import SignupForm
+from .login import user_login
 
 
 @login_manager.user_loader
@@ -21,6 +22,8 @@ class SignupView(views.MethodView):
     template = 'auth/signup.html'
 
     def get(self):
+        if current_user.is_authenticated():
+            return redirect(url_for('index.index'))
         form = SignupForm()
         return render_template(self.template, form=form)
 
@@ -33,4 +36,5 @@ class SignupView(views.MethodView):
         form.populate_obj(user)
         db.session.add(user)
         db.session.commit()
+        user_login(user)
         return redirect(url_for('auth.login'))
