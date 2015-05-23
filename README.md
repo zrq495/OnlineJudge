@@ -34,6 +34,7 @@ SDUT Online Judge
 - cd src
 - ./manage.py db upgrade
 - ./manage.py runserver
+- celery -A oj.core.tasks:celery worker
 
 
 ## docker

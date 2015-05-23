@@ -10,7 +10,6 @@ from flask.ext.login import (
 
 from oj import db
 from oj.models import UserModel
-from oj.core.email import send_email
 from .forms import LoginForm
 
 

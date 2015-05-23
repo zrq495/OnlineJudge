@@ -9,7 +9,7 @@ from flask.ext.login import (
 
 from oj import db
 from oj.models import UserModel
-from oj.core.email import send_email
+from oj.core.tasks import send_email
 from . import forms
 from . import bp_auth
 
@@ -39,10 +39,11 @@ def password_reset_request():
         user = UserModel.query.filter_by(email=form.email.data).first()
         if user:
             token = user.generate_reset_token()
-            send_email(user.email, '重置密码',
-                       'auth/email/reset_password',
-                       user=user, token=token,
-                       next=request.args.get('next'))
+            send_email.delay(
+                user.email, '重置密码',
+                'auth/email/reset_password',
+                user=user, token=token,
+                next=request.args.get('next'))
             flash('重置密码的邮件已经发到邮箱，请尽快登陆邮箱重置密码')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)

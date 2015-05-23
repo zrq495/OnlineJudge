@@ -6,12 +6,11 @@ if os.environ.get('OJ_COVERAGE'):
     COV = coverage.coverage(branch=True, include='oj/*')
     COV.start()
 
-from oj import create_app, db
+from oj import app, db
 from oj.models import UserModel
 from flask.ext.script import Manager, Shell, Server
 from flask.ext.migrate import Migrate, MigrateCommand
 
-app = create_app(os.getenv('OJ_CONFIG') or 'default')
 manager = Manager(app)
 migrate = Migrate(app, db)
 
@@ -22,7 +21,7 @@ def make_shell_context():
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
-server = Server(host="0.0.0.0", port=5000)
+server = Server(host="dev.sdutacm.org", port=5000)
 manager.add_command("runserver", server)
 
 

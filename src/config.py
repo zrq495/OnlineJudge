@@ -44,15 +44,23 @@ class Config(object):
     SEND_CLOUD_API_USER = os.environ.get('SEND_CLOUD_API_USER')
     SEND_CLOUD_API_KEY = os.environ.get('SEND_CLOUD_API_KEY')
 
+    # redis
     REDIS_URL = 'redis://%s:%s/%s' % (
         os.environ.get('REDIS_HOST', 'localhost'),
         os.environ.get('REDIS_PORT', '6379'),
         os.environ.get('REDIS_DATABASE', '1'),
     )
 
+    # celery
+    CELERY_BROKER_URL = 'redis://%s:%s' % (
+        os.environ.get('REDIS_HOST', 'localhost'),
+        os.environ.get('REDIS_PORT', '6379'))
+
     # frequency limitation
     ENABLE_TIMELIMIT = True
     SUBMIT_TIMELIMIT = 2
+
+    SERVER_NAME = os.getenv('OJ_SERVER_NAME') or 'dev.sdutacm.org:5000'
 
     @staticmethod
     def init_app(app):

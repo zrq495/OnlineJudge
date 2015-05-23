@@ -8,7 +8,6 @@ from flask.ext.login import (
     login_user, logout_user, login_required, current_user)
 from oj import db, login_manager
 from oj.models import UserModel
-from oj.core.email import send_email
 from .forms import SignupForm
 
 

@@ -19,7 +19,7 @@ absolute_path = os.path.abspath
 split_path = os.path.split
 split_ext = os.path.splitext
 
-root = app.config['APP_DIR']
+root = app.root_path
 file_manager_path = os.path.join(root, "static/upload/")
 
 

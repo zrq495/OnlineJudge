@@ -21,11 +21,10 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 
 app = Flask(__name__)
-app.config.from_object('config.Config')
-app.config['APP_DIR'] = app_dir
 
 
-def create_app(config_name):
+with app.app_context():
+    config_name = os.getenv('OJ_CONFIG') or 'default'
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
@@ -104,5 +103,3 @@ def create_app(config_name):
     @app.context_processor
     def inject_permissions():
         return dict(Permission=Permission)
-
-    return app
