@@ -10,6 +10,7 @@ from .contest import *  # noqa
 from .news import *  # noqa
 from .message import *  # noqa
 from .role import *  # noqa
+from .registry import *  # noqa
 from . import listeners  # noqa
 
 

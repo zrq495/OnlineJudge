@@ -1,0 +1,53 @@
+{% extends 'admin/model/list.html' %}
+
+    {% block model_menu_bar %}
+    <ul class="nav nav-tabs actions-nav">
+        <li class="active">
+            <a href="javascript:void(0)">{{ _gettext('List') }} ({{ count }})</a>
+        </li>
+        {% if admin_view.can_create %}
+        <li>
+            <a href="{{ get_url('registryview.EditRegistryMetaView') }}" title="{{ _gettext('Create new record') }}">{{ _gettext('Create') }}</a>
+        </li>
+        {% endif %}
+
+        {% if filters %}
+        <li class="dropdown">
+            {{ model_layout.filter_options() }}
+        </li>
+        {% endif %}
+
+        {% if actions %}
+        <li class="dropdown">
+            {{ actionlib.dropdown(actions) }}
+        </li>
+        {% endif %}
+
+        {% if search_supported %}
+        <li>
+            {{ model_layout.search_form() }}
+        </li>
+        {% endif %}
+    </ul>
+    {% endblock %}
+
+                    {% block list_row_actions scoped %}
+                        {%- if admin_view.can_edit -%}
+                        <a class="icon" href="{{ get_url('registryview.EditRegistryMetaView', key=get_pk_value(row)) }}" title="{{ _gettext('编辑字段') }}">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <a class="icon" href="{{ get_url('registryview.EditRegistryValueView', key=get_pk_value(row)) }}" title="{{ _gettext('编辑值') }}">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        {%- endif -%}
+                        {%- if admin_view.can_delete -%}
+                        <form class="icon" method="POST" action="{{ get_url('.delete_view') }}">
+                            {{ delete_form.id(value=get_pk_value(row)) }}
+                            {{ delete_form.url(value=return_url) }}
+                            {{ delete_form.csrf_token }}
+                            <button onclick="return confirm('{{ _gettext('Are you sure you want to delete this record?') }}');" title="Delete record">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </form>
+                        {%- endif -%}
+                    {% endblock %}

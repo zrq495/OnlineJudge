@@ -1,0 +1,100 @@
+{% extends 'admin/master.html' %}
+{% block title %}编辑注册项结构定义-{{ super() }}{% endblock %}
+{% block body %}
+<form method="POST" id="form">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group {% if form.key.errors %}has-error{% endif %}">
+                {{ form.key(class="form-control", placeholder=form.key.description) }}
+                {% if form.key.errors %}
+                <p class="text-warning">{{form.key.errors[0]}}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group {% if form.name.errors %}has-error{% endif %}">
+                {{ form.name(class="form-control", placeholder=form.name.description) }}
+                {% if form.name.errors %}
+                <p class="text-warning">{{form.name.errors[0]}}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% if form.meta.errors %}
+    <div class="row">
+        {% for error in form.meta.errors %}
+        {% if error is string %}
+        <p class="text-warning">{{ form.meta.errors[0] }}</p>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% for field in form.meta %}
+    <div class="row" meta-fields="true">
+        <div class="col-md-2">
+            <div class="form-group {% if field.form.kind.errors %}has-error{% endif %}">
+                {{ field.form.kind(class="form-control") }}
+                {% if field.form.kind.errors %}
+                <p class="text-warning">{{field.form.kind.errors[0]}}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group {% if field.form.name.errors %}has-error{% endif %}">
+                {{ field.form.name(class="form-control", placeholder=field.form.name.description) }}
+                {% if field.form.name.errors %}
+                <p class="text-warning">{{field.form.name.errors[0]}}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group {% if field.form.label.errors %}has-error{% endif %}">
+                {{ field.form.label(class="form-control", placeholder=field.form.label.description) }}
+                {% if field.form.label.errors %}
+                <p class="text-warning">{{field.form.label.errors[0]}}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="checkbox">
+                <label>
+                    {{ field.form.required }}
+                    {{ field.form.required.label.text }}
+                </label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" data-trigger= "insert-up" title="上插" class="btn btn-sm">
+                        <span class="glyphicon glyphicon-open"></span>
+                    </button>
+                    <button type="button" data-trigger="insert-down" title="下插" class="btn btn-sm">
+                        <span class="glyphicon glyphicon-save"></span>
+                    </button>
+                    <button type="button" data-trigger="exchange-up" title="上移" class="btn btn-sm">
+                        <span class="glyphicon glyphicon-arrow-up"></span>
+                    </button>
+                    <button type="button" data-trigger="exchange-down" title="下移" class="btn btn-sm">
+                        <span class="glyphicon glyphicon-arrow-down"></span>
+                    </button>
+                    <button type="button" data-trigger="remove" title="移除" class="btn btn-sm">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-md-offset-4 col-md-2">
+            <button class="form-control btn btn-primary">确定</button>
+        </div>
+    </div>
+    {{ form.csrf_token }}
+</form>
+{% endblock %}
+{% block tail_js %}
+{{ super() }}
+<script src="{{ url_for('static', filename='scripts/admin.js') }}"></script>
+{% endblock %}

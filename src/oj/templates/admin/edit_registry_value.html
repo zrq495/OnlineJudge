@@ -1,0 +1,74 @@
+{% extends 'admin/master.html' %}
+{% block title %}填充注册项值-{{ super() }}{% endblock %}
+
+{% block body %}
+<form method="POST" id="form">
+    {% if form.value.errors %}
+    <div class="row">
+        {% for error in form.value.errors %}
+        {% if error is string %}
+        <p class="text-warning">{{ form.value.errors[0] }}</p>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% for field in form.value %}
+    <div class="row" meta-fields="true">
+        {% for subfield in field.form %}
+        {% if subfield.widget.input_type == 'text' %}
+        <div class="col-md-3">
+        {% elif subfield.widget.input_type == 'url' %}
+        <div class="col-md-4">
+        {% else %}
+        <div class="col-md-2">
+        {% endif %}
+            <div class="form-group {% if subfield.errors %}has-error{% endif %}">
+                {% if subfield.widget.input_type == 'checkbox' %}
+                <label class="form-control">
+                    {{ subfield.label }}
+                    {{ subfield(title=subfield.description) }}
+                </label>
+                {% else %}
+                {{ subfield(class="form-control", placeholder=subfield.description, title=subfield.description) }}
+                {% endif %}
+                {% if subfield.errors %}
+                <p class="text-warning">{{subfield.errors[0]}}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" data-trigger= "insert-up" title="上插" class="btn btn-sm">
+                        <span class="glyphicon glyphicon-open"></span>
+                    </button>
+                    <button type="button" data-trigger="insert-down" title="下插" class="btn btn-sm">
+                        <span class="glyphicon glyphicon-save"></span>
+                    </button>
+                    <button type="button" data-trigger="exchange-up" title="上移" class="btn btn-sm">
+                        <span class="glyphicon glyphicon-arrow-up"></span>
+                    </button>
+                    <button type="button" data-trigger="exchange-down" title="下移" class="btn btn-sm">
+                        <span class="glyphicon glyphicon-arrow-down"></span>
+                    </button>
+                    <button type="button" data-trigger="remove" title="移除" class="btn btn-sm">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-md-offset-4 col-md-2">
+            <button class="form-control btn btn-primary">确定</button>
+        </div>
+    </div>
+    {{ form.csrf_token }}
+</form>
+{% endblock %}
+{% block tail_js %}
+{{ super() }}
+<script src="{{ url_for('static', filename='scripts/admin.js') }}"></script>
+{% endblock %}
