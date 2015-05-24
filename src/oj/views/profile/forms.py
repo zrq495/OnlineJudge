@@ -10,6 +10,7 @@ from wtforms import ValidationError
 from flask.ext.login import current_user
 
 from oj.models import UserModel
+from oj.core.sensitive import censor
 
 
 class UserForm(Form):
@@ -48,11 +49,15 @@ class UserForm(Form):
                 raise ValidationError('邮箱已经注册')
 
     def validate_username(self, field):
+        if censor.has_name_forbidden_word(field.data):
+            raise ValidationError('用户名中存在禁用词，请更换')
         if current_user.username != field.data:
             if UserModel.query.filter_by(username=field.data).first():
                 raise ValidationError('用户名已经存在')
 
     def validate_nickname(self, field):
+        if censor.has_name_forbidden_word(field.data):
+            raise ValidationError('昵称中存在禁用词，请更换')
         if current_user.nickname != field.data:
             if UserModel.query.filter_by(nickname=field.data).first():
                 raise ValidationError('昵称已经存在')

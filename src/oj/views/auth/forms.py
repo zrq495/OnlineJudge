@@ -10,19 +10,20 @@ from wtforms.validators import (
 from wtforms import ValidationError
 
 from oj.models import UserModel
+from oj.core.sensitive import censor
 
 
 class LoginForm(Form):
-    login_name = StringField('邮箱或用户名', validators=[Required(), Length(1, 64),
-                                             ])
+    login_name = StringField(
+        '邮箱或用户名', validators=[Required(), Length(1, 64)])
     password = PasswordField('密码', validators=[Required()])
     remember_me = BooleanField('记住我')
     submit = SubmitField('登录')
 
 
 class SignupForm(Form):
-    email = StringField('邮箱', validators=[Required(), Length(1, 64),
-                                             Email()])
+    email = StringField(
+        '邮箱', validators=[Required(), Length(1, 64), Email()])
     username = StringField('用户名', validators=[
         Required(), Length(1, 64), Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
                                           '用户名只能包含字母、数字、点、下划线')])
@@ -56,10 +57,14 @@ class SignupForm(Form):
             raise ValidationError('邮箱已经注册')
 
     def validate_username(self, field):
+        if censor.has_name_forbidden_word(field.data):
+            raise ValidationError('用户名中存在禁用词，请更换')
         if UserModel.query.filter_by(username=field.data).first():
             raise ValidationError('用户名已经存在')
 
     def validate_nickname(self, field):
+        if censor.has_name_forbidden_word(field.data):
+            raise ValidationError('昵称中存在禁用词，请更换')
         if UserModel.query.filter_by(nickname=field.data).first():
             raise ValidationError('昵称已经存在')
 
