@@ -15,6 +15,7 @@ class NewsAdmin(Mixin):
     column_filters = [
         'id', 'user_id', 'title', 'is_display', 'date_created'
     ]
+    column_editable_list = ['is_display']
 
     form_excluded_columns = ['user_id', 'date_created']
 
@@ -29,6 +30,7 @@ class HeadlineAdmin(Mixin):
     column_filters = [
         'id', 'user_id', 'title', 'url', 'alert', 'is_display', 'date_created'
     ]
+    column_editable_list = ['is_display']
 
     form_excluded_columns = ['user_id', 'date_created']
 

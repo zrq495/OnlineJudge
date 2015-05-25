@@ -12,13 +12,12 @@ class AdminIndexView(_AdminIndexView):
 
 
 flask_admin = Admin(
-    name='SDUT OJ后台', index_view=AdminIndexView(), template_mode='bootstrap3')
+    name='SDUT OJ后台', index_view=AdminIndexView(name='主页'), template_mode='bootstrap3')
 
 from . import user  # noqa
 from . import problem  # noqa
 from . import contest  # noqa
 from . import news  # noqa
-from . import code  # noqa
 from . import solution  # noqa
 from . import file_manager  # noqa
 from . import registry  # noqa

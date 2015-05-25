@@ -124,6 +124,10 @@ class CodeModel(db.Model):
     )
 
     @property
+    def linage(self):
+        return len(self.content.splitlines())
+
+    @property
     def url(self):
         return url_for('code.detail', code_id=self.id)
 

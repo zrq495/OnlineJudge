@@ -14,7 +14,8 @@ from . import flask_admin
 
 class CKTextAreaWidget(widgets.TextArea):
     def __call__(self, field, **kwargs):
-        kwargs.setdefault('class_', 'ckeditor')
+        kwargs['class'] = (
+            kwargs.setdefault('class', '') + ' ckeditor').strip()
         return super(CKTextAreaWidget, self).__call__(field, **kwargs)
 
 
@@ -29,8 +30,8 @@ class ProblemAdmin(Mixin):
     can_edit = True
     can_delete = False
 
-    create_template = 'admin/edit_problem.html'
-    edit_template = 'admin/edit_problem.html'
+    create_template = 'admin/edit.html'
+    edit_template = 'admin/edit.html'
 
     column_list = [
         'id', 'title', 'source', 'is_display', 'date_created'
@@ -39,6 +40,7 @@ class ProblemAdmin(Mixin):
     column_filters = [
         'id', 'title', 'source', 'is_display', 'date_created', 'date_modified'
     ]
+    column_editable_list = ['is_display']
 
     form_overrides = dict(
         description=CKTextAreaField,
@@ -71,7 +73,7 @@ class ProblemStatisticsAdmin(Mixin):
 
 
 class ProblemTestDataAdmin(fileadmin.FileAdmin):
-    
+
     # TODO 多文件上传
 
     allowed_extensions = ('in', 'out')

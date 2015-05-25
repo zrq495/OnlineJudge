@@ -63,7 +63,6 @@ class RegistryView(BaseView):
             return registry
 
         def get(self, cls, key=None):
-            print request.endpoint
             registry = self._get_registry(key)
             form = forms.EditRegistryMetaForm(obj=registry)
             return cls.render(self.template, form=form)
