@@ -37,7 +37,7 @@ class ContestModel(db.Model):
     password_hash = db.Column(db.String(128))
     date_start_register = db.Column(db.DateTime)
     date_end_register = db.Column(db.DateTime)
-    is_hiden = db.Column(
+    is_hidden = db.Column(
         db.Boolean, default=False, server_default=sql.false(),
         nullable=True)
     date_created = db.Column(
