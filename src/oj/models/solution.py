@@ -32,7 +32,9 @@ class SolutionModel(db.Model):
         db.Integer(), nullable=False, default=0, server_default='0')
     take_memory = db.Column(
         db.Integer(), nullable=False, default=0, server_default='0')
-    program_language = db.Column(db.String(64), nullable=False, index=True)
+    program_language = db.Column(
+        db.Enum('gcc', 'g++', 'java', name='solution_program_language_enum'),
+        nullable=False, index=True)
     date_created = db.Column(
         db.DateTime, nullable=False, index=True,
         server_default=db.func.current_timestamp())

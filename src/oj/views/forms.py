@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 from flask.ext.wtf import Form
 from wtforms import fields, validators, ValidationError
 
-from oj.models import ContestModel, ContestProblemModel
+from oj import app
+from oj.models import ContestProblemModel
 
 
 class ProblemSearchForm(Form):
@@ -25,12 +26,12 @@ class SolutionSearchForm(Form):
     language = fields.SelectField(
         'Language',
         coerce=lambda s: s if s else None,
-        choices=[('', 'all'), ('gcc', 'gcc'), ('python', 'Python')],
+        choices=[('', 'all')] + app.config['PROGRAM_LANGUAGE'].items(),
         validators=[validators.Optional()])
     result = fields.SelectField(
         'Result',
-        coerce=lambda s: s if s else None,
-        choices=[('', 'all'), ('0', '0'), ('1', '1')],
+        coerce=lambda s: s if s == '' else None,
+        choices=[('', 'all')] + app.config['SOLUTION_RESULT'].items(),
         validators=[validators.Optional()])
     submit = fields.SubmitField('Search')
 
@@ -40,7 +41,7 @@ class SubmitForm(Form):
         'Problem ID', validators=[validators.Required()])
     language = fields.SelectField(
         'Language',
-        choices=[('gcc', 'gcc'), ('python', 'Python')],
+        choices=app.config['PROGRAM_LANGUAGE'].items(),
         validators=[validators.Required()])
     code = fields.TextAreaField(
         'Source Code',
@@ -57,7 +58,7 @@ class ContestSubmitForm(Form):
         'Contest_Problem ID', validators=[validators.Required()])
     language = fields.SelectField(
         'Language',
-        choices=[('gcc', 'gcc'), ('python', 'Python')],
+        choices=app.config['PROGRAM_LANGUAGE'].items(),
         validators=[validators.Required()])
     code = fields.TextAreaField(
         'Source Code',

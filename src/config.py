@@ -62,6 +62,26 @@ class Config(object):
 
     SERVER_NAME = os.getenv('OJ_SERVER_NAME') or 'dev.sdutacm.org:5000'
 
+    PROGRAM_LANGUAGE = {
+        'gcc': 'gcc',
+        'g++': 'g++',
+        'java': 'java',
+    }
+
+    SOLUTION_RESULT = {
+        1: 'ACCEPTED',
+        8: 'PE',
+        2: 'TIME_LIMIT',
+        3: 'MEMORY_LIMIT',
+        4: 'WRONG_ANSWER',
+        5: 'RUNTIME_ERROR',
+        6: 'OUTPUT_LIMIT',
+        7: 'COMPILE_ERROR',
+        11: 'SYSTEM_ERROR',
+        0: 'WAITING',
+        12: 'JUDGEING',
+    }
+
     @staticmethod
     def init_app(app):
         pass

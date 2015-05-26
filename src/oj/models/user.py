@@ -49,7 +49,8 @@ class UserModel(UserMixin, db.Model):
     major = db.Column(db.String(256))
     grade = db.Column(db.String(64))
     clazz = db.Column(db.String(64))
-    program_language = db.Column(db.String(64))
+    program_language = db.Column(
+        db.Enum('gcc', 'g++', 'java', name='user_program_language_enum'))
     avatar = db.Column(db.String(256))
     qq = db.Column(db.String(64))
     phone = db.Column(db.String(64))

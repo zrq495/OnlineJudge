@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from oj import db
+from oj import app, db
 from oj.models import SolutionModel, CodeModel, CompileInfoModel
 from .mixin import Mixin
 from . import flask_admin
@@ -14,6 +14,10 @@ class SolutionAdmin(Mixin):
     can_create = False
     can_edit = False
     can_delete = False
+
+    column_choices = {
+        'result': app.config['SOLUTION_RESULT'].items()
+    }
 
     def __init__(self, session, **kwargs):
         super(SolutionAdmin, self).__init__(SolutionModel, session, **kwargs)

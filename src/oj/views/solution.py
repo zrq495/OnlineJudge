@@ -51,7 +51,7 @@ class SolutionView(views.MethodView):
         if language:
             query = query.filter(
                 SolutionModel.program_language == language)
-        if result:
+        if result == 0 or result:
             query = query.filter(
                 SolutionModel.result == result)
         if problem_id or solution_id or username or language or result:

@@ -9,6 +9,7 @@ from wtforms.validators import (
 from wtforms import ValidationError
 from flask.ext.login import current_user
 
+from oj import app
 from oj.models import UserModel
 from oj.core.sensitive import censor
 
@@ -31,7 +32,7 @@ class UserForm(Form):
             Optional()])
     program_language = SelectField(
         '编程语言',
-        choices=[('gcc', 'gcc'), ('g++', 'g++'), ('java', 'java')],
+        choices=app.config['PROGRAM_LANGUAGE'].items(),
         validators=[Required()])
     school = StringField('学校')
     college = StringField('学院')
