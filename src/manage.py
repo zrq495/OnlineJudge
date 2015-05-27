@@ -21,7 +21,14 @@ def make_shell_context():
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
-server = Server(host="dev.sdutacm.org", port=5000)
+server_name = app.config['SERVER_NAME'].split(':')
+if len(server_name) == 2:
+    host, port = server_name[0], server_name[1]
+elif len(server_name) == 1:
+    host, port = server_name[0], 80
+else:
+    host, port = '0.0.0.0', '80'
+server = Server(host=host, port=port)
 manager.add_command("runserver", server)
 
 
