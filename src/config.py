@@ -14,6 +14,7 @@ class Config(object):
         '\xd0J\xec\xbdw\nfc\xc5Q\xd0\x8cd\xf1')
 
     SQLALCHEMY_RECORD_QUERIES = True
+    # SQLALCHEMY_ECHO = True
 
     # email
     # MAIL_SERVER = 'smtp.163.com'
