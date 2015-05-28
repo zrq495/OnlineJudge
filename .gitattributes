@@ -1,2 +1,2 @@
-src/oj/static/ckeditor/* linguist-vendored
-src/oj/static/filemanager/* linguist-vendored
+oj/static/ckeditor/* linguist-vendored
+oj/static/filemanager/* linguist-vendored
