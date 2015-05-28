@@ -19,12 +19,16 @@ class CensorCenter(object):
             return g._name_forbidden_words_pattern
         words = set()
         values = RegistryModel.fetch('name_forbidden_words')
-        for row in values:
-            is_enabled = row.pop('is_enabled', False)
-            if is_enabled:
-                words.update([v for v in row.values() if v])
-        words = map(lambda w: w.replace('|', '\|').replace('.', '\.'), words)
-        g._name_forbidden_words_pattern = pattern = re.compile('|'.join(words))
+        if values:
+            for row in values:
+                is_enabled = row.pop('is_enabled', False)
+                if is_enabled:
+                    words.update([v for v in row.values() if v])
+            words = map(lambda w: w.replace('|', '\|').replace('.', '\.'), words)
+            pattern = re.compile('|'.join(words))
+        else:
+            pattern = '.^'
+        g._name_forbidden_words_pattern = pattern
         return pattern
 
     def has_name_forbidden_word(self, content):
