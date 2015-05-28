@@ -41,7 +41,7 @@ class SignupForm(Form):
         validators=[Optional()])
     program_language = SelectField(
         '编程语言',
-        choices=app.config['PROGRAM_LANGUAGE'],
+        choices=app.config['PROGRAM_LANGUAGE'].items(),
         validators=[Required()])
     school = StringField('学校')
     college = StringField('学院')
