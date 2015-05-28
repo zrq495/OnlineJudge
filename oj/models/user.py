@@ -168,11 +168,6 @@ class UserModel(UserMixin, db.Model):
     def __init__(self, **kwargs):
         super(UserModel, self).__init__(**kwargs)
         self._statistics = UserStatisticsModel()
-        if self.role is None:
-            if self.email == current_app.config['OJ_ADMIN']:
-                self.role = RoleModel.query.filter_by(permissions=0xff).first()
-            if self.role is None:
-                self.role = RoleModel.query.filter_by(default=True).first()
 
     @staticmethod
     def generate_fake(count=100):
