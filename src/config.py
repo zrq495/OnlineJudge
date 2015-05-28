@@ -61,8 +61,6 @@ class Config(object):
     ENABLE_TIMELIMIT = True
     SUBMIT_TIMELIMIT = 2
 
-    SERVER_NAME = os.getenv('OJ_SERVER_NAME') or 'dev.sdutacm.org:5000'
-
     PROGRAM_LANGUAGE = {
         'gcc': 'gcc',
         'g++': 'g++',
@@ -90,7 +88,11 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     DEBUG = True
+
     # SQLALCHEMY_ECHO = True
+
+    SERVER_NAME = os.getenv('OJ_SERVER_NAME') or 'dev.sdutacm.org:5000'
+
     SQLALCHEMY_DATABASE_URI = (
         os.environ.get('DEV_DATABASE_URL')
         or 'postgresql+psycopg2://oj:oooo@localhost/oj')
@@ -105,6 +107,9 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
+
+    SERVER_NAME = os.getenv('OJ_SERVER_NAME') or 'do.zrq495.com:5000'
+
     SQLALCHEMY_DATABASE_URI = (
         os.environ.get('DATABASE_URL')
         or 'postgresql+psycopg2://oj:oooo@localhost/oj')

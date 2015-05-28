@@ -12,7 +12,7 @@ web:
   environment:
    OJ_CONFIG: "production"
    REDIS_HOST: "redis"
-   REDIS_PORT: 6379
+   REDIS_PORT: "6379"
    DEV_DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
    DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
    OJ_SERVER_NAME: "do.zrq495.com:5000"
