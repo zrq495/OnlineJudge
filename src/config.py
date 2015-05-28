@@ -61,8 +61,6 @@ class Config(object):
     ENABLE_TIMELIMIT = True
     SUBMIT_TIMELIMIT = 2
 
-    SERVER_NAME = os.getenv('OJ_SERVER_NAME') or 'dev.sdutacm.org:5000'
-
     PROGRAM_LANGUAGE = {
         'gcc': 'gcc',
         'g++': 'g++',
@@ -90,7 +88,11 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     DEBUG = True
+
     # SQLALCHEMY_ECHO = True
+
+    SERVER_NAME = os.getenv('OJ_SERVER_NAME') or 'dev.sdutacm.org:5000'
+
     SQLALCHEMY_DATABASE_URI = (
         os.environ.get('DEV_DATABASE_URL')
         or 'postgresql+psycopg2://oj:oooo@localhost/oj')
@@ -105,6 +107,9 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
+
+    SERVER_NAME = os.getenv('OJ_SERVER_NAME') or 'do.zrq495.com:5000'
+
     SQLALCHEMY_DATABASE_URI = (
         os.environ.get('DATABASE_URL')
         or 'postgresql+psycopg2://oj:oooo@localhost/oj')
@@ -114,23 +119,23 @@ class ProductionConfig(Config):
         Config.init_app(app)
 
         # email errors to the administrators
-        import logging
-        from logging.handlers import SMTPHandler
-        credentials = None
-        secure = None
-        if getattr(cls, 'MAIL_USERNAME', None) is not None:
-            credentials = (cls.MAIL_USERNAME, cls.MAIL_PASSWORD)
-            if getattr(cls, 'MAIL_USE_TLS', None):
-                secure = ()
-        mail_handler = SMTPHandler(
-            mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
-            fromaddr=cls.OJ_MAIL_SENDER,
-            toaddrs=[cls.OJ_ADMIN],
-            subject=cls.OJ_MAIL_SUBJECT_PREFIX + ' Application Error',
-            credentials=credentials,
-            secure=secure)
-        mail_handler.setLevel(logging.ERROR)
-        app.logger.addHandler(mail_handler)
+        # import logging
+        # from logging.handlers import SMTPHandler
+        # credentials = None
+        # secure = None
+        # if getattr(cls, 'MAIL_USERNAME', None) is not None:
+            # credentials = (cls.MAIL_USERNAME, cls.MAIL_PASSWORD)
+            # if getattr(cls, 'MAIL_USE_TLS', None):
+                # secure = ()
+        # mail_handler = SMTPHandler(
+            # mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
+            # fromaddr=cls.OJ_MAIL_SENDER,
+            # toaddrs=[cls.OJ_ADMIN],
+            # subject=cls.OJ_MAIL_SUBJECT_PREFIX + ' Application Error',
+            # credentials=credentials,
+            # secure=secure)
+        # mail_handler.setLevel(logging.ERROR)
+        # app.logger.addHandler(mail_handler)
 
 
 class UnixConfig(ProductionConfig):

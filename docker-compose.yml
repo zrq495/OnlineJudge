@@ -5,9 +5,17 @@ web:
    - "5000:5000"
   volumes:
    - .:/OnlineJudge
+   - /data
   links:
    - redis
    - postgres
+  environment:
+   OJ_CONFIG: "production"
+   REDIS_HOST: "redis"
+   REDIS_PORT: "6379"
+   DEV_DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
+   DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
+   OJ_SERVER_NAME: "do.zrq495.com:5000"
 redis:
   image: redis
 postgres:
