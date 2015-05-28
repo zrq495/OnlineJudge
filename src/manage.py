@@ -21,18 +21,7 @@ def make_shell_context():
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
-server_name = app.config['SERVER_NAME']
-if server_name:
-    uri = server_name.split(':')
-    if len(uri) == 2:
-        host, port = uri[0], uri[1]
-    elif len(uri) == 1:
-        host, port = uri[0], 80
-    else:
-        host, port = '0.0.0.0', '5000'
-else:
-    host, port = '0.0.0.0', '5000'
-server = Server(host=host, port=port)
+server = Server(host='0.0.0.0', port='5000')
 manager.add_command("runserver", server)
 
 
