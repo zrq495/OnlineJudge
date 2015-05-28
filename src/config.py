@@ -26,7 +26,7 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     OJ_MAIL_SUBJECT_PREFIX = '[SDTU OJ]'
     OJ_MAIL_SENDER = os.environ.get('MAIL_USERNAME')
-    OJ_ADMIN = os.environ.get('MAIL_USERNAME')
+    OJ_ADMIN = os.environ.get('OJ_ADMIN')
 
     # pagination
     PROBLEMS_PER_PAGE = 5
