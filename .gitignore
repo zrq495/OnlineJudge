@@ -58,3 +58,8 @@ dump.rdb
 
 # upload dir
 src/oj/static/upload/
+
+.idea/
+
+# vim swp
+*.swp

@@ -31,8 +31,7 @@ SDUT Online Judge
 - git clone git@github.com:zrq495/OnlineJudge.git
 - cd OnlineJudge
 - pip install -r requirements/install.txt
-- cd src
-- ./manage.py db upgrade
+- ./manage.py db deploy
 - ./manage.py runserver
 - celery -A oj.core.tasks:celery worker
 
