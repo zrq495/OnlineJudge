@@ -9,18 +9,18 @@ from wtforms import fields
 from flask import (
     current_app as app, views, render_template, request
 )
-from flask.ext.admin import expose, expose_plugview, BaseView
+from flask.ext.admin import expose, expose_plugview
 from flask.ext.login import current_user
 from werkzeug.datastructures import MultiDict
 
 from oj import db
 from oj.models import UserModel, UserStatisticsModel
-from .mixin import Mixin
+from .mixin import ModelViewMixin, BaseViewMixin
 from . import forms
 from . import flask_admin
 
 
-class UserAdmin(Mixin):
+class UserAdmin(ModelViewMixin):
 
     can_restore = False
     can_create = True
@@ -59,7 +59,7 @@ class UserAdmin(Mixin):
             model.password = form.password2.data if len(model.password2) else default_password
 
 
-class UserDeletedAdmin(Mixin):
+class UserDeletedAdmin(ModelViewMixin):
 
     can_restore = True
     can_create = False
@@ -79,7 +79,7 @@ class UserDeletedAdmin(Mixin):
         super(UserDeletedAdmin, self).__init__(UserModel.deleted, session, **kwargs)
 
 
-class UserStatisticsAdmin(Mixin):
+class UserStatisticsAdmin(ModelViewMixin):
 
     can_restore = False
     can_create = False
@@ -90,11 +90,7 @@ class UserStatisticsAdmin(Mixin):
         super(UserStatisticsAdmin, self).__init__(UserStatisticsModel, session, **kwargs)
 
 
-class ImportUserView(BaseView):
-
-    def is_accessible(self):
-        return (current_user.is_authenticated()
-                and current_user.is_administrator())
+class ImportUserView(BaseViewMixin):
 
     @expose_plugview('/')
     class ImportUser(views.MethodView):

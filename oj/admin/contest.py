@@ -7,12 +7,12 @@ from flask import current_app as app
 
 from oj import db
 from oj.models import ContestModel
-from .mixin import Mixin
+from .mixin import ModelViewMixin
 from . import flask_admin
 from .problem import CKTextAreaField
 
 
-class ContestAdmin(Mixin):
+class ContestAdmin(ModelViewMixin):
 
     can_restore = False
     can_create = True

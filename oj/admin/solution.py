@@ -4,11 +4,11 @@ from __future__ import unicode_literals
 
 from oj import app, db
 from oj.models import SolutionModel, CodeModel, CompileInfoModel
-from .mixin import Mixin
+from .mixin import ModelViewMixin
 from . import flask_admin
 
 
-class SolutionAdmin(Mixin):
+class SolutionAdmin(ModelViewMixin):
 
     can_restore = False
     can_create = False
@@ -23,7 +23,7 @@ class SolutionAdmin(Mixin):
         super(SolutionAdmin, self).__init__(SolutionModel, session, **kwargs)
 
 
-class CodeAdmin(Mixin):
+class CodeAdmin(ModelViewMixin):
 
     can_restore = False
     can_create = False
@@ -38,7 +38,7 @@ class CodeAdmin(Mixin):
         super(CodeAdmin, self).__init__(CodeModel, session, **kwargs)
 
 
-class CompileInfoAdmin(Mixin):
+class CompileInfoAdmin(ModelViewMixin):
 
     can_restore = False
     can_create = False

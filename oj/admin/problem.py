@@ -8,7 +8,7 @@ from flask.ext.admin.contrib import fileadmin
 
 from oj import db, app
 from oj.models import ProblemModel, ProblemStatisticsModel
-from .mixin import Mixin
+from .mixin import ModelViewMixin
 from . import flask_admin
 
 
@@ -23,7 +23,7 @@ class CKTextAreaField(fields.TextAreaField):
     widget = CKTextAreaWidget()
 
 
-class ProblemAdmin(Mixin):
+class ProblemAdmin(ModelViewMixin):
 
     can_restore = False
     can_create = True
@@ -61,7 +61,7 @@ class ProblemAdmin(Mixin):
         super(ProblemAdmin, self).__init__(ProblemModel, session, **kwargs)
 
 
-class ProblemStatisticsAdmin(Mixin):
+class ProblemStatisticsAdmin(ModelViewMixin):
 
     can_restore = False
     can_create = False

@@ -2,8 +2,9 @@
 
 from __future__ import unicode_literals
 
+from flask import redirect, url_for, request
 from flask.ext.login import current_user
-from flask.ext.admin import form
+from flask.ext.admin import form, BaseView
 from flask.ext.admin.actions import action
 from flask.ext.admin.contrib.sqla import ModelView
 
@@ -30,7 +31,7 @@ def image_validate(form, field):
     #  将''替换为None,否则postgres的CHAR(50)有space padding.
 
 
-class Mixin(ModelView):
+class ModelViewMixin(ModelView):
     column_labels = labels
     form_base_class = form.BaseForm
     column_display_pk = True
@@ -40,6 +41,10 @@ class Mixin(ModelView):
         return (current_user.is_authenticated()
                 and current_user.is_administrator())
 
+    def _handle_view(self, name, **kwargs):
+        if not self.is_accessible():
+            return redirect(url_for('auth.login', next=request.url))
+
     def delete_model(self, model):
         class_ = model.__class__
         if hasattr(class_, 'deleted'):
@@ -47,7 +52,7 @@ class Mixin(ModelView):
             self.session.delete(model, reason='deleted_by_admin')
             self.session.commit()
         else:
-            super(Mixin, self).delete_model(model)
+            super(ModelViewMixin, self).delete_model(model)
 
     @action('delete', '删除', '确定选中的删除吗')
     def action_delete(self, ids):
@@ -59,7 +64,7 @@ class Mixin(ModelView):
                     self.session.delete(m, reason='deleted_by_admin')
             self.session.commit()
         else:
-            super(Mixin, self).action_delete(ids)
+            super(ModelViewMixin, self).action_delete(ids)
 
     @action('restore', '恢复', '确定要恢复已经删除的吗')
     def action_restore(self, ids):
@@ -76,4 +81,14 @@ class Mixin(ModelView):
             if hasattr(self, 'can_restore') and self.can_restore:
                 return True
             return False
-        return super(Mixin, self).is_action_allowed(name)
+        return super(ModelViewMixin, self).is_action_allowed(name)
+
+
+class BaseViewMixin(BaseView):
+    def is_accessible(self):
+        return (current_user.is_authenticated()
+                and current_user.is_administrator())
+
+    def _handle_view(self, name, **kwargs):
+        if not self.is_accessible():
+            return redirect(url_for('auth.login', next=request.url))

@@ -2,20 +2,16 @@
 
 from __future__ import unicode_literals
 
-from flask.ext.admin import expose, expose_plugview, BaseView
+from flask.ext.admin import expose, expose_plugview
 from flask import request, jsonify
 from flask import views
-from flask.ext.login import current_user
 
 from . import flask_admin
+from .mixin import BaseViewMixin
 from oj.core.logic import CkFinder
 
 
-class FileManagerView(BaseView):
-
-    def is_accessible(self):
-        return (current_user.is_authenticated()
-                and current_user.is_administrator())
+class FileManagerView(BaseViewMixin):
 
     def is_visible(self):
         return False

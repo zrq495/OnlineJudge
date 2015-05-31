@@ -4,11 +4,11 @@ from __future__ import unicode_literals
 
 from oj import db
 from oj.models import NewsModel, HeadlineModel
-from .mixin import Mixin
+from .mixin import ModelViewMixin
 from . import flask_admin
 
 
-class NewsAdmin(Mixin):
+class NewsAdmin(ModelViewMixin):
 
     column_exclude_list = ['content']
     column_searchable_list = ['title', 'content']
@@ -23,7 +23,7 @@ class NewsAdmin(Mixin):
         super(NewsAdmin, self).__init__(NewsModel, session, **kwargs)
 
 
-class HeadlineAdmin(Mixin):
+class HeadlineAdmin(ModelViewMixin):
 
     column_exclude_list = ['url']
     column_searchable_list = ['title', 'url', 'alert']

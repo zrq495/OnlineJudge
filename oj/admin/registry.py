@@ -8,7 +8,7 @@ from flask import (
     redirect, url_for, g)
 from flask.ext.wtf import Form
 from flask.ext.login import current_user
-from flask.ext.admin import expose, expose_plugview, BaseView
+from flask.ext.admin import expose, expose_plugview
 from wtforms import Form as WTForm
 from wtforms import fields, validators
 from wtforms.fields import html5
@@ -18,10 +18,10 @@ from oj import db
 from oj.models import RegistryModel
 from . import flask_admin
 from . import forms
-from .mixin import Mixin
+from .mixin import ModelViewMixin, BaseViewMixin
 
 
-class RegistryAdmin(Mixin):
+class RegistryAdmin(ModelViewMixin):
 
     can_restore = False
     can_create = True
@@ -35,11 +35,7 @@ class RegistryAdmin(Mixin):
         super(RegistryAdmin, self).__init__(RegistryModel, session, **kwargs)
 
 
-class RegistryView(BaseView):
-
-    def is_accessible(self):
-        return (current_user.is_authenticated()
-                and current_user.is_administrator())
+class RegistryView(BaseViewMixin):
 
     def is_visible(self):
         return False
