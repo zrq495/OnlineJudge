@@ -41,6 +41,7 @@ jsonschema==2.4.0
 kombu==3.0.24
 librabbitmq==1.6.1
 mimerender==0.5.5
+nose==1.3.6
 psycopg2==2.6
 python-cjson==1.1.0
 python-dateutil==2.4.1
