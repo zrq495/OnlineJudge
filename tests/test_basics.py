@@ -1,19 +1,21 @@
-import unittest
 from flask import current_app
-from oj import create_app, db
+from flask.ext.testing import TestCase
+from oj import app, db
+from oj.config import config
 
 
-class BasicsTestCase(unittest.TestCase):
+class BasicsTestCase(TestCase):
+
+    def create_app(self):
+        app.config.update(config['testing'].__dict__)
+        return app
+
     def setUp(self):
-        self.app = create_app('testing')
-        self.app_context = self.app.app_context()
-        self.app_context.push()
         db.create_all()
 
     def tearDown(self):
         db.session.remove()
         db.drop_all()
-        self.app_context.pop()
 
     def test_app_exists(self):
         self.assertFalse(current_app is None)

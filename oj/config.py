@@ -102,7 +102,7 @@ class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = (
         os.environ.get('TEST_DATABASE_URL')
-        or 'postgresql+psycopg2://oj:oooo@localhost/oj')
+        or 'postgresql+psycopg2://oj_test:oooo@localhost/oj_test')
     WTF_CSRF_ENABLED = False
 
 
