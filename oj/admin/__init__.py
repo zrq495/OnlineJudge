@@ -19,7 +19,7 @@ class AdminIndexView(_AdminIndexView):
 
 flask_admin = Admin(
     name='SDUT OJ后台', index_view=AdminIndexView(name='主页'),
-    template_mode='bootstrap3')
+    template_mode='admin')
 
 flask_admin.add_link(MenuLink(name='返回首页', endpoint='index.index'))
 # flask admin 使用bootstrap3创建MenuLink缺少navbar-nav样式，已提pr
