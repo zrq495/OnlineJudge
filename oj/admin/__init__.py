@@ -22,8 +22,7 @@ flask_admin = Admin(
     template_mode='admin')
 
 flask_admin.add_link(MenuLink(name='返回首页', endpoint='index.index'))
-# flask admin 使用bootstrap3创建MenuLink缺少navbar-nav样式，已提pr
-# flask_admin.add_link(MenuLink(name='注销', endpoint='auth.logout'))
+flask_admin.add_link(MenuLink(name='注销', endpoint='auth.logout'))
 
 from . import user  # noqa
 from . import problem  # noqa
