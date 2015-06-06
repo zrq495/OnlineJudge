@@ -1,49 +1,39 @@
 # OnlineJudge
+
 SDUT Online Judge
 
 
-## How to
+## develop
 
-- sudo apt-get install pip
-- sudo pip install virtualenv virtualenvwrapper
-- add follow to ~/.bashrc
+OS: Ubuntu 14.04
 
-	```
-	if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
-     	source /usr/local/bin/virtualenvwrapper.sh
-	fi
-	```
-- source ~/.bashrc
-- sudo apt-get install git
-- sudo apt-get install python-dev
-- sudo apt-get install postgresql
-- sudo -u postgres createuser --superuser zrq495
-- sudo -u postgres psql
-	- \password zrq495
-	- \q
-- sudo -u postgres createdb -O zrq495 zrq495
-- psql
-	- CREATE USER oj WITH PASSWORD 'oooo';
-	- CREATE DATABASE oj OWNER oj;
-	- GRANT ALL PRIVILEGES ON DATABASE oj to oj;
-	- \q
-- mkvirtualenv oj
-- git clone git@github.com:zrq495/OnlineJudge.git
-- cd OnlineJudge
-- pip install -r requirements/install.txt
-- ./manage.py db deploy
-- ./manage.py runserver
+- bash install.sh
+- workon oj
+- python manage.py db deploy
+- python manage.py runserver
 - celery -A oj.core.tasks:celery worker
+
+url: `http://dev.sdutacm.org:5000/`
 
 
 ## docker
 
-- mkvirtualenv oj
-- pip install -r requirements/install.txt
+- install docker and docker-compose
 - docker-compose build
 - docker-compose up
 
 
 ## honcho
 
-honcho start
+- bash install.sh
+- workon oj
+- honcho start
+
+
+## Note:
+
+- `export OJ_CONFIG="production"`
+- `export OJ_SERVER_NAME="oj.sdutacm.org"`, your server name
+- `export MAIL_USERNAME="oj@sdutacm.org"`
+- `export MAIL_PASSWORD="password"`
+- `export OJ_ADMIN="admin@sdutacm.org"`
