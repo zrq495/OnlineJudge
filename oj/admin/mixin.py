@@ -37,6 +37,15 @@ class ModelViewMixin(ModelView):
     column_display_pk = True
     form_extra_fields = None
 
+    column_formatters = dict(
+        date_created=(
+            lambda v, c, m, p: m.date_created.strftime('%Y-%m-%d %H:%M:%S')),
+        date_start=(
+            lambda v, c, m, p: m.date_start.strftime('%Y-%m-%d %H:%M:%S')),
+        date_end=(
+            lambda v, c, m, p: m.date_end.strftime('%Y-%m-%d %H:%M:%S'))
+    )
+
     def is_accessible(self):
         return (current_user.is_authenticated()
                 and current_user.is_administrator())

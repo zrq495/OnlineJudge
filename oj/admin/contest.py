@@ -4,12 +4,23 @@ from __future__ import unicode_literals
 
 from wtforms import fields
 from flask import current_app as app
+from flask.ext.admin.model.form import InlineFormAdmin
 
 from oj import db
-from oj.models import ContestModel
+from oj.models import ContestModel, ContestProblemModel
 from .mixin import ModelViewMixin
 from . import flask_admin
 from .problem import CKTextAreaField
+
+
+class ContestProblemModelInlineForm(InlineFormAdmin):
+
+    form_excluded_columns = (
+        'solutions', 'accepts', 'contest_id', 'problem_id', 'date_created')
+
+    def __init__(self):
+        return super(
+            ContestProblemModelInlineForm, self).__init__(ContestProblemModel)
 
 
 class ContestAdmin(ModelViewMixin):
@@ -36,6 +47,8 @@ class ContestAdmin(ModelViewMixin):
         'password_hash']
     form_overrides = dict(
         description=CKTextAreaField)
+
+    inline_models = (ContestProblemModelInlineForm(),)
 
     def __init__(self, session, **kwargs):
         super(ContestAdmin, self).__init__(ContestModel, session, **kwargs)
