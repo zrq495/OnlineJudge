@@ -55,9 +55,10 @@ class ContestProblemDetailView(views.MethodView):
     def get(self, contest_problem_id):
         contest_problem = ContestProblemModel.query.get_or_404(contest_problem_id)
         problem = contest_problem.problem
+        contest = contest_problem.contest
         return render_template(
             'contest_problem_detail.html', problem=problem,
-            contest_problem=contest_problem)
+            contest_problem=contest_problem, contest=contest)
 
 
 class ContestSubmitView(views.MethodView):
@@ -66,10 +67,13 @@ class ContestSubmitView(views.MethodView):
 
     @login_required
     def get(self):
+        contest_problem_id = request.args.get('contest_problem_id', None)
+        contest_problem = ContestProblemModel.query.get_or_404(contest_problem_id)
+        contest = contest_problem.contest
         values = MultiDict(request.args)
         values['language'] = current_user.program_language
         form = forms.ContestSubmitForm(values)
-        return render_template(self.template, form=form)
+        return render_template(self.template, form=form, contest=contest)
 
     @login_required
     def post(self):
@@ -94,7 +98,8 @@ class ContestSubmitView(views.MethodView):
         db.session.add(solution)
         db.session.commit()
         self.submit_timeout.set()
-        return redirect(url_for('contest.solution'))
+        return redirect(
+            url_for('contest.solution', contest_id=contest_problem.contest_id))
 
     @cached_property
     def submit_timeout(self):

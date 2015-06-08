@@ -1,13 +1,6 @@
-{% extends "bootstrap/base.html" %}
+{% extends "layout.html" %}
 
-{% block title %}SDUT Online Judge{% endblock %}
-
-{% block head %}
-{{ super() }}
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
-{% endblock %}
+{% block title %}SDUT Online Judge Contest{% endblock %}
 
 {% block navbar %}
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -24,11 +17,9 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="{{ url_for('index.index') }}">Home</a></li>
-                <li><a href="{{ url_for('news.list') }}">News</a></li>
-                <li><a href="{{ url_for('problem.list') }}">Problems</a></li>
-                <li><a href="{{ url_for('contest.list') }}">Contest</a></li>
-                <li><a href="{{ url_for('solution.list') }}">Status</a></li>
-                <li><a href="{{ url_for('rank.list') }}">Ranklist</a></li>
+                <li><a href="{{ contest.url }}">Problems</a></li>
+                <li><a href="{{ url_for('contest.solution', contest_id=contest.id) }}">Status</a></li>
+                <li><a href="{{ url_for('contest.rank', contest_id=contest.id) }}">Ranklist</a></li>
                 {% if current_user.is_administrator() -%}
                 <li><a href="{{ url_for('admin.index') }}">管理后台</a></li>
                 {%- endif %}
@@ -53,37 +44,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block content %}
-<div class="container">
-    {% for headline in get_headlines() %}
-    {% if loop.first %}
-    <div class="list-group">
-    {% endif %}
-        <a href="{{ headline.url or '#' }}" class="text-center list-group-item list-group-item-{{ headline.alert }}">{{ headline.title }}</a>
-    {% if loop.last %}
-    </div>
-    {% endif %}
-    {% endfor %}
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message }}
-    </div>
-    {% endfor %}
-
-    {% block page_content %}{% endblock %}
-</div>
-{% block footer %}
-<footer class="footer">
-    <div class="container">
-        <p class="text-muted text-center">&copy; 2015 SDUTACM - All Rights Reserved.</p>
-    </div>
-</footer>
-{% endblock %}
-{% endblock %}
-
-{% block scripts %}
-{{ super() }}
 {% endblock %}

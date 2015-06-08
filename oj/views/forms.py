@@ -21,6 +21,8 @@ class SolutionSearchForm(Form):
         'Run ID', validators=[validators.Optional()])
     problem_id = fields.IntegerField(
         'Problem ID', validators=[validators.Optional()])
+    contest_id = fields.IntegerField(
+        'Contest ID', validators=[validators.Optional()])
     username = fields.StringField(
         'Username', validators=[validators.Optional()])
     language = fields.SelectField(
@@ -71,7 +73,7 @@ class ContestSubmitForm(Form):
             contest_problem_id)
         if not contest_problem:
             raise ValidationError('题目不存在')
-        if contest_problem.contest.is_hiden:
+        if contest_problem.contest.is_hidden:
             raise ValidationError('比赛不存在')
         if contest_problem.contest.status == 'pending':
             raise ValidationError('比赛还没开始')

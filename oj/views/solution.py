@@ -13,7 +13,7 @@ from flask import (views,
 from flask.ext.login import login_required, current_user
 
 from oj.models import (
-    SolutionModel, CodeModel, CompileInfoModel, UserModel)
+    SolutionModel, CodeModel, CompileInfoModel, UserModel, ContestModel)
 from . import forms
 from .contest import bp_contest
 
@@ -28,13 +28,19 @@ class SolutionView(views.MethodView):
             redirect(url_for('solution.list'))
         problem_id = form.problem_id.data
         solution_id = form.solution_id.data
+        contest_id = form.contest_id.data
         username = form.username.data
         language = form.language.data
         result = form.result.data
         query = SolutionModel.query
+        contest = None
         if is_contest:
             query = query.filter(
                 SolutionModel.contest_id != 0)
+            if contest_id:
+                query = query.filter(
+                    SolutionModel.contest_id == contest_id)
+                contest = ContestModel.query.get(contest_id)
         else:
             query = query.filter(
                 SolutionModel.contest_id == 0)
@@ -68,7 +74,7 @@ class SolutionView(views.MethodView):
         solutions = pagination.items
         return render_template(
             self.template, pagination=pagination,
-            solutions=solutions, form=form)
+            solutions=solutions, form=form, contest=contest)
 
 
 class CodeDetailView(views.MethodView):

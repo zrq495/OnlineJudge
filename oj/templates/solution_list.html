@@ -1,4 +1,8 @@
+{% if request.endpoint == 'contest.solution' %}
+{% extends "contest_layout.html" %}
+{% else %}
 {% extends "layout.html" %}
+{% endif %}
 {% import "bootstrap/wtf.html" as wtf %}
 {% from "bootstrap/pagination.html" import render_pagination %}
 
