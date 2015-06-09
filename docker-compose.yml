@@ -5,7 +5,7 @@ web:
    - "5000:5000"
   volumes:
    - .:/OnlineJudge
-   - /data
+   - /data:/data
   links:
    - redis
    - postgres
@@ -23,3 +23,11 @@ redis:
   image: redis
 postgres:
   build: ./docker_file/postgres
+judge:
+  image: registry.sdutacm.org/oj_judge
+  command: nohup python protect.py &
+  volumes:
+   - ../oj_judge:/oj_judge
+   - /data:/data
+  links:
+   - postgres
