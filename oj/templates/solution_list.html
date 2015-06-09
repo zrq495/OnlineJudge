@@ -38,7 +38,7 @@
                     {% else %}
                     <td><a href="{{ solution.problem.url }}">{{ solution.problem.id }}</a></td>
                     {% endif %}
-                    <td>{{ solution.result }}</td>
+                    <td>{{ SOLUTION_RESULT[solution.result] }}</td>
                     <td>{{ solution.take_time }}MS</td>
                     <td>{{ solution.take_memory }}KB</td>
                     <td>

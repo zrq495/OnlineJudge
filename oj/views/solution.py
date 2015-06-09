@@ -72,8 +72,10 @@ class SolutionView(views.MethodView):
             .paginate(
                 page, per_page=per_page, error_out=False))
         solutions = pagination.items
+        SOLUTION_RESULT = current_app.config['SOLUTION_RESULT']
         return render_template(
             self.template, pagination=pagination,
+            SOLUTION_RESULT=SOLUTION_RESULT,
             solutions=solutions, form=form, contest=contest)
 
 
