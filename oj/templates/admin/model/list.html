@@ -10,67 +10,42 @@
 {% endblock %}
 
 {% block _brand %}
-    <h2 id="brand">{{ admin_view.name|capitalize }} list</h2>
-    {% if admin_view.can_create %}
-    <div class="btn-menu">
-      <a href="{{ url_for('.create_view', url=return_url) }}" class="btn btn-primary pull-right">{{ _gettext('Create') }}</a>
-    </div>
-    {% endif %}
-    
-    {% if filter_groups %}
-    <div class="btn-group btn-menu">
-      {{ model_layout.filter_options(btn_class='btn dropdown-toggle btn-title') }}
-    </div>
-    {% endif %}
-    
-    {% if actions %}
-    <div class="btn-group btn-menu">
-      {{ actionlib.dropdown(actions, btn_class='btn dropdown-toggle btn-title') }}
-    </div>
-    {% endif %}
-    
-    {% if search_supported %}
-    <div class="search-form btn-menu">
-      {{ model_layout.search_form(input_class='span2 btn-title') }}
-    </div>
-    {% endif %}
-    <div class="clearfix"></div>
-    <hr>
+    <ul class="nav nav-tabs">
+      <li class="active"><a>{{ admin_view.name|capitalize }}</a></li>
+      {% block modal %}
+      {% endblock %}
+    </ul>
+
 {% endblock %}
 
 {% block body %}
     {% block model_menu_bar %}
+
+    <div class="menu_bar">
+      {% if admin_view.can_create %}
+        <a class="btn btn-primary" href="{{ url_for('.create_view', url=return_url) }}" >{{ _gettext('Create') }}</a>
+      {% endif %}
+      
+      {% if filter_groups %}
+      <div class="btn-group pull-right">
+        {{ model_layout.filter_options(btn_class='btn dropdown-toggle btn-default btn-title') }}
+      </div>
+      {% endif %}
+      
+      {% if actions %}
+      <div class="btn-group pull-right">
+        {{ actionlib.dropdown(actions, btn_class='btn dropdown-toggle btn-default btn-title') }}
+      </div>
+      {% endif %}
+      
+      {% if search_supported %}
+      <div class="search-form pull-right">
+        {{ model_layout.search_form(input_class='span2 btn-title') }}
+      </div>
+      {% endif %}
+      <div class="clearfix"></div>
+    </div>
     {% endblock %}
-    {#% block model_menu_bar %}
-    <ul class="nav nav-tabs actions-nav">
-        <li class="active">
-            <a href="javascript:void(0)">{{ _gettext('List') }} ({{ count }})</a>
-        </li>
-        {% if admin_view.can_create %}
-        <li>
-            <a href="{{ get_url('.create_view', url=return_url) }}" title="{{ _gettext('Create new record') }}">{{ _gettext('Create') }}</a>
-        </li>
-        {% endif %}
-
-        {% if filters %}
-        <li class="dropdown">
-            {{ model_layout.filter_options() }}
-        </li>
-        {% endif %}
-
-        {% if actions %}
-        <li class="dropdown">
-            {{ actionlib.dropdown(actions) }}
-        </li>
-        {% endif %}
-
-        {% if search_supported %}
-        <li>
-            {{ model_layout.search_form() }}
-        </li>
-        {% endif %}
-    </ul>
-    {% endblock %#}
 
     {% if filters %}
         {{ model_layout.filter_form() }}
