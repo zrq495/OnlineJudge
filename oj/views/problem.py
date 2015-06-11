@@ -17,6 +17,7 @@ from werkzeug.utils import cached_property
 from oj import db
 from oj.models import SolutionModel, CodeModel, ProblemModel
 from oj.core import timelimit
+from oj.core.pagination import ProblemPagination
 from . import forms
 
 
@@ -40,13 +41,20 @@ class ProblemView(views.MethodView):
                 'problem_list.html', form=form,
                 problems=query.all())
         per_page = current_app.config['PROBLEMS_PER_PAGE']
+        start_id = current_app.config['PROBLEM_START_ID']
         page = request.args.get('page', 1, type=int)
-        pagination = (
+        start_problem_id = (page - 1) * per_page + start_id
+        end_problem_id = start_problem_id + per_page
+        problems = (
             query
+            .filter(ProblemModel.id >= start_problem_id)
+            .filter(ProblemModel.id < end_problem_id)
             .order_by(ProblemModel.id.asc())
-            .paginate(
-                page, per_page=per_page, error_out=False))
-        problems = pagination.items
+        )
+        problems_count = problems.count()
+        last_problem = query.order_by(ProblemModel.id.desc()).first()
+        pagination = ProblemPagination(
+            page, per_page, problems_count, last_problem.id, start_id)
         return render_template(
             'problem_list.html', pagination=pagination,
             problems=problems, form=form)
