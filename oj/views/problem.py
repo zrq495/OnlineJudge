@@ -29,7 +29,8 @@ class ProblemView(views.MethodView):
             redirect(url_for('problem.list'))
         problem_id = form.problem_id.data
         problem_title = form.problem_title.data
-        query = ProblemModel.query
+        query = ProblemModel.query.filter(
+            ProblemModel.is_display == True)
         if problem_id:
             query = query.filter(
                 ProblemModel.id == problem_id)
@@ -53,8 +54,9 @@ class ProblemView(views.MethodView):
         )
         problems_count = problems.count()
         last_problem = query.order_by(ProblemModel.id.desc()).first()
+        last_problem_id = last_problem.id if last_problem else 1
         pagination = ProblemPagination(
-            page, per_page, problems_count, last_problem.id, start_id)
+            page, per_page, problems_count, last_problem_id, start_id)
         return render_template(
             'problem_list.html', pagination=pagination,
             problems=problems, form=form)

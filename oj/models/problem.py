@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 from flask import url_for
 from sqlalchemy import sql
+from sqlalchemy.schema import Sequence
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from oj import db
@@ -19,7 +20,10 @@ __all__ = [
 class ProblemModel(db.Model):
     __tablename__ = 'problem'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(
+        db.Integer,
+        Sequence('problem_id_seq', start=1000, increment=1),
+        primary_key=True)
     title = db.Column(db.String(512), nullable=False)
     time_limit = db.Column(db.Integer, nullable=False)
     memory_limit = db.Column(db.Integer, nullable=False)
