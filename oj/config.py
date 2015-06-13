@@ -29,8 +29,8 @@ class Config(object):
     OJ_ADMIN = os.environ.get('OJ_ADMIN')
 
     # pagination
-    PROBLEM_START_ID = 1
-    PROBLEMS_PER_PAGE = 10
+    PROBLEM_START_ID = 1000
+    PROBLEMS_PER_PAGE = 100
     NEWS_PER_PAGE = 5
     SOLUTIONS_PER_PAGE = 5
     RANK_PER_PAGE = 5

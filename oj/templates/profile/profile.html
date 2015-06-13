@@ -8,7 +8,7 @@
         <h1>{{ user.username }}</h1>
         <p>
             {% if user == current_user %}
-            <a class="btn btn-default" href="{{ url_for('profile.setting') }}">Edit Profile</a>
+            <a class="btn btn-default" href="{{ url_for('profile.setting') }}">编辑个人信息</a>
             {% endif %}
         </p>
     </div>
