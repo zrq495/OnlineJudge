@@ -3,6 +3,8 @@
 from __future__ import unicode_literals
 
 import os
+from celery.schedules import crontab
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -80,6 +82,14 @@ class Config(object):
         11: 'SYSTEM_ERROR',
         0: 'WAITING',
         12: 'JUDGEING',
+    }
+
+    CELERYBEAT_SCHEDULE = {
+        'test': {
+            'task': 'oj.core.tasks.test',
+            'schedule': crontab(minute='*/1'),
+            'args': (1, 2, 3)
+        },
     }
 
     @staticmethod
