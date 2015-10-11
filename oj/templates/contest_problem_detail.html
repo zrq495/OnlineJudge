@@ -1,14 +1,25 @@
-{% extends "contest_layout.html" %}
+{% extends "layout.html" %}
 
 {% block title %}Online Judge - Contest Problem - {{ contest_problem.id }}{% endblock %}
 
 {% block page_content %}
-<div>
-    <div>
-        {% include '_problem.html' %}
-        <div class="center-block" style="width:300px">
-            <a class="btn btn-default" href="{{ url_for('contest.submit', contest_problem_id=contest_problem.id) }}" role="button">Submit</a>
-        </div>
+<ul class="nav nav-tabs">
+    <li role="presentation"><a href="{{ url_for('contest.detail', contest_id=contest.id) }}">Overview</a></li>
+    <li role="presentation" class="active"><a href="#">Problem</a></li>
+    <li role="presentation"><a href="{{ url_for('contest.solution', contest_id=contest.id) }}">Solution</a></li>
+    <li role="presentation"><a href="{{ url_for('contest.rank', contest_id=contest.id)}}">Rank</a></li>
+</ul>
+<nav class="text-center">
+  <ul class="pagination">
+    {% for problem in contest.problems %}
+    <li><a role="presentation" href="{{ url_for('contest.contest_problem', contest_id=contest.id, contest_problem_id=loop.index) }}">{{ loop.index0|digital_to_letter }}</a></li>
+    {% endfor %}
+  </ul>
+</nav>
+<div class="row">
+    {% include '_problem.html' %}
+    <div class="center-block" style="width:300px">
+        <a class="btn btn-default" href="{{ url_for('contest.submit', contest_problem_id=contest_problem.id) }}" role="button">Submit</a>
     </div>
 </div>
 {% endblock %}

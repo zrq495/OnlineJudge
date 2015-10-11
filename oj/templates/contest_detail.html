@@ -1,51 +1,67 @@
-{% extends "contest_layout.html" %}
+{% extends "layout.html" %}
 
 {% block title %}Online Judge - Contest - {{ contest.id }}{% endblock %}
 
 {% block page_content %}
-<div>
-    <div>
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="#">Overview</a></li>
+    <li role="presentation"><a href="{{ url_for('contest.contest_problem', contest_id=contest.id, contest_problem_id=1 )}}">Problem</a></li>
+    <li role="presentation"><a href="{{ url_for('contest.solution', contest_id=contest.id) }}">Solution</a></li>
+    <li role="presentation"><a href="{{ url_for('contest.rank', contest_id=contest.id)}}">Rank</a></li>
+</ul>
+<div class="row">
+    <div class="text-center">
         <div>
-            <h3 class="text-center">{{ contest.name }}<br>
-                <small>
-                    Start Time: {{ contest.date_start.strftime('%Y-%m-%d %H:%M:%S') }}&nbsp;&nbsp;
-                    End Time: {{ contest.date_start.strftime('%Y-%m-%d %H:%M:%S') }}<br>
-                    Contest Type: {{ contest.type|title }}&nbsp;&nbsp;
-                    Contest Status: {{ contest.status|title }}<br>
-                    Server Time: {{ now.strftime('%Y-%m-%d %H:%M:%S') }}<br>
-                </small>
-            </h3>
+            <h2>{{ contest.name }}</h2>
+            <div id="contest_info">
+              <table style="width:100%">
+                <tbody>
+                  <tr>
+                    <td class="contest_detail"> Contest Type: {{ contest.type|title }} </td>
+                    <td class="contest_time" id="current_time"> Current Time: {{ now.strftime('%Y-%m-%d %H:%M:%S') }} </td>
+                  </tr>
+                  <tr>
+                    <td class="contest_detail" id="contest_status"> Contest Status: {{ contest.status|title }} </td>
+                    <td class="contest_time"> Start Time: {{ contest.date_start.strftime('%Y-%m-%d %H:%M:%S') }} </td>
+                  </tr>
+                  <tr>
+                    <td class="contest_detail"> Manager: {{ contest.user}}</td>
+                    <td class="contest_time"> End Time : {{ contest.date_start.strftime('%Y-%m-%d %H:%M:%S') }} </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <p class="text-center">{{ contest.description|safe }}<p>
         </div>
-        <div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Solved</th>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Accepted</th>
-                        <th>Submit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for problem in contest.problems %}
-                    <tr>
-                        <td>
-                        {% if problem.current_user_has_solved %}
-                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                        {% elif problem.current_user_has_submitted %}
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                        {% endif %}
-                        </td>
-                        <td><a href="{{ problem.url }}">{{ loop.index0|digital_to_letter }}</a></td>
-                        <td><a href="{{ problem.url }}">{{ problem.name }}</a></td>
-                        <td>{{ problem.accepts_count }}</td>
-                        <td>{{ problem.solutions_count }}</td>
-                    <tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div id="contest_overview">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th style="width:5%"></th>
+                <th style="width:5%">#</th>
+                <th>Title</th>
+                <th style="width:10%"></th>
+                <th style="width:10%">AC/Submit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for problem in contest.problems %}
+              <tr>
+                  <td>
+                  {% if problem.current_user_has_solved %}
+                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                  {% elif problem.current_user_has_submitted %}
+                      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                  {% endif %}
+                  </td>
+                  <td style="text-align:left"><a href="{{ problem.url }}">{{ loop.index0|digital_to_letter }}</a></td>
+                  <td style="text-align:left"><a href="{{ problem.url }}">{{ problem.name }}</a></td>
+                  <td><a href="{{ problem.url }}#problem_submit" ><i class="glyphicon glyphicon-hand-right"></i></a></td>
+                  <td>{{ problem.accepts_count }} / {{ problem.solutions_count }}</td>
+              <tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
     </div>
 </div>

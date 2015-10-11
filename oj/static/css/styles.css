@@ -221,3 +221,31 @@ p {
     padding: 20px;
 }
 
+/*
+ * Contest
+ */
+
+#contest_info{
+    width: 75%;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 10px
+}
+
+#contest_overview{
+    width: 75%;
+    margin: 20px auto;
+    border-top: 4px solid #6cf;
+}
+
+.contest_time{
+    width: 50%;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.contest_detail {
+    width: 50%;
+    text-align: right;
+    padding-right: 10px;
+}

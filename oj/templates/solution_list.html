@@ -1,14 +1,18 @@
-{% if request.endpoint == 'contest.solution' %}
-{% extends "contest_layout.html" %}
-{% else %}
 {% extends "layout.html" %}
-{% endif %}
 {% import "bootstrap/wtf.html" as wtf %}
 {% from "bootstrap/pagination.html" import render_pagination %}
 
 {% block title %}Online Judge - Solution List{% endblock %}
 
 {% block page_content %}
+{% if request.endpoint == 'contest.solution' %}
+<ul class="nav nav-tabs">
+    <li role="presentation"><a href="{{ url_for('contest.detail', contest_id=contest.id) }}">Overview</a></li>
+    <li role="presentation"><a href="{{ url_for('contest.contest_problem', contest_id=contest.id, contest_problem_id=1 )}}">Problem</a></li>
+    <li role="presentation" class="active"><a href="{{ url_for('contest.solution', contest_id=contest.id) }}">Solution</a></li>
+    <li role="presentation"><a href="{{ url_for('contest.rank', contest_id=contest.id)}}">Rank</a></li>
+</ul>
+{% endif %}
 <div>
     <div>
         {{ wtf.quick_form(form, form_type="inline", method="get") }}
