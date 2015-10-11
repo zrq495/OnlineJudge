@@ -145,3 +145,65 @@ body > .container {
 code {
   font-size: 80%;
 }
+
+pre {
+    border: 0px;
+    border-radius: 0px;
+    border-top: 3px solid #ddd;
+    color: black
+}
+
+p {
+    margin: 0px;
+}
+
+/*
+ * problem
+ */
+
+#problem_head {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px
+}
+
+#problem_head h2 {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    font-size: 34px;
+}
+
+#problem_body {
+    margin-top: 20px;
+    margin-bottom: 20px
+}
+
+#problem_title {
+    display: inline-block;
+}
+
+#problem_info {
+    display: inline-block;
+}
+
+#problem_info span {
+    margin-left: 20px;
+    font-size: 12px;
+    color: #31708f
+}
+
+#problem_description {
+    padding-left: 20px;
+    border-left: 3px solid #ddd;
+}
+
+#problem_input {
+    border: 1px;
+    border-style: dashed;
+    padding: 20px;
+} 
+
+#problem_output {
+    border: 1px;
+    border-style: dashed;
+    padding: 20px;
+}
