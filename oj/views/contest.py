@@ -60,33 +60,26 @@ class ContestProblemDetailView(views.MethodView):
             'contest_problem_detail.html', problem=problem,
             contest_problem=contest_problem, contest=contest)
 
-
-class ContestSubmitView(views.MethodView):
-
-    template = 'contest_submit.html'
-
     @login_required
-    def get(self):
-        contest_problem_id = request.args.get('contest_problem_id', None)
-        contest_problem = ContestProblemModel.query.get_or_404(contest_problem_id)
-        contest = contest_problem.contest
-        values = MultiDict(request.args)
-        values['language'] = current_user.program_language
-        form = forms.ContestSubmitForm(values)
-        return render_template(self.template, form=form, contest=contest)
-
-    @login_required
-    def post(self):
+    def post(self, contest_problem_id):
+        contest_problem = ContestProblemModel.query.get_or_404(
+            contest_problem_id
+        )
         form = forms.ContestSubmitForm(request.form)
+        print(request.__dict__)
         if self.submit_timeout.get():
             flash('提交过于频繁，请稍候')
-            return render_template(
-                self.template, form=form)
+            return redirect(
+                url_for('contest.contest_problem',
+                    contest_problem_id=contest_problem_id
+                )
+            )
         if not form.validate():
-            return render_template(
-                self.template, form=form)
-        contest_problem = ContestProblemModel.query.get(
-            form.contest_problem_id.data)
+            return redirect(
+                url_for('contest.contest_problem',
+                    contest_problem_id=contest_problem_id
+                )
+            )
         solution = SolutionModel(
             problem_id=contest_problem.problem_id,
             user=current_user._get_current_object(),
@@ -172,11 +165,6 @@ bp_contest.add_url_rule(
     '/problem/<int:contest_problem_id>/',
     endpoint='contest_problem',
     view_func=ContestProblemDetailView.as_view(b'contest_problem'),
-    methods=['GET'])
-bp_contest.add_url_rule(
-    '/problem/submit/',
-    endpoint='submit',
-    view_func=ContestSubmitView.as_view(b'submit'),
     methods=['GET', 'POST'])
 bp_contest.add_url_rule(
     '/<int:contest_id>/rank/',

@@ -5,8 +5,5 @@
 {% block page_content %}
 <div class="row">
     {% include '_problem.html' %}
-    <div class="center-block" style="width:300px">
-        <a class="btn btn-default" href="{{ url_for('problem.submit', problem_id=problem.id) }}" role="button">Submit</a>
-    </div>
 </div>
 {% endblock %}

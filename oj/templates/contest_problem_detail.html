@@ -18,8 +18,5 @@
 </nav>
 <div class="row">
     {% include '_problem.html' %}
-    <div class="center-block" style="width:300px">
-        <a class="btn btn-default" href="{{ url_for('contest.submit', contest_problem_id=contest_problem.id) }}" role="button">Submit</a>
-    </div>
 </div>
 {% endblock %}
