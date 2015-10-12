@@ -6,7 +6,7 @@
 {% block page_content %}
 <ul class="nav nav-tabs">
     <li role="presentation"><a href="{{ url_for('contest.detail', contest_id=contest.id) }}">Overview</a></li>
-    <li role="presentation"><a href="{{ url_for('contest.contest_problem', contest_id=contest.id, contest_problem_id=1 )}}">Problem</a></li>
+    <li role="presentation"><a href="{{ contest.problems[0].url }}">Problem</a></li>
     <li role="presentation"><a href="{{ url_for('contest.solution', contest_id=contest.id) }}">Solution</a></li>
     <li role="presentation" class="active"><a href="{{ url_for('contest.rank', contest_id=contest.id)}}">Rank</a></li>
 </ul>
