@@ -4,12 +4,7 @@
 {% block title %}Online Judge - Contest - {{ contest.id }} - Rank{% endblock %}
 
 {% block page_content %}
-<ul class="nav nav-tabs">
-    <li role="presentation"><a href="{{ url_for('contest.detail', contest_id=contest.id) }}">Overview</a></li>
-    <li role="presentation"><a href="{{ contest.problems[0].url }}">Problem</a></li>
-    <li role="presentation"><a href="{{ url_for('contest.solution', contest_id=contest.id) }}">Solution</a></li>
-    <li role="presentation" class="active"><a href="{{ url_for('contest.rank', contest_id=contest.id)}}">Rank</a></li>
-</ul>
+{% include '_contest.html' %}
 <div>
     <div>
         <table class="table">
