@@ -12,7 +12,7 @@
 <nav class="text-center">
   <ul class="pagination">
     {% for problem in contest.problems %}
-    <li><a role="presentation" href="{{ url_for('contest.contest_problem', contest_id=contest.id, contest_problem_id=loop.index) }}">{{ loop.index0|digital_to_letter }}</a></li>
+    <li><a role="presentation" href="{{ problem.url }}">{{ loop.index0|digital_to_letter }}</a></li>
     {% endfor %}
   </ul>
 </nav>
