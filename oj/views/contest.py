@@ -67,7 +67,6 @@ class ContestProblemDetailView(views.MethodView):
             contest_problem_id
         )
         form = forms.ContestSubmitForm(request.form)
-        print(request.__dict__)
         if self.submit_timeout.get():
             flash('提交过于频繁，请稍候')
             return redirect(
