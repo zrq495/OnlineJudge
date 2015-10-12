@@ -25,7 +25,7 @@
                     <td class="contest_time"> Start Time: {{ contest.date_start.strftime('%Y-%m-%d %H:%M:%S') }} </td>
                   </tr>
                   <tr>
-                    <td class="contest_detail"> Manager: {{ contest.user}}</td>
+                    <td class="contest_detail"> Manager: {{ contest.user.username }}</td>
                     <td class="contest_time"> End Time : {{ contest.date_start.strftime('%Y-%m-%d %H:%M:%S') }} </td>
                   </tr>
                 </tbody>
