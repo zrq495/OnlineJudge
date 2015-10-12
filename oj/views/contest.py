@@ -53,7 +53,8 @@ class ContestDetailView(views.MethodView):
 class ContestProblemDetailView(views.MethodView):
 
     def get(self, contest_problem_id):
-        contest_problem = ContestProblemModel.query.get_or_404(contest_problem_id)
+        contest_problem = ContestProblemModel.query.get_or_404(
+            contest_problem_id)
         problem = contest_problem.problem
         contest = contest_problem.contest
         return render_template(
@@ -70,16 +71,14 @@ class ContestProblemDetailView(views.MethodView):
         if self.submit_timeout.get():
             flash('提交过于频繁，请稍候')
             return redirect(
-                url_for('contest.contest_problem',
-                    contest_problem_id=contest_problem_id
-                )
-            )
+                url_for(
+                    'contest.contest_problem',
+                    contest_problem_id=contest_problem_id))
         if not form.validate():
             return redirect(
-                url_for('contest.contest_problem',
-                    contest_problem_id=contest_problem_id
-                )
-            )
+                url_for(
+                    'contest.contest_problem',
+                    contest_problem_id=contest_problem_id))
         solution = SolutionModel(
             problem_id=contest_problem.problem_id,
             user=current_user._get_current_object(),

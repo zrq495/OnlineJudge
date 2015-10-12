@@ -30,7 +30,7 @@ class ProblemView(views.MethodView):
         problem_id = form.problem_id.data
         problem_title = form.problem_title.data
         query = ProblemModel.query.filter(
-            ProblemModel.is_display == True)
+            ProblemModel.is_display)
         if problem_id:
             query = query.filter(
                 ProblemModel.id == problem_id)
@@ -76,14 +76,10 @@ class ProblemDetailView(views.MethodView):
         if self.submit_timeout.get():
             flash('提交过于频繁，请稍候')
             return redirect(
-                url_for('problem.detail', 
-                    problem_id=problem_id
-                ))
+                url_for('problem.detail', problem_id=problem_id))
         if not form.validate():
             return redirect(
-                url_for('problem.detail', 
-                    problem_id=problem_id
-                ))
+                url_for('problem.detail', problem_id=problem_id))
         solution = SolutionModel(
             problem_id=form.problem_id.data,
             user=current_user._get_current_object(),
