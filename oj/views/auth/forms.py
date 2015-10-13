@@ -3,71 +3,54 @@ from __future__ import unicode_literals
 
 from flask.ext.wtf import Form
 from wtforms import (
-    StringField, PasswordField, BooleanField, SubmitField, SelectField,
-    RadioField)
+    StringField, PasswordField, BooleanField, SubmitField)
 from wtforms.validators import (
-    Required, Length, Email, Regexp, EqualTo, Optional)
+    Required, Length, Email, Regexp, EqualTo)
 from wtforms import ValidationError
 
-from oj import app
 from oj.models import UserModel
 from oj.core.sensitive import censor
 
 
 class LoginForm(Form):
     login_name = StringField(
-        '邮箱或用户名', validators=[Required(), Length(1, 64)])
-    password = PasswordField('密码', validators=[Required()])
-    remember_me = BooleanField('记住我')
-    submit = SubmitField('登录')
+        'Email or Username', validators=[Required(), Length(1, 64)])
+    password = PasswordField('Password', validators=[Required()])
+    remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Log in')
 
 
 class SignupForm(Form):
     email = StringField(
-        '邮箱', validators=[Required(), Length(1, 64), Email()])
-    username = StringField('用户名', validators=[
+        'Email', validators=[Required(), Length(1, 64), Email()])
+    username = StringField('Username', validators=[
         Required(), Length(1, 64), Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
-                                          '用户名只能包含字母、数字、点、下划线')])
-    nickname = StringField('昵称', validators=[
+                                          'Username must have only letters,'
+                                          'numbers, dots or underscores')])
+    nickname = StringField('Nickname', validators=[
         Required(), Length(1, 64)])
-    password = PasswordField('密码', validators=[
-        Required(), EqualTo('password2', message='两次密码不相同')])
-    password2 = PasswordField('确认密码', validators=[Required()])
-    gender = SelectField(
-        '性别',
-        choices=[
-            ('male', '男'),
-            ('female', '女')],
-        validators=[Optional()])
-    program_language = SelectField(
-        '编程语言',
-        choices=app.config['PROGRAM_LANGUAGE'].items(),
-        validators=[Required()])
-    school = StringField('学校')
-    college = StringField('学院')
-    major = StringField('专业')
-    grade = StringField('年级')
-    clazz = StringField('班级')
-    qq = StringField('QQ')
-    phone = StringField('手机号')
-    address = StringField('地址')
-    submit = SubmitField('注册')
+    password = PasswordField('Password', validators=[
+        Required(), EqualTo('password2', message='Passwords must match')])
+    password2 = PasswordField('Confirm Password', validators=[Required()])
+    submit = SubmitField('Sign up')
 
     def validate_email(self, field):
         if UserModel.query.filter_by(email=field.data).first():
-            raise ValidationError('邮箱已经注册')
+            raise ValidationError('Email has already been registered')
 
     def validate_username(self, field):
         if censor.has_name_forbidden_word(field.data):
-            raise ValidationError('用户名中存在禁用词，请更换')
+            raise ValidationError('Username exists disabled word, '
+                                  'please change')
         if UserModel.query.filter_by(username=field.data).first():
-            raise ValidationError('用户名已经存在')
+            raise ValidationError('Username already in use')
 
     def validate_nickname(self, field):
         if censor.has_name_forbidden_word(field.data):
-            raise ValidationError('昵称中存在禁用词，请更换')
+            raise ValidationError('Nickname exists disabled word, '
+                                  'please change')
         if UserModel.query.filter_by(nickname=field.data).first():
-            raise ValidationError('昵称已经存在')
+            raise ValidationError('Nickname already in use')
 
 
 class ChangePasswordForm(Form):
