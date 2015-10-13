@@ -249,3 +249,11 @@ p {
     text-align: right;
     padding-right: 10px;
 }
+
+/*
+ * auth
+ */
+
+.auth_form {
+    margin-top: 20px;
+}

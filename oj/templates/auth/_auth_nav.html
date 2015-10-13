@@ -1,0 +1,8 @@
+<ul class="nav nav-tabs">
+  <li role="presentation"{% if request.endpoint == 'auth.login' %} class="active"{% endif %}>
+    <a href="{{ url_for('auth.login') }}">Log in</a>
+  </li>
+  <li role="presentation"{% if request.endpoint == 'auth.signup' %} class="active"{% endif %}>
+    <a href="{{ url_for('auth.signup') }}">Sign up</a>
+  </li>
+</ul>
