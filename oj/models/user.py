@@ -174,7 +174,7 @@ class UserModel(UserMixin, db.Model):
     @property
     def email_md5(self):
         email = self.email.strip()
-        if isinstance(email, unicode):  # noqa
+        if isinstance(email, unicode):
             email = email.encode('utf-8')
         return md5(email).hexdigest()
 
