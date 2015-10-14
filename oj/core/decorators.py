@@ -2,10 +2,10 @@
 
 from __future__ import unicode_literals
 from functools import wraps
-from flask import abort
+from flask import abort, session, redirect, url_for
 from flask.ext.login import current_user
 
-from oj.models import Permission
+from oj.models import Permission, ContestModel
 
 
 def permission_required(permission):
@@ -21,3 +21,16 @@ def permission_required(permission):
 
 def admin_required(f):
     return permission_required(Permission.ADMINISTER)(f)
+
+
+def contest_access_required(func):
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        session.setdefault('contests', {})
+        contest = ContestModel.query.get_or_404(kwargs['contest_id'])
+        if contest.type == 'private' and not \
+                session['contests'].get(str(contest.id), False):
+            return redirect(url_for(
+                'contest.access_required', contest_id=contest.id))
+        return func(*args, **kwargs)
+    return decorated_view

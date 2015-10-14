@@ -9,18 +9,18 @@ from flask import (views,
                    request,
                    url_for,
                    redirect,
+                   session,
                    Blueprint,
                    current_app,
                    render_template)
 from flask.ext.login import login_required, current_user
-from werkzeug.datastructures import MultiDict
 from werkzeug.utils import cached_property
 
 from oj.models import (
-    ContestModel, ContestProblemModel, ContestUserModel,
-    SolutionModel, CodeModel)
+    ContestModel, ContestProblemModel, SolutionModel, CodeModel)
 from oj import db
 from oj.core import timelimit
+from oj.core.decorators import contest_access_required
 from . import forms
 
 
@@ -40,8 +40,37 @@ class ContestView(views.MethodView):
             contests=contests)
 
 
+class ContestAccessRequiredView(views.MethodView):
+
+    template = 'contest_access_required.html'
+
+    def get(self, contest_id):
+        now = datetime.datetime.now()
+        contest = ContestModel.query.get_or_404(contest_id)
+        if contest.type != 'private' or \
+                session['contests'].get(str(contest.id), False):
+            return redirect(url_for('contest.detail', contest_id=contest.id))
+
+        return render_template(
+            self.template,
+            contest=contest,
+            now=now)
+
+    def post(self, contest_id):
+        now = datetime.datetime.now()
+        contest = ContestModel.query.get_or_404(contest_id)
+        if not contest.verify_password(request.form['password']):
+            return render_template(
+                self.template,
+                contest=contest,
+                now=now)
+        session.setdefault('contests', {}).setdefault(contest.id, True)
+        return redirect(url_for('contest.detail', contest_id=contest.id))
+
+
 class ContestDetailView(views.MethodView):
 
+    @contest_access_required
     def get(self, contest_id):
         now = datetime.datetime.now()
         contest = ContestModel.query.get_or_404(contest_id)
@@ -103,6 +132,7 @@ class ContestRankView(views.MethodView):
 
     template = 'contest_rank.html'
 
+    @contest_access_required
     def get(self, contest_id):
         rank = OrderedDict()
         contest = ContestModel.query.get_or_404(contest_id)
@@ -154,6 +184,11 @@ bp_contest.add_url_rule(
     endpoint='list',
     view_func=ContestView.as_view(b'list'),
     methods=['GET'])
+bp_contest.add_url_rule(
+    '/<int:contest_id>/access_required',
+    endpoint='access_required',
+    view_func=ContestAccessRequiredView.as_view(b'access_required'),
+    methods=['get', 'post'])
 bp_contest.add_url_rule(
     '/<int:contest_id>/',
     endpoint='detail',
