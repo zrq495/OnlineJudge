@@ -10,7 +10,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from flask.ext.login import UserMixin, AnonymousUserMixin
 
 from oj import db, login_manager
-from .role import RoleModel, Permission
+from .role import Permission
 
 from hashlib import md5
 
@@ -60,6 +60,7 @@ class UserModel(UserMixin, db.Model):
     role_id = db.Column(db.Integer)
     is_bulk_registration = db.Column(
         db.Boolean, default=False, server_default=sql.false(), nullable=True)
+    confirmed = db.Column(db.Boolean, default=False)
     last_login_ip = db.Column(db.String(64))
     current_login_ip = db.Column(db.String(64))
     login_count = db.Column(db.Integer())
@@ -234,6 +235,23 @@ class UserModel(UserMixin, db.Model):
         if data.get('reset') != self.id:
             return False
         self.password = new_password
+        db.session.add(self)
+        db.session.commit()
+        return True
+
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.id})
+
+    def confirm(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('confirm') != self.id:
+            return False
+        self.confirmed = True
         db.session.add(self)
         db.session.commit()
         return True

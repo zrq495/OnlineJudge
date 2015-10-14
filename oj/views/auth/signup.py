@@ -10,6 +10,7 @@ from oj import db, login_manager
 from oj.models import UserModel
 from .forms import SignupForm
 from .login import user_login
+from oj.core.tasks import send_email
 
 
 @login_manager.user_loader
@@ -36,5 +37,14 @@ class SignupView(views.MethodView):
         form.populate_obj(user)
         db.session.add(user)
         db.session.commit()
+        token = user.generate_confirmation_token()
+        send_email.delay(
+            user.email,
+            'Confirm Your Account',
+            'auth/email/confirm',
+            user=user,
+            token=token
+        )
+        flash('A confirmation email has been sent to you by email')
         user_login(user)
         return redirect(url_for('auth.login'))
