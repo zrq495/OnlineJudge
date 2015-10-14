@@ -1,2 +1,3 @@
 oj/static/ckeditor/* linguist-vendored
 oj/static/filemanager/* linguist-vendored
+oj/static/scripts/ace/* linguist-vendored
