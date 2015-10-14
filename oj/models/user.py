@@ -12,6 +12,8 @@ from flask.ext.login import UserMixin, AnonymousUserMixin
 from oj import db, login_manager
 from .role import RoleModel, Permission
 
+from hashlib import md5
+
 
 __all__ = [
     'UserModel',
@@ -168,6 +170,22 @@ class UserModel(UserMixin, db.Model):
     def __init__(self, **kwargs):
         super(UserModel, self).__init__(**kwargs)
         self._statistics = UserStatisticsModel()
+
+    @property
+    def email_md5(self):
+        email = self.email.strip()
+        if isinstance(email, unicode):
+            email = email.encode('utf-8')
+        return md5(email).hexdigest()
+
+    def g_avatar(self, size=48, default='retro', rating='g'):
+        return "{url}{hash}?d={default}&s={size}".format(
+            url=current_app.config['GRAVATAR_BASE_URL'],
+            hash=self.email_md5,
+            default=default,
+            size=size,
+            rating=rating
+        )
 
     @staticmethod
     def generate_fake(count=100):

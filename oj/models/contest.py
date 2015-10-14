@@ -82,7 +82,7 @@ class ContestModel(db.Model):
         backref=db.backref(
             'contest',
             lazy=True),
-        order_by='ContestProblemModel.ordinal.asc()',
+        order_by='(ContestProblemModel.ordinal, ContestProblemModel.id)',
         passive_deletes='all',
         lazy='dynamic'
     )
