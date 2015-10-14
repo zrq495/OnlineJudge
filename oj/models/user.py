@@ -60,7 +60,8 @@ class UserModel(UserMixin, db.Model):
     role_id = db.Column(db.Integer)
     is_bulk_registration = db.Column(
         db.Boolean, default=False, server_default=sql.false(), nullable=True)
-    confirmed = db.Column(db.Boolean, default=False)
+    confirmed = db.Column(
+        db.Boolean, default=False, server_default=sql.false(), nullable=False)
     last_login_ip = db.Column(db.String(64))
     current_login_ip = db.Column(db.String(64))
     login_count = db.Column(db.Integer())
