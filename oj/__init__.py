@@ -5,6 +5,7 @@ from flask import Flask
 from flask.ext.mail import Mail
 from flask.ext.login import LoginManager
 from flask.ext.bootstrap import Bootstrap
+from flask.ext.wtf.csrf import CsrfProtect
 
 from config import config
 from oj.core.sqlalchemy import SQLAlchemy
@@ -15,6 +16,7 @@ app_dir = os.path.abspath(os.path.dirname(__file__))
 mail = Mail()
 db = SQLAlchemy()
 bootstrap = Bootstrap()
+csrf = CsrfProtect()
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -32,6 +34,7 @@ with app.app_context():
     db.init_app(app)
     bootstrap.init_app(app)
     login_manager.init_app(app)
+    csrf.init_app(app)
 
     from .admin import flask_admin
     flask_admin.init_app(app)

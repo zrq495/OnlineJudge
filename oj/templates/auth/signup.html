@@ -1,13 +1,57 @@
 {% extends "layout.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% from "_macro/_formhelpers.html" import field_error %}
 
 {% block title %}Online Judge - 注册{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h1 class="text-center">新用户注册</h1>
-</div>
-<div class="col-md-6 col-md-offset-3">
-    {{ wtf.quick_form(form) }}
+{% include 'auth/_auth_nav.html' %}
+<div class="col-md-12 auth_form">
+  <form method=post class="form-horizontal">
+  {{ form.csrf_token }}
+  {% if form.csrf_token.errors %}
+    <div class="warning">You have submitted an invalid CSRF token</div>
+  {% endif %}
+      <div class="form-group">
+        {{ form.username.label(class="col-sm-4 control-label") }}
+        <div class="col-sm-4">
+          {{ form.username(class="form-control") }}
+        </div>
+        {{ field_error(form.username) }}
+      </div>
+      <div class="form-group">
+        {{ form.nickname.label(class="col-sm-4 control-label") }}
+        <div class="col-sm-4">
+          {{ form.nickname(class="form-control") }}
+        </div>
+        {{ field_error(form.nickname) }}
+      </div>
+      <div class="form-group">
+        {{ form.email.label(class="col-sm-4 control-label") }}
+        <div class="col-sm-4">
+          {{ form.email(class="form-control") }}
+        </div>
+        {{ field_error(form.email) }}
+      </div>
+      <div class="form-group">
+        {{ form.password.label(class="col-sm-4 control-label") }}
+        <div class="col-sm-4">
+          {{ form.password(class="form-control") }}
+        </div>
+        {{ field_error(form.password) }}
+      </div>
+      <div class="form-group">
+        {{ form.password2.label(class="col-sm-4 control-label") }}
+        <div class="col-sm-4">
+          {{ form.password2(class="form-control") }}
+        </div>
+        {{ field_error(form.password2) }}
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-4">
+          {{ form.submit(class="btn btn-default") }}
+        </div>
+      </div>
+  </form>
 </div>
 {% endblock %}

@@ -27,11 +27,11 @@
   </div>
   <h3>Sample Input</h3>
   <div id="problem_sampleinput">
-    <pre>{{ problem.sample_input|safe|d('', true) }}</pre>
+    {{ problem.sample_input|safe|d('', true) }}
   </div>
   <h3>Sample Output</h3>
   <div id="problem_sampleoutput">
-    <pre>{{ problem.sample_output|safe|d('', true) }}</pre>
+    {{ problem.sample_output|safe|d('', true) }}
   </div>
   <h3>Hint</h3>
   <div id="problem_hint">
@@ -45,4 +45,46 @@
   <div id="problem_samplecode">
     {{ problem.sample_code|safe|d('', true) }}
   </div>
+</div>
+<div id="problem_submit" class="col-md-12">
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <div class="row" style="margin-bottom: 20px">
+      <div class="form-inline">
+        <div class="col-md-12">
+          <select class="form-control" id="lang" name="language">
+            <option value="gcc">GCC</option>
+            <option value="g++">G++</option>
+            <option value="java">Java</option>
+            <option value="pascal">Pascal</option>
+            <option value="go">Go</option>
+            <option value="lua">Lua</option>
+            <option value="dao">Dao</option>
+            <option value="perl">Perl</option>
+            <option value="ruby">Ruby</option>
+            <option value="haskell">Haskell</option>
+            <option value="python2">Python2</option>
+            <option value="python3">Python3</option>
+          </select>
+          <button type="submit" class="btn btn-success" id="submit" name="submit" {% if current_user.is_anonymous() %}disabled{% endif%}><i class="fa fa-rocket"></i></button>
+          {% if current_user.is_anonymous() %}
+          <a> You have not signed in, cannot submit your code.</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div id="editor">
+    </div>
+    {% if request.endpoint == 'contest.contest_problem' %}
+    <input type="hidden" name="contest_problem_id" value="{{ contest_problem.ordinal + 1 }}" />
+    {% else %}
+    <input type="hidden" name="problem_id" value="{{ problem.id }}"/>
+    {% endif %}
+    <textarea class="hidden" id="code" name="code" required="required"></textarea>
+    <style type="text/css" media="screen">
+        #editor {
+            height: 400px;
+        }
+    </style>
+  </form>
 </div>
