@@ -1,16 +1,62 @@
 {% extends "layout.html" %}
 
-{% block title %}Online Judge - {{ user.username }}{% endblock %}
+{% block title %}Profile - {{ user.username }} | Online Judge{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <div class="profile-header">
-        <h1>{{ user.username }}</h1>
-        <p>
-            {% if user == current_user %}
-            <a class="btn btn-default" href="{{ url_for('profile.setting') }}">编辑个人信息</a>
-            {% endif %}
-        </p>
+<div class="content">
+  <div class="one-fifth left">
+    <a href="{{ user.g_avatar(460) }}">
+      <img src="{{ user.g_avatar(460) }}" class="vcard-avatar" width="100%" height="auto" >
+    </a>
+    <h1 class="vcard-names">
+      {{ user.nickname }}
+      <p class="vcard-username">{{ user.username }}</p>
+    </h1>
+    <ul class="vcard-details">
+      {% if user.school %}
+      <li class="vcard-detail">
+        <span class="glyphicon glyphicon-education"></span>{{ user.school }}
+      </li>
+      {% endif %}
+      {% if user.address %}
+      <li class="vcard-detail">
+        <span class="glyphicon glyphicon-map-marker"></span>{{ user.address }}
+      </li>
+      {% endif %}
+      <li class="vcard-detail">
+         <span class="glyphicon glyphicon-envelope"></span>{{ user.email }}
+      </li>
+      <li class="vcard-detail">
+        <span class="glyphicon glyphicon-time"></span>Joined on {{ user.date_created.strftime('%m.%d %Y') }}
+      </li>
+    </ul>
+    <div class="vcard-stats">
+      <a class="vcard-stat">
+        <strong class="vcard-stat-count">0</strong>
+        <span class="text-muted">Rank</span>
+      </a>
+      <a class="vcard-stat">
+        <strong class="vcard-stat-count">{{ user.accepts_count }}</strong>
+        <span class="text-muted">Accept</span>
+      </a>
+      <a class="vcard-stat">
+        <strong class="vcard-stat-count">{{ user.solutions_count }}</strong>
+        <span class="text-muted">Submit</span>
+      </a>
     </div>
+  </div>
+  <div class="four-fifth right main">
+    {% block profile_main %}
+    <ul class="nav nav-tabs" style="padding-top:0px">
+      <li role="presentation" class="active"><a href="#"><i class="fa fa-pencil-square-o"> Your Problem</i></a></li>
+      <li role="presentation"><a href="#"><i class="fa fa-list"> Your Contest</i></a></li>
+      <li role="presentation"><a href="#"><i class="fa fa-rss"> Public activity</i></a></li>
+        {% if current_user == user %}
+          <a href="{{ url_for('profile.setting') }}" class="btn btn-default right"><i class="fa fa-pencil"> Edit Profile</i></a>
+        {% endif %}
+    </ul>
+    {% endblock %}
+  </div>
 </div>
 {% endblock %}
+

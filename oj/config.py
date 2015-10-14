@@ -64,6 +64,9 @@ class Config(object):
     ENABLE_TIMELIMIT = True
     SUBMIT_TIMELIMIT = 2
 
+    # gravatar
+    GRAVATAR_BASE_URL = 'http://cdn.v2ex.com/gravatar/'
+
     PROGRAM_LANGUAGE = {
         'gcc': 'gcc',
         'g++': 'g++',
