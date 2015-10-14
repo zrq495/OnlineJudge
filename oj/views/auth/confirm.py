@@ -3,11 +3,20 @@
 from __future__ import unicode_literals
 
 from flask import (
-    redirect, url_for, flash, render_template)
+    request, redirect, url_for, flash, render_template)
 from flask.ext.login import current_user, login_required
 from oj.models import UserModel
 from oj.core.tasks import send_email
 from . import bp_auth
+
+
+@bp_auth.before_app_request
+def before_request():
+    if current_user.is_authenticated():
+        if not current_user.confirmed \
+                and request.endpoint[:5] != 'auth.' \
+                and not request.endpoint.endswith('static'):
+            return redirect(url_for('auth.unconfirmed'))
 
 
 @bp_auth.route('/confirm/<token>')
