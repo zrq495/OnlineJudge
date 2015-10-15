@@ -81,7 +81,8 @@ class ContestDetailView(views.MethodView):
 
 class ContestProblemDetailView(views.MethodView):
 
-    def get(self, contest_problem_id):
+    @contest_access_required
+    def get(self, contest_id, contest_problem_id):
         contest_problem = ContestProblemModel.query.get_or_404(
             contest_problem_id)
         problem = contest_problem.problem
@@ -91,7 +92,8 @@ class ContestProblemDetailView(views.MethodView):
             contest_problem=contest_problem, contest=contest)
 
     @login_required
-    def post(self, contest_problem_id):
+    @contest_access_required
+    def post(self, contest_id, contest_problem_id):
         contest_problem = ContestProblemModel.query.get_or_404(
             contest_problem_id
         )
@@ -195,7 +197,7 @@ bp_contest.add_url_rule(
     view_func=ContestDetailView.as_view(b'detail'),
     methods=['GET'])
 bp_contest.add_url_rule(
-    '/problem/<int:contest_problem_id>/',
+    '/<int:contest_id>/problem/<int:contest_problem_id>/',
     endpoint='contest_problem',
     view_func=ContestProblemDetailView.as_view(b'contest_problem'),
     methods=['GET', 'POST'])
