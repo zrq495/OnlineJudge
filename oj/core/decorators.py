@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 from functools import wraps
-from flask import abort, session, redirect, url_for
+from flask import abort, session, redirect, url_for, request
 from flask.ext.login import current_user
 
 from oj.models import Permission, ContestModel
@@ -31,6 +31,7 @@ def contest_access_required(func):
         if contest.type == 'private' and not \
                 session['contests'].get(str(contest.id), False):
             return redirect(url_for(
-                'contest.access_required', contest_id=contest.id))
+                'contest.access_required', contest_id=contest.id,
+                next=request.url))
         return func(*args, **kwargs)
     return decorated_view

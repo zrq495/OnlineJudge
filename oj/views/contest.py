@@ -65,7 +65,7 @@ class ContestAccessRequiredView(views.MethodView):
                 contest=contest,
                 now=now)
         session.setdefault('contests', {}).setdefault(contest.id, True)
-        return redirect(url_for('contest.detail', contest_id=contest.id))
+        return redirect(request.args.get('next') or url_for('contest.detail', contest_id=contest.id))
 
 
 class ContestDetailView(views.MethodView):
