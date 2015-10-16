@@ -1,13 +1,16 @@
 {% extends "layout.html" %}
 
-{% block title %}Online Judge - Contest Problem - {{ contest_problem.id }}{% endblock %}
+{% block title %}Online Judge - CONTEST #{{ contest.id }} - Contest Problem - #{{ contest_problem.id }}{% endblock %}
+
+{% block breadcrumbs %}CONTEST #{{ contest.id }}{% endblock %}
 
 {% block page_content %}
 {% include '_contest_nav.html' %}
+<div class="margin-bottom-20"></div>
 <nav class="text-center">
   <ul class="pagination">
     {% for problem in contest.problems %}
-    <li><a role="presentation" href="{{ problem.url }}">{{ loop.index0|digital_to_letter }}</a></li>
+    <li{% if contest_problem.id == problem.id %} class="active"{% endif %}><a role="presentation" href="{{ problem.url }}">{{ loop.index0|digital_to_letter }}</a></li>
     {% endfor %}
   </ul>
 </nav>

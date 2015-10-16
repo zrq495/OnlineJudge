@@ -2,8 +2,10 @@
 
 {% block title %}Profile - {{ user.username }} | Online Judge{% endblock %}
 
+{% block breadcrumbs %}PROFILE{% endblock %}
+
 {% block page_content %}
-<div class="content">
+<div>
   <div class="one-fifth left">
     <a href="{{ user.g_avatar(460) }}">
       <img src="{{ user.g_avatar(460) }}" class="vcard-avatar" width="100%" height="auto" >

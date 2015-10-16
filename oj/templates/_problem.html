@@ -3,10 +3,12 @@
     <h2>{{ problem.title }}</h2>
   </div>
   <div id="problem_info">
+    {% if request.endpoint != 'contest.contest_problem' %}
     <p>
       <span>Total Accepted: <strong>{{ problem.accepts_count|d(0, true) }}</strong></span>
       <span>Total Submissions: <strong>{{ problem.solutions_count|d(0, true) }}</strong></span>
     </p>
+    {% endif %}
     <p>
       <span>Memory Limit: <strong>{{ problem.memory_limit|d(65535, true) }}KB</strong></span>
       <span>Time Limit: <strong>{{ problem.time_limit|d(1000, true) }}MS</strong></span>
@@ -17,31 +19,51 @@
   <div id="problem_description">
     {{ problem.description|safe|d('', true) }}
   </div>
-  <h3>Input</h3>
+  <div class="headline">
+    <h3>Input</h3>
+  </div>
   <div id="problem_input">
     {{ problem.input|safe|d('', true) }}
   </div>
-  <h3>Output</h3>
+  <div class="headline">
+    <h3>Output</h3>
+  </div>
   <div id="problem_output">
     {{ problem.output|safe|d('', true) }}
   </div>
-  <h3>Sample Input</h3>
-  <div id="problem_sampleinput">
-    {{ problem.sample_input|safe|d('', true) }}
+  <div class="row">
+    <div class="col-md-6">
+      <div class="headline">
+        <h3>Sample Input</h3>
+      </div>
+      <div id="problem_sampleinput">
+        {{ problem.sample_input|safe|d('', true) }}
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="headline">
+        <h3>Sample Output</h3>
+      </div>
+      <div id="problem_sampleoutput">
+        {{ problem.sample_output|safe|d('', true) }}
+      </div>
+    </div>
   </div>
-  <h3>Sample Output</h3>
-  <div id="problem_sampleoutput">
-    {{ problem.sample_output|safe|d('', true) }}
+  <div class="headline">
+    <h3>Hint</h3>
   </div>
-  <h3>Hint</h3>
   <div id="problem_hint">
     {{ problem.hint|safe|d('', true) }}
   </div>
-  <h3>Source</h3>
+  <div class="headline">
+    <h3>Source</h3>
+  </div>
   <div id="problem_source">
     {{ problem.source|safe|d('', true) }}
   </div>
-  <h3>Sample Code</h3>
+  <div class="headline">
+    <h3>Sample Code</h3>
+  </div>
   <div id="problem_samplecode">
     {{ problem.sample_code|safe|d('', true) }}
   </div>

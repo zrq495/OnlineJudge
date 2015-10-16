@@ -1,32 +1,99 @@
 {% extends "layout.html" %}
 
-{% block page_content %}
+{% block breadcrumbs %}
     {% if current_user.is_authenticated() %}
       <h1>Hello {{ current_user.username }}!</h1>
     {% else %}
       <h1>Hello World!</h1>
     {% endif %}
+{% endblock %}
+
+{% block home %}
+<div class="section-main">
+    <div class="container content-sm">
+        <div class="text-center margin-bottom-50">
+            <h2 class="title-v2 title-center">SDUT Online Judge</h2>
+            <div class="content-horizontal-rule"></div>
+            <p class="space-lg-hor">PEOBLEMS & CONTESTS</p>
+        </div>
+    </div>
+</div>
+<div class="section-counter parallaxBg">
+    <div class="container">
+        <div class="row margin-bottom-10">
+            <div class="col-sm-3 col-xs-6">
+                <div class="counters">
+                    <span class="counter">14224</span>   
+                    <h4>USERS</h4>
+                </div>    
+            </div>
+            <div class="col-sm-3 col-xs-6">
+                <div class="counters">
+                    <span class="counter">2335</span> 
+                    <h4>PROBLEMS</h4>
+                </div>    
+            </div>
+            <div class="col-sm-3 col-xs-6">
+                <div class="counters">
+                    <span class="counter">1543</span>
+                    <h4>CONTESTS</h4>
+                </div>    
+            </div>
+            <div class="col-sm-3 col-xs-6">
+                <div class="counters">
+                    <span class="counter">+963735</span>
+                    <h4>SUBMISSIONS</h4>
+                </div>    
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_content %}
+<div class="row">
     {% for data in [day_top, week_top, month_top, year_top] %}
     <div class="col-md-3">
-        <h3 class="text-center"> {{ data.1 }}</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Username</th>
-                    <th>Solved</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for d in data.0 %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td><a href="{{ url_for('profile.profile', user_id=d.1) }}">{{ d.2 }}</a></td>
-                    <td>{{ d.0 }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="headline">
+            <h3> {{ data.1 }}</h3>
+        </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Username</th>
+                        <th>Solved</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in data.0 %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><a href="{{ url_for('profile.profile', user_id=d.1) }}">{{ d.2 }}</a></td>
+                        <td>{{ d.0 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
     </div>
     {% endfor %}
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='scripts/jquery.parallax.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/waypoints.min.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/jquery.counterup.min.js') }}"></script>
+<script>
+  $(document).ready(function() {
+    $('.counter').counterUp({
+            delay: 10,
+            time: 1000
+        });
+        $(window).load(function() {
+            $('.parallaxBg').parallax("50%", 0.2);
+            $('.parallaxBg1').parallax("50%", 0.4);
+        });
+  });
+</script>
 {% endblock %}

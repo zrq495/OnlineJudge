@@ -109,37 +109,30 @@ div.flask-pagedown-preview h3 {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
+    position: relative;
+    min-height: 100%;
 }
 
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+}
 
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
-body > .container {
-  padding: 70px 15px 0;
-}
 .container .text-muted {
   margin: 20px 0;
-}
-
-.footer > .container {
-  padding-right: 15px;
-  padding-left: 15px;
 }
 
 code {
@@ -235,7 +228,6 @@ p {
 #contest_overview{
     width: 75%;
     margin: 20px auto;
-    border-top: 4px solid #6cf;
 }
 
 .contest_time{
@@ -409,3 +401,134 @@ dl.form>dt {
 .left{
     float: left;
 }
+
+/*
+ * breadcrumbs
+ */
+
+.breadcrumbs {
+    overflow: hidden;
+    padding: 10px 0 6px;
+    border-bottom: solid 1px #eee;
+    background: url(../images/breadcrumbs.png) repeat
+}
+
+.breadcrumbs h1 {
+    color: #666;
+    font-size: 22px;
+    margin-top: 8px;
+}
+
+* {
+    border-radius: 0!important;
+}
+
+.table thead>tr>th {
+    border-bottom: none;
+}
+
+/*
+ * blue
+ */
+
+.header .navbar-default .navbar-nav>.active>a {
+    border-color: #3498db;
+}
+
+.header .navbar-default .navbar-nav>.active>a {
+    color: #3498db;
+}
+
+.wrapper {
+    background: #fff;
+}
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}
+
+.margin-bottom-50 {
+    margin-bottom: 50px;
+}
+
+.content {
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+.content-sm {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+nav .pagination {
+    margin: 0px;
+}
+
+/*
+ * home
+ */
+
+.section-main {
+    background: linear-gradient(135deg, #32d1ac 0%, #4a90e2 100%)
+}
+
+h1.title-v2.title-center, h2.title-v2.title-center, h3.title-v2.title-center {
+    text-align: center;
+}
+
+h2.title-v2 {
+    font-size: 32px;
+    color: #fff;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.content-horizontal-rule{
+    width: 64px;
+    height: 2px;
+    background: #bfc3c8;
+    margin: auto;
+    margin-top: -20px;
+    margin-bottom: 20px
+}
+
+.headline {
+    display: block;
+    margin: 20px 0 20px 0;
+    border-bottom: 1px dotted #e4e9f0;
+}
+
+.headline h3 {
+    border-bottom: 2px solid #3498db;
+    margin: 0 0 -2px 0;
+    padding-bottom: 10px;
+    display: inline-block;
+    font-size: 22px;
+}
+
+.section-counter {
+    padding: 70px 0;
+    background: url(../images/breadcrumbs.png) repeat
+}
+
+.section-counter .counters {
+    color: #fff;
+    padding: 15px 0 10px;
+    border: solid 1px rgba(154, 192, 215, 0.29);
+    text-align: center
+}
+
+.section-counter .counters span.counter {
+    font-size: 42px;
+    line-height: 48px;
+    color: #3498db;
+    font-family: 'Lato', sans-serif;
+}
+
+.section-counter h4 {
+    color: #bbb;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+

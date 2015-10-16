@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 
-{% block title %}Online Judge - News - {{ news.id }}{% endblock %}
+{% block title %}Online Judge - News #{{ news.id }}{% endblock %}
+
+{% block breadcrumbs %}NEWS #{{ news.id }}{% endblock %}
 
 {% block page_content %}
 <div>
