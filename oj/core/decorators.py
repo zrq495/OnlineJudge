@@ -27,9 +27,9 @@ def contest_access_required(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
         session.setdefault('contests', {})
-        contest = ContestModel.query.get_or_404(kwargs['contest_id'])
+        contest = ContestModel.query.get_or_404(kwargs.get('contest_id'))
         if contest.type == 'private' and not \
-                session['contests'].get(str(contest.id), False):
+                session.setdefault('contests', {}).get(str(contest.id), False):
             return redirect(url_for(
                 'contest.access_required', contest_id=contest.id,
                 next=request.url))
