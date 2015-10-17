@@ -204,6 +204,7 @@ p {
     border-top: 3px solid #ddd;
     background-color: #f5f5f5;
     padding: 20px;
+    overflow-x: auto;
 }
 
 #problem_sampleoutput {
@@ -212,6 +213,7 @@ p {
     border-top: 3px solid #ddd;
     background-color: #f5f5f5;
     padding: 20px;
+    overflow-x: auto;
 }
 
 /*
@@ -287,7 +289,7 @@ p {
 }
 
 .main{
-    padding-left: 30px;
+    padding-left: 20px;
 }
 
 .vcard-avatar{
