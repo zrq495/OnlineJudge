@@ -28,6 +28,7 @@ class RegistryAdmin(ModelViewMixin):
     can_edit = True
     can_delete = True
     column_list = ['key', 'name']
+    column_default_sort = ('key', False)
 
     list_template = 'admin/registry_list.html'
 
