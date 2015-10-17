@@ -57,7 +57,7 @@ target/
 dump.rdb
 
 # upload dir
-src/oj/static/upload/
+oj/static/upload/
 
 .idea/
 

@@ -28,12 +28,12 @@ class UserAdmin(ModelViewMixin):
     can_delete = True
 
     column_list = [
-        'id', 'username', 'nickname', 'email', 'date_created'
+        'id', 'username', 'nickname', 'email', 'date_created', 'role',
     ]
     column_searchable_list = ['username', 'nickname', 'email', 'school']
     column_filters = [
         'id', 'username', 'nickname', 'email', 'gender', 'school',
-        'program_language', 'date_created'
+        'program_language', 'date_created', 'role.name',
     ]
 
     form_excluded_columns = [

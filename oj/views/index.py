@@ -37,9 +37,9 @@ def get_days_top(days=1, top=10):
         .filter(SolutionModel.result == 1)
         .filter(tomorrow - SolutionModel.date_created <= datetime.timedelta(days=days))
         .group_by(UserModel.id)
-        .order_by(func.count().desc())
+        .order_by(func.count(distinct(SolutionModel.problem_id)).desc())
         .limit(top)
-        .values(func.count(), UserModel.id, UserModel.username))
+        .values(func.count(distinct(SolutionModel.problem_id)), UserModel.id, UserModel.username))
     return list(users)
 
 

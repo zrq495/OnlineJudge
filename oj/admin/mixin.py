@@ -36,6 +36,7 @@ class ModelViewMixin(ModelView):
     form_base_class = form.BaseForm
     column_display_pk = True
     form_extra_fields = None
+    column_default_sort = ('id', False)
 
     column_formatters = dict(
         date_created=(

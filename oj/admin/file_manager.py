@@ -8,6 +8,7 @@ from flask import views
 
 from . import flask_admin
 from .mixin import BaseViewMixin
+from oj import csrf
 from oj.core.logic import CkFinder
 
 
@@ -16,10 +17,12 @@ class FileManagerView(BaseViewMixin):
     def is_visible(self):
         return False
 
+    @csrf.exempt
     @expose('/')
     def index(self):
         return self.render('admin/file_manager.html')
 
+    @csrf.exempt
     @expose_plugview('/filemanager/')
     class GetInfoView(views.MethodView):
 
@@ -51,6 +54,7 @@ class FileManagerView(BaseViewMixin):
             else:
                 return "fail"
 
+    @csrf.exempt
     @expose_plugview('/filemanager/dirlist/')
     class DirListView(views.MethodView):
 
