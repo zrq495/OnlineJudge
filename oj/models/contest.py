@@ -210,7 +210,9 @@ class ContestProblemModel(db.Model):
 
     @property
     def url(self):
-        return url_for('contest.contest_problem', contest_problem_id=self.id)
+        return url_for('contest.contest_problem',
+                       contest_id=self.contest_id,
+                       contest_problem_id=self.id)
 
     @hybrid_property
     def solutions_count(self):
