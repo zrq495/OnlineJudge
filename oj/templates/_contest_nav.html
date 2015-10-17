@@ -1,5 +1,5 @@
 <ul class="nav nav-tabs">
-    <li role="presentation"{% if request.endpoint == "contest.detail" %} class="active"{% endif %}>
+    <li role="presentation"{% if request.endpoint == "contest.detail" or request.endpoint == "contest.access_required" %} class="active"{% endif %}>
       <a href="{{ url_for('contest.detail', contest_id=contest.id) }}">Overview</a>
     </li>
     <li role="presentation"{% if request.endpoint == "contest.contest_problem" %} class="active"{% endif %}>
