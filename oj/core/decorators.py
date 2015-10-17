@@ -26,7 +26,6 @@ def admin_required(f):
 def contest_access_required(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
-        session.setdefault('contests', {})
         contest = ContestModel.query.get_or_404(kwargs.get('contest_id'))
         if contest.type == 'private' and not \
                 session.setdefault('contests', {}).get(str(contest.id), False):
