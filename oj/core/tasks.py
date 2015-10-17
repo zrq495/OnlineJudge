@@ -51,3 +51,8 @@ def send_cloud_email(to, subject, template, **kwargs):
     }
     r = requests.post(url, files={}, data=params)
     print r
+
+
+@celery.task()
+def test(*args):
+    print args

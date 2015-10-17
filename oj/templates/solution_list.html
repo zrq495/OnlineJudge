@@ -1,14 +1,13 @@
-{% if request.endpoint == 'contest.solution' %}
-{% extends "contest_layout.html" %}
-{% else %}
 {% extends "layout.html" %}
-{% endif %}
 {% import "bootstrap/wtf.html" as wtf %}
 {% from "bootstrap/pagination.html" import render_pagination %}
 
 {% block title %}Online Judge - Solution List{% endblock %}
 
 {% block page_content %}
+{% if request.endpoint == 'contest.solution' %}
+{% include '_contest_nav.html' %}
+{% endif %}
 <div>
     <div>
         {{ wtf.quick_form(form, form_type="inline", method="get") }}

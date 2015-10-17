@@ -4,13 +4,46 @@
 {% block title %}Online Judge - 登录{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h1 class="text-center">登录</h1>
-</div>
-<div class="col-md-6 col-md-offset-3">
-    {{ wtf.quick_form(form) }}
-    <br>
-    <p>新用户？<a href="{{ url_for('auth.signup') }}">点击注册</a></p>
-    <p>忘记密码？<a href="{{ url_for('auth.password_reset_request') }}">点击重置</a></p>
+{% include 'auth/_auth_nav.html' %}
+<div class="row">
+  <div class="col-md-12 auth_form">
+    <form method=post class="form-horizontal">
+    {{ form.csrf_token }}
+    {% if form.csrf_token.errors %}
+      <div class="warning">You have submitted an invalid CSRF token</div>
+    {% endif %}
+        <div class="form-group">
+          {{ form.login_name.label(class="col-sm-4 control-label") }}
+          <div class="col-sm-4">
+            {{ form.login_name(class="form-control") }}
+          </div>
+        </div>
+        <div class="form-group">
+          {{ form.password.label(class="col-sm-4 control-label") }}
+          <div class="col-sm-4">
+            {{ form.password(class="form-control") }}
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-4">
+            <div class="checkbox">
+              <label>
+                {{ form.remember_me }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-4">
+            {{ form.submit(class="btn btn-default") }}
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-4">
+            <a href="{{ url_for('auth.password_reset_request' )}}"> Forget the password ?</a>
+          </div>
+        </div>
+    </form>
+  </div>
 </div>
 {% endblock %}

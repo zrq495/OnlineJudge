@@ -30,7 +30,7 @@ class ProblemView(views.MethodView):
         problem_id = form.problem_id.data
         problem_title = form.problem_title.data
         query = ProblemModel.query.filter(
-            ProblemModel.is_display == True)
+            ProblemModel.is_display)
         if problem_id:
             query = query.filter(
                 ProblemModel.id == problem_id)
@@ -70,28 +70,16 @@ class ProblemDetailView(views.MethodView):
             'problem_detail.html',
             problem=problem)
 
-
-class SubmitView(views.MethodView):
-
-    template = 'submit.html'
-
     @login_required
-    def get(self):
-        values = MultiDict(request.args)
-        values['language'] = current_user.program_language
-        form = forms.SubmitForm(values)
-        return render_template(self.template, form=form)
-
-    @login_required
-    def post(self):
+    def post(self, problem_id):
         form = forms.SubmitForm(request.form)
         if self.submit_timeout.get():
             flash('提交过于频繁，请稍候')
-            return render_template(
-                self.template, form=form)
+            return redirect(
+                url_for('problem.detail', problem_id=problem_id))
         if not form.validate():
-            return render_template(
-                self.template, form=form)
+            return redirect(
+                url_for('problem.detail', problem_id=problem_id))
         solution = SolutionModel(
             problem_id=form.problem_id.data,
             user=current_user._get_current_object(),
@@ -121,9 +109,4 @@ bp_problem.add_url_rule(
     '/<int:problem_id>/',
     endpoint='detail',
     view_func=ProblemDetailView.as_view(b'detail'),
-    methods=['GET'])
-bp_problem.add_url_rule(
-    '/submit/',
-    endpoint='submit',
-    view_func=SubmitView.as_view(b'submit'),
     methods=['GET', 'POST'])

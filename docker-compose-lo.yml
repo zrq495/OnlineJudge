@@ -1,0 +1,33 @@
+web:
+  build: .
+  command: honcho start
+  ports:
+   - "5000:5000"
+  volumes:
+   - .:/OnlineJudge
+   - /data:/data
+  links:
+   - redis
+   - postgres
+  environment:
+   OJ_CONFIG: "production"
+   REDIS_HOST: "redis"
+   REDIS_PORT: "6379"
+   DEV_DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
+   DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
+   OJ_SERVER_NAME: "lo.zrq495.com:5000"
+   OJ_ADMIN: "zrq495@gmail.com"
+   MAIL_USERNAME: "sdutacm@sina.cn"
+   MAIL_PASSWORD: "sdutacmv5"
+redis:
+  image: redis
+postgres:
+  build: ./docker_file/postgres
+judge:
+  image: registry.sdutacm.org/oj_judge
+  command: nohup python protect.py &
+  volumes:
+   - ../oj_judge:/oj_judge
+   - /data:/data
+  links:
+   - postgres

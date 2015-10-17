@@ -88,8 +88,10 @@ class CodeDetailView(views.MethodView):
         code = CodeModel.query.get_or_404(code_id)
         if current_user.id != code.solution.user_id:
             abort(404)
+        SOLUTION_RESULT = current_app.config['SOLUTION_RESULT']
         return render_template(
-            self.template, code=code, solution=code.solution)
+            self.template, code=code, solution=code.solution,
+            SOLUTION_RESULT=SOLUTION_RESULT)
 
 
 class CompileInfoDetailView(views.MethodView):

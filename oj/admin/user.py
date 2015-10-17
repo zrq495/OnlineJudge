@@ -56,7 +56,7 @@ class UserAdmin(ModelViewMixin):
             model.password = form.password2.data
         elif not model.password_hash:
             default_password = app.config['DEFAULT_PASSWORD']
-            model.password = form.password2.data if len(model.password2) else default_password
+            model.password = default_password
 
 
 class UserDeletedAdmin(ModelViewMixin):

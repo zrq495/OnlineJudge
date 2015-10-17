@@ -10,7 +10,9 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from flask.ext.login import UserMixin, AnonymousUserMixin
 
 from oj import db, login_manager
-from .role import RoleModel, Permission
+from .role import Permission
+
+from hashlib import md5
 
 
 __all__ = [
@@ -58,6 +60,8 @@ class UserModel(UserMixin, db.Model):
     role_id = db.Column(db.Integer)
     is_bulk_registration = db.Column(
         db.Boolean, default=False, server_default=sql.false(), nullable=True)
+    confirmed = db.Column(
+        db.Boolean, default=False, server_default=sql.false(), nullable=False)
     last_login_ip = db.Column(db.String(64))
     current_login_ip = db.Column(db.String(64))
     login_count = db.Column(db.Integer())
@@ -169,6 +173,22 @@ class UserModel(UserMixin, db.Model):
         super(UserModel, self).__init__(**kwargs)
         self._statistics = UserStatisticsModel()
 
+    @property
+    def email_md5(self):
+        email = self.email.strip()
+        if isinstance(email, unicode):
+            email = email.encode('utf-8')
+        return md5(email).hexdigest()
+
+    def g_avatar(self, size=48, default='retro', rating='g'):
+        return "{url}{hash}?d={default}&s={size}".format(
+            url=current_app.config['GRAVATAR_BASE_URL'],
+            hash=self.email_md5,
+            default=default,
+            size=size,
+            rating=rating
+        )
+
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
@@ -216,6 +236,23 @@ class UserModel(UserMixin, db.Model):
         if data.get('reset') != self.id:
             return False
         self.password = new_password
+        db.session.add(self)
+        db.session.commit()
+        return True
+
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.id})
+
+    def confirm(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('confirm') != self.id:
+            return False
+        self.confirmed = True
         db.session.add(self)
         db.session.commit()
         return True

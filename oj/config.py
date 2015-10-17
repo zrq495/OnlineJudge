@@ -3,6 +3,8 @@
 from __future__ import unicode_literals
 
 import os
+from celery.schedules import crontab
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -29,8 +31,8 @@ class Config(object):
     OJ_ADMIN = os.environ.get('OJ_ADMIN')
 
     # pagination
-    PROBLEM_START_ID = 1
-    PROBLEMS_PER_PAGE = 10
+    PROBLEM_START_ID = 1000
+    PROBLEMS_PER_PAGE = 100
     NEWS_PER_PAGE = 5
     SOLUTIONS_PER_PAGE = 5
     RANK_PER_PAGE = 5
@@ -62,6 +64,9 @@ class Config(object):
     ENABLE_TIMELIMIT = True
     SUBMIT_TIMELIMIT = 2
 
+    # gravatar
+    GRAVATAR_BASE_URL = 'http://cdn.v2ex.com/gravatar/'
+
     PROGRAM_LANGUAGE = {
         'gcc': 'gcc',
         'g++': 'g++',
@@ -80,6 +85,14 @@ class Config(object):
         11: 'SYSTEM_ERROR',
         0: 'WAITING',
         12: 'JUDGEING',
+    }
+
+    CELERYBEAT_SCHEDULE = {
+        'test': {
+            'task': 'oj.core.tasks.test',
+            'schedule': crontab(minute='*/1'),
+            'args': (1, 2, 3)
+        },
     }
 
     @staticmethod

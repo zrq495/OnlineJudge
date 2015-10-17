@@ -1,69 +1,90 @@
-        <div>
-            <h3 class="text-center">{{ problem.title }}<br>
-                <small>Time Limit: {{ problem.time_limit|d(1000, true) }}MS&nbsp;&nbsp;
-                Memory Limit: {{ problem.memory_limit|d(65535, true) }}KB</small></h3>
+<div id="problem_head" class="col-md-12">
+  <div id="problem_title">
+    <h2>{{ problem.title }}</h2>
+  </div>
+  <div id="problem_info">
+    <p>
+      <span>Total Accepted: <strong>{{ problem.accepts_count|d(0, true) }}</strong></span>
+      <span>Total Submissions: <strong>{{ problem.solutions_count|d(0, true) }}</strong></span>
+    </p>
+    <p>
+      <span>Memory Limit: <strong>{{ problem.memory_limit|d(65535, true) }}KB</strong></span>
+      <span>Time Limit: <strong>{{ problem.time_limit|d(1000, true) }}MS</strong></span>
+    </p>
+  </div>
+</div>
+<div id="problem_body" class="col-md-12">
+  <div id="problem_description">
+    {{ problem.description|safe|d('', true) }}
+  </div>
+  <h3>Input</h3>
+  <div id="problem_input">
+    {{ problem.input|safe|d('', true) }}
+  </div>
+  <h3>Output</h3>
+  <div id="problem_output">
+    {{ problem.output|safe|d('', true) }}
+  </div>
+  <h3>Sample Input</h3>
+  <div id="problem_sampleinput">
+    {{ problem.sample_input|safe|d('', true) }}
+  </div>
+  <h3>Sample Output</h3>
+  <div id="problem_sampleoutput">
+    {{ problem.sample_output|safe|d('', true) }}
+  </div>
+  <h3>Hint</h3>
+  <div id="problem_hint">
+    {{ problem.hint|safe|d('', true) }}
+  </div>
+  <h3>Source</h3>
+  <div id="problem_source">
+    {{ problem.source|safe|d('', true) }}
+  </div>
+  <h3>Sample Code</h3>
+  <div id="problem_samplecode">
+    {{ problem.sample_code|safe|d('', true) }}
+  </div>
+</div>
+<div id="problem_submit" class="col-md-12">
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <div class="row" style="margin-bottom: 20px">
+      <div class="form-inline">
+        <div class="col-md-12">
+          <select class="form-control" id="lang" name="language">
+            <option value="gcc">GCC</option>
+            <option value="g++">G++</option>
+            <option value="java">Java</option>
+            <option value="pascal">Pascal</option>
+            <option value="go">Go</option>
+            <option value="lua">Lua</option>
+            <option value="dao">Dao</option>
+            <option value="perl">Perl</option>
+            <option value="ruby">Ruby</option>
+            <option value="haskell">Haskell</option>
+            <option value="python2">Python2</option>
+            <option value="python3">Python3</option>
+          </select>
+          <button type="submit" class="btn btn-success" id="submit" name="submit" {% if current_user.is_anonymous() %}disabled{% endif%}><i class="fa fa-rocket"></i></button>
+          {% if current_user.is_anonymous() %}
+          <a> You have not signed in, cannot submit your code.</a>
+          {% endif %}
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Description</h3>
-            </div>
-            <div class="panel-body">
-                {{ problem.description|safe|d('', true) }}
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Input</h3>
-            </div>
-            <div class="panel-body">
-                {{ problem.input|safe|d('', true) }}
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Output</h3>
-            </div>
-            <div class="panel-body">
-                {{ problem.output|safe|d('', true) }}
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Sample Input</h3>
-            </div>
-            <div class="panel-body">
-                {{ problem.sample_input|safe|d('', true) }}
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Sample Output</h3>
-            </div>
-            <div class="panel-body">
-                {{ problem.sample_output|safe|d('', true) }}
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Hint</h3>
-            </div>
-            <div class="panel-body">
-                {{ problem.hint|safe|d('', true) }}
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Source</h3>
-            </div>
-            <div class="panel-body">
-                {{ problem.source|safe|d('', true) }}
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Sample Code</h3>
-            </div>
-            <div class="panel-body">
-                {{ problem.sample_code|safe|d('', true) }}
-            </div>
-        </div>
+      </div>
+    </div>
+    <div id="editor">
+    </div>
+    {% if request.endpoint == 'contest.contest_problem' %}
+    <input type="hidden" name="contest_problem_id" value="{{ contest_problem.ordinal + 1 }}" />
+    {% else %}
+    <input type="hidden" name="problem_id" value="{{ problem.id }}"/>
+    {% endif %}
+    <textarea class="hidden" id="code" name="code" required="required"></textarea>
+    <style type="text/css" media="screen">
+        #editor {
+            height: 400px;
+        }
+    </style>
+  </form>
+</div>

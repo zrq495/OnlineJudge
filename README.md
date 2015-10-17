@@ -19,7 +19,6 @@ url: `http://dev.sdutacm.org:5000/`
 ## docker
 
 - install docker and docker-compose
-- docker-compose build
 - docker-compose up
 
 

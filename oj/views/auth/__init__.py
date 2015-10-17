@@ -31,3 +31,4 @@ bp_auth.add_url_rule(
 
 
 from . import password  # noqa
+from . import confirm  # noqa
