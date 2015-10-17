@@ -55,6 +55,7 @@ with app.app_context():
         bp_compile_info,
         bp_rank,
         bp_contest,
+        bp_settings,
     )
 
     app.register_blueprint(
@@ -100,6 +101,10 @@ with app.app_context():
     app.register_blueprint(
         bp_contest,
         url_prefix='/contest')
+
+    app.register_blueprint(
+        bp_settings,
+        url_prefix='/settings')
 
     from .models import Permission
 

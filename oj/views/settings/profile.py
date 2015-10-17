@@ -11,20 +11,19 @@ from flask import (
 from flask.ext.login import login_required, current_user
 
 from oj import db
-from oj.models import UserModel
-from .forms import UserForm
+from .forms import ProfileForm
 
 
-class ProfileEditView(views.MethodView):
+class EditProfileView(views.MethodView):
 
     @login_required
     def get(self):
         user = current_user._get_current_object()
         if not user:
             raise abort(404)
-        form = UserForm(obj=user)
+        form = ProfileForm(obj=user)
         return render_template(
-            'profile/edit.html',
+            'settings/profile.html',
             form=form,
             user=user)
 
@@ -34,10 +33,10 @@ class ProfileEditView(views.MethodView):
         if not user:
             raise abort(404)
 
-        form = UserForm()
+        form = ProfileForm()
         if not form.validate():
             return render_template(
-                'profile/edit.html',
+                'settings/profile.html',
                 form=form,
                 user=user)
         form.populate_obj(user)

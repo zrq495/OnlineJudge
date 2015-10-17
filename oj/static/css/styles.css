@@ -391,11 +391,11 @@ dl.form>dt {
 
 .avatar-picture {
     height: auto;
-    border-radius: 3px;
+    border-radius: 3px !important;
 }
 
 .avatar-upload {
-    width: 80%;
+    width: 85%;
     float: right;
 }
 
@@ -403,6 +403,10 @@ dl.form>dt {
     padding: 10px 0;
     font-size: 12px;
     color: #767676;
+}
+
+.edit-profile-avatar {
+    padding-left: 15px;
 }
 
 .right{
