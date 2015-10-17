@@ -547,3 +547,10 @@ h2.title-v2 {
     text-transform: uppercase;
 }
 
+/*
+ * settings
+ */
+
+.settings_form {
+    margin: 15px 0;
+}

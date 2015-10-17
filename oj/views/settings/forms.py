@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 
 from flask.ext.wtf import Form
 from wtforms.fields import (
-    StringField, RadioField, SubmitField, SelectField)
+    StringField, RadioField, SubmitField, SelectField, PasswordField)
 from wtforms.validators import (
-    Required, Optional, Length)
+    Required, Optional, Length, Email)
 from wtforms import ValidationError
 from flask.ext.login import current_user
 
@@ -46,3 +46,17 @@ class ProfileForm(Form):
         if current_user.nickname != field.data:
             if UserModel.query.filter_by(nickname=field.data).first():
                 raise ValidationError('Nickname already in use')
+
+
+class ChangeEmailForm(Form):
+    new_email = StringField('New Email', validators=[Required(), Email()])
+    password = PasswordField('Password', validators=[Required()])
+    submit = SubmitField('Change Email')
+
+    def validate_new_email(self, field):
+        if UserModel.query.filter_by(email=field.data).first():
+            raise ValidationError('Email has already been registered')
+
+    def validate_password(self, field):
+        if not current_user.verify_password(field.data):
+            raise ValidationError('Invalid password.')
