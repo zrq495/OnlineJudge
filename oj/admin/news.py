@@ -32,9 +32,9 @@ class NewsAdmin(ModelViewMixin):
 class HeadlineAdmin(ModelViewMixin):
 
     column_exclude_list = ['url']
-    column_searchable_list = ['title', 'url', 'alert']
+    column_searchable_list = ['title', 'url']
     column_filters = [
-        'id', 'user_id', 'title', 'url', 'alert', 'is_display', 'date_created'
+        'id', 'user_id', 'title', 'url', 'is_display', 'date_created'
     ]
     column_editable_list = ['is_display']
 

@@ -6,65 +6,94 @@
 {{ super() }}
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/header.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/font-awesome.min.css')}}">
 {% endblock %}
 
 {% block navbar %}
-<div style="background:#fff" class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ url_for('index.index') }}">Online Judge</a>
+<div class="wrapper">
+    <div class="header no-print" data-swiftype-index="false">
+        <div class="topbar">
+            <div class="container">
+                <div id="bulletins">
+                  <ul class="bulletin left">
+                      {% for headline in get_headlines() %}
+                      <li>
+                        <a href="{{ headline.url or '#' }}">{{ headline.title }}</a>
+                      </li>
+                      {% endfor %}
+                  </ul>
+                </div>
+                <ul class="loginbar pull-right">
+                    {% if current_user.is_authenticated() %}
+                    <li><a href="{{ url_for('profile.profile', user_id=current_user.id) }}"><i class="fa fa-user fa-fw"></i> PROFILE</a></li>
+                    <li class="topbar-devider"></li>  
+                    <li><a href="{{ url_for('auth.logout') }}">LOGOUT</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">LOG IN</a></li>
+                    <li class="topbar-devider"></li>  
+                    <li><a href="{{ url_for('auth.signup') }}">SIGN UP</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="{{ url_for('news.list') }}">News</a></li>
-                <li><a href="{{ url_for('problem.list') }}">Problems</a></li>
-                <li><a href="{{ url_for('contest.list') }}">Contest</a></li>
-                <li><a href="{{ url_for('solution.list') }}">Status</a></li>
-                <li><a href="{{ url_for('rank.list') }}">Ranklist</a></li>
-                {% if current_user.is_administrator() -%}
-                <li><a href="{{ url_for('admin.index') }}">管理后台</a></li>
-                {%- endif %}
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                {% if current_user.is_authenticated() %}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        {{ current_user.username }} <b class="caret"></b>
+        <div class="navbar navbar-default mega-menu" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-bars"></span>
+                    </button>
+                    <a class="navbar-brand" href="/" style="font-size:24px">
+                        SDUT Online Judge
+                        <!--img id="logo-header" src="" alt="Logo" data-retina="" style="height: 40px"-->
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('profile.profile', user_id=current_user.id) }}"><i class="fa fa-user fa-fw"></i> Profile</a></li>
-                        <li><a href="{{ url_for('auth.change_password') }}"><i class="fa fa-gear fa-fw"></i> Change Password</a></li>
-                        <li><a href="{{ url_for('auth.logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+                </div>
+                <div class="collapse navbar-collapse navbar-responsive-collapse">
+                    <ul class="nav navbar-nav">
+                        <li{% if request.endpoint == 'news.list' %} class="active"{% endif %}>
+                            <a href="{{ url_for('news.list') }}"><i class="fa fa-quote-right"></i> NEWS</a>
+                        </li>
+                        <li{% if request.endpoint == 'problem.list' %} class="active"{% endif %}>
+                            <a href="{{ url_for('problem.list') }}"><i class="fa fa-puzzle-piece"></i> PROBLEMS</a>
+                        </li>
+                        <li{% if request.endpoint == 'contest.list' %} class="active"{% endif %}>
+                            <a href="{{ url_for('contest.list') }}"><i class="fa fa-users"></i> CONTESTS</a>
+                        </li>
+                        <li{% if request.endpoint == 'solution.list' %} class="active"{% endif %}>
+                            <a href="{{ url_for('solution.list') }}"><i class="fa fa-cogs"></i> STATUS</a>
+                        </li>
+                        <li{% if request.endpoint == 'rank.list' %} class="active"{% endif %}>
+                            <a href="{{ url_for('rank.list') }}"><i class="fa fa-trophy"></i> RANKS</a>
+                        </li>
+                        {% if current_user.is_administrator() -%}
+                        <li><a href="{{ url_for('admin.index') }}"><i class="fa fa-tachometer"></i> 管理后台</a></li>
+                        {%- endif %}
+                        <li>
+                          <i class="search fa fa-search search-btn"></i>
+                          <div class="search-open">
+                              <div class="animated fadeInDown">
+                                  <input type="text" class="st-default-search-input form-control" id="header-search" autocomplete="off" autocorrect="off" autocapitalize="off">
+                              </div>
+                          </div>    
+                        </li>
                     </ul>
-                </li>
-                {% else %}
-                <li><a href="{{ url_for('auth.login') }}"><i class="fa fa-sign-in fa-fw"></i> Log in</a></li>
-                {% endif %}
-            </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    {% for headline in get_headlines() %}
-    {% if loop.first %}
-    <div class="list-group">
-    {% endif %}
-        <a href="{{ headline.url or '#' }}" class="text-center list-group-item list-group-item-{{ headline.alert }}">{{ headline.title }}</a>
-    {% if loop.last %}
+<div class="breadcrumbs">
+    <div class="container">
+      <h1 class="pull-left">{% block breadcrumbs %}{% endblock %}</h1>
     </div>
-    {% endif %}
-    {% endfor %}
+</div>
+{% block home %}{% endblock %}
+<div class="container content">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -85,4 +114,10 @@
 
 {% block scripts %}
 {{ super() }}
+<script src="{{ url_for('static', filename='scripts/bulletin.js') }}"></script>
+<script>
+$(document).ready(function(){
+    $("#bulletins").Scroll({line:1,speed:1000,timer:5000});
+});
+</script>
 {% endblock %}

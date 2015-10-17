@@ -1,10 +1,11 @@
 {% extends "layout.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Online Judge - 登录{% endblock %}
+{% block title %}Online Judge - Login{% endblock %}
+
+{% block breadcrumbs %}LOG IN{% endblock %}
 
 {% block page_content %}
-{% include 'auth/_auth_nav.html' %}
 <div class="row">
   <div class="col-md-12 auth_form">
     <form method=post class="form-horizontal">

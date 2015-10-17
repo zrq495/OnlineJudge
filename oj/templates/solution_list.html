@@ -2,7 +2,21 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% from "bootstrap/pagination.html" import render_pagination %}
 
-{% block title %}Online Judge - Solution List{% endblock %}
+{% block title %}
+{% if request.endpoint == 'contest.solution' %}
+Online Judge - Contest #{{ contest.id }} - Solution
+{% else %}
+Online Judge - Solution List
+{% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+{% if request.endpoint == 'contest.solution' %}
+CONTEST #{{ contest.id }}
+{% else %}
+STATUS
+{% endif %}
+{% endblock %}
 
 {% block page_content %}
 {% if request.endpoint == 'contest.solution' %}
@@ -12,8 +26,9 @@
     <div>
         {{ wtf.quick_form(form, form_type="inline", method="get") }}
     </div>
+    <div class="margin-bottom-20"></div>
     <div>
-        <table class="table">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Run ID</th>
