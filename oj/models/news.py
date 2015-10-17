@@ -73,10 +73,6 @@ class HeadlineModel(db.Model):
     user_id = db.Column(db.Integer(), nullable=False, index=True)
     title = db.Column(db.Unicode(512), nullable=False)
     url = db.Column(db.Unicode(512))
-    alert = db.Column(
-        db.Enum('info', 'success', 'warning', 'danger',
-                name='headline_alert_enum'),
-        server_default='info', nullable=False)
     is_display = db.Column(
         db.Boolean, default=True, server_default=sql.true(),
         nullable=False, index=True)

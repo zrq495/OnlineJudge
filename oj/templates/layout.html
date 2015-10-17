@@ -20,7 +20,7 @@
                   <ul class="bulletin left">
                       {% for headline in get_headlines() %}
                       <li>
-                        <a href="{{ headline.url or '#' }}" class="{{ headline.alert }}">{{ headline.title }}</a>
+                        <a href="{{ headline.url or '#' }}">{{ headline.title }}</a>
                       </li>
                       {% endfor %}
                   </ul>
