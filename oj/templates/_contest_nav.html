@@ -3,7 +3,7 @@
       <a href="{{ url_for('contest.detail', contest_id=contest.id) }}">Overview</a>
     </li>
     <li role="presentation"{% if request.endpoint == "contest.contest_problem" %} class="active"{% endif %}>
-      <a href="{{ contest.problems[0].url }}">Problem</a>
+      <a href="{{ contest.problems.first().url or '#' }}">Problem</a>
     </li>
     <li role="presentation"{% if request.endpoint == "contest.solution" %} class="active"{% endif %}>
       <a href="{{ url_for('contest.solution', contest_id=contest.id) }}">Solution</a>
