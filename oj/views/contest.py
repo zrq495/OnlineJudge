@@ -59,13 +59,15 @@ class ContestAccessRequiredView(views.MethodView):
     def post(self, contest_id):
         now = datetime.datetime.now()
         contest = ContestModel.query.get_or_404(contest_id)
-        if not contest.verify_password(request.form['password']):
+        form = forms.ContestAccessRequiredPasswordForm(contest, request.form)
+        if not form.validate():
             return render_template(
                 self.template,
                 contest=contest,
                 now=now)
         session.setdefault('contests', {}).setdefault(contest.id, True)
-        return redirect(request.args.get('next') or url_for('contest.detail', contest_id=contest.id))
+        return redirect(request.args.get('next') or
+                        url_for('contest.detail', contest_id=contest.id))
 
 
 class ContestDetailView(views.MethodView):
@@ -134,7 +136,6 @@ class ContestRankView(views.MethodView):
 
     template = 'contest_rank.html'
 
-    @contest_access_required
     def get(self, contest_id):
         rank = OrderedDict()
         contest = ContestModel.query.get_or_404(contest_id)

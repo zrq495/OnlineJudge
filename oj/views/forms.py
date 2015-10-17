@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 from flask.ext.wtf import Form
+from wtforms import PasswordField
+from wtforms.validators import Required
 from wtforms import fields, validators, ValidationError
 
 from oj import app
@@ -79,3 +81,16 @@ class ContestSubmitForm(Form):
             raise ValidationError('比赛还没开始')
         if contest_problem.contest.status == 'ended':
             raise ValidationError('比赛已经结束')
+
+
+class ContestAccessRequiredPasswordForm(Form):
+    password = PasswordField('Password', validators=[Required()])
+
+    def __init__(self, contest_obj, *args, **kwargs):
+        super(ContestAccessRequiredPasswordForm, self).__init__(*args,
+                                                                **kwargs)
+        self.contest = contest_obj
+
+    def validate_password(self, filed):
+        if not self.contest.verify_password(filed.data):
+            raise ValidationError('Password is invalid')
