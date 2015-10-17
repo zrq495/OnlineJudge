@@ -86,7 +86,7 @@ class CodeDetailView(views.MethodView):
     @login_required
     def get(self, code_id):
         code = CodeModel.query.get_or_404(code_id)
-        if current_user.id != code.solution.user_id:
+        if current_user.id != code.solution.user_id and not current_user.is_administrator():
             abort(404)
         SOLUTION_RESULT = current_app.config['SOLUTION_RESULT']
         return render_template(

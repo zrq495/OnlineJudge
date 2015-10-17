@@ -56,7 +56,7 @@ STATUS
                     <td>{{ solution.take_time }}MS</td>
                     <td>{{ solution.take_memory }}KB</td>
                     <td>
-                        {% if current_user.id == solution.user_id %}
+                        {% if current_user.id == solution.user_id or current_user.is_administrator() %}
                         <a href="{{ solution.code.url }}">{{ solution.program_language }}</a>
                         {% else %}
                         {{ solution.program_language }}
