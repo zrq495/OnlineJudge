@@ -50,7 +50,7 @@ class ProfileForm(Form):
 
 class ChangeEmailForm(Form):
     new_email = StringField('New Email', validators=[Required(), Email()])
-    password = PasswordField('Password', validators=[Required()])
+    password = PasswordField('Verify Password', validators=[Required()])
     submit = SubmitField('Change Email')
 
     def validate_new_email(self, field):
