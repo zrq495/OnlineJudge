@@ -48,3 +48,12 @@ bp_index.add_url_rule(
     '',
     view_func=IndexView.as_view(b'index'),
     methods=['GET'])
+
+
+@bp_index.route('test/')
+def test():
+    import socket
+    from oj.core.cache import redis
+    redis.incr('hits')
+    host = socket.gethostname()
+    return '\nHello World!\nI have been seen %s times.\nMy Host name is %s\n\n' % (redis.get('hits'), host)

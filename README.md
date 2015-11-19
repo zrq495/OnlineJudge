@@ -19,7 +19,8 @@ url: `http://dev.sdutacm.org:5000/`
 ## docker
 
 - install docker and docker-compose
-- docker-compose up
+- docker-compose up -d
+- docker-compose scale web=5
 
 
 ## honcho

@@ -1,8 +1,8 @@
 web:
   build: .
   command: honcho start
-  ports:
-   - "5000:5000"
+  expose:
+   - "5000"
   volumes:
    - .:/OnlineJudge
    - /data:/data
@@ -31,3 +31,11 @@ judge:
    - /data:/data
   links:
    - postgres
+haproxy:
+  image: tutum/haproxy
+  links:
+   - web
+  ports:
+   - "80:80"
+  environment:
+   - BACKEND_PORT=5000
