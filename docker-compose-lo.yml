@@ -1,24 +1,22 @@
 web:
-  build: .
-  command: honcho start
-  expose:
-   - "5000"
-  volumes:
-   - .:/OnlineJudge
-   - /data:/data
+  extends:
+   file: common.yml
+   service: app
   links:
    - redis
    - postgres
   environment:
-   OJ_CONFIG: "production"
-   REDIS_HOST: "redis"
-   REDIS_PORT: "6379"
-   DEV_DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
-   DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
    OJ_SERVER_NAME: "lo.zrq495.com:5000"
-   OJ_ADMIN: "zrq495@gmail.com"
-   MAIL_USERNAME: "sdutacm@sina.cn"
-   MAIL_PASSWORD: "sdutacmv5"
+web_beat:
+  extends:
+   file: common.yml
+   service: app
+  command: honcho start --procfile Procfile.beat
+  links:
+   - redis
+   - postgres
+  environment:
+   OJ_SERVER_NAME: "lo.zrq495.com:5000"
 redis:
   image: redis
 postgres:
@@ -36,6 +34,6 @@ haproxy:
   links:
    - web
   ports:
-   - "80:80"
+   - "5000:80"
   environment:
    - BACKEND_PORT=5000

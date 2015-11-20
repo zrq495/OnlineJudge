@@ -1,24 +1,19 @@
 web:
-  build: .
-  command: honcho --procfile Procfile.gunicorn start
-  expose:
-   - "5000"
-  volumes:
-   - .:/OnlineJudge
-   - /data:/data
+  extends:
+   file: common.yml
+   service: app
+  command: honcho start --procfile Procfile.gunicorn
   links:
    - redis
    - postgres
-  environment:
-   OJ_CONFIG: "production"
-   REDIS_HOST: "redis"
-   REDIS_PORT: "6379"
-   DEV_DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
-   DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
-   OJ_SERVER_NAME: "oj.sdutacm.org"
-   OJ_ADMIN: "zrq495@gmail.com"
-   MAIL_USERNAME: "sdutacm@sina.cn"
-   MAIL_PASSWORD: "sdutacmv5"
+web_beat:
+  extends:
+   file: common.yml
+   service: app
+  command: honcho start --procfile Procfile.gunicorn.beat
+  links:
+   - redis
+   - postgres
 redis:
   image: redis
 postgres:
@@ -35,6 +30,7 @@ haproxy:
   image: tutum/haproxy
   links:
    - web
+   - web_beat
   ports:
    - "80:80"
   environment:

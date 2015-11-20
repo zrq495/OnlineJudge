@@ -1,0 +1,18 @@
+app:
+  build: .
+  command: honcho start
+  expose:
+   - "5000"
+  volumes:
+   - .:/OnlineJudge
+   - /data:/data
+  environment:
+   OJ_CONFIG: "production"
+   REDIS_HOST: "redis"
+   REDIS_PORT: "6379"
+   DEV_DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
+   DATABASE_URL: "postgresql+psycopg2://oj:oooo@postgres/oj"
+   OJ_SERVER_NAME: "oj.sdutacm.org"
+   OJ_ADMIN: "zrq495@gmail.com"
+   MAIL_USERNAME: "sdutacm@sina.cn"
+   MAIL_PASSWORD: "sdutacmv5"
