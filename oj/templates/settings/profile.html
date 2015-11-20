@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Online Judge - Settings{% endblock %}
+
+{% block breadcrumbs %}SETTINGS{% endblock %}
+
+{% block page_content %}
+  <div class="one-fifth left">
+    {% include 'settings/_settings_nav.html' %}
+  </div>
+  <div class="four-fifth right main">
+    <div class="panel panel-default">
+      <div class="panel-heading">Public profile</div>
+      <div class="panel-body">
+        <dl class="form edit-profile-avatar">
+          <dt>
+            <label for="exampleInputText">Profile picture</label>
+          </dt>
+          <dd>
+          <img class="avatar-picture" src="{{ current_user.g_avatar() }}" width="10%"> 
+            <div class="avatar-upload">
+              <button class="btn btn-default">Upload new picture</button>
+              <div class="avatar-upload-default">
+                <p>Change your avatar at <a href="http://gravatar.com">gravatar.com</a> or upload from your computer.</p>
+              </div>
+            </div>
+          </dd>
+        </dl>
+        <div class="col-md-9 settings_form">
+        {{ wtf.quick_form(form) }}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

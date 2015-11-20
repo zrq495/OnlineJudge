@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Online Judge - Settings{% endblock %}
+
+{% block breadcrumbs %}SETTINGS{% endblock %}
+
+{% block page_content %}
+  <div class="one-fifth left">
+    {% include 'settings/_settings_nav.html' %}
+  </div>
+  <div class="four-fifth right main">
+    <div class="panel panel-default">
+      <div class="panel-heading">Change Email</div>
+      <div class="panel-body">
+        <div class="col-md-9 settings_form">
+        {{ wtf.quick_form(form) }}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
